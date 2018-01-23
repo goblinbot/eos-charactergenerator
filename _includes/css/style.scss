@@ -1,21 +1,110 @@
-// luna - GIGER
-$gZWART    : #1c1616;
-$gDONKER   : #3a3d44;
-$gPRIMARY  : #707176;
-$gGRAY     : #a7a8ac;
-$gLITE     : #dbf0f1;
+@import 'fonts.scss';
 
-// luna - LUNAR
-$Lorange   : #fa875a;
-$Ldark     : #524e4d;
+// blus
+$bg    : #262e3e;
+$bgalt : #2c3445;
+$medi  : #323846;
+$lite  : #3b414e;
 
-// thijs - thijs
-$wit : #f8f8f8;
+// bright
+$wit   : #ccd1dd;
+$groen : #31e184;
+$cyan  : #38e8de;
+$blue  : #386ae8;
+
+// details
+$btnshadow : #262e3e; //zelfde als BG
+
+// fonts
+$fontstack  : 'Roboto-regular', sans-serif, arial;
+$fontbold   : 'Roboto-medium','Roboto-regular', sans-serif, arial;
+$fonttitle  : 'Roboto-Light','Roboto-Thin', sans-serif, arial;
+
 
 html {
-  background: $gZWART;
+  background: $bg;
 }
 body {
-  background: $gZWART;
-  color: $gLITE;
+  background: $bg;
+  color: $wit;
+  font-family: $fontstack;
+}
+
+h1,h2 {
+  text-transform: uppercase;
+}
+h1,h2,h3,h4,h5,h6 {
+  font-family: $fonttitle;
+}
+p {
+  font-family: $fontstack;
+}
+
+.grid {
+
+  width: 100%;
+  height: 99vh;
+  transition: 0.4s;
+  margin-top: 1vh;
+
+  grid-template-areas:
+    "wsleft logo main wsright"
+    "wsleft menu main wsright"
+    "wsleft footer footer wsright";
+
+  display: grid;
+  grid-template-columns: 1fr 10px 100% 1fr;
+  grid-template-rows: 64px 1fr 32px;
+  grid-gap: 2px 2px;
+
+  @media(min-width:992px) {
+    grid-template-columns: 1fr 150px 820px 1fr;
+    grid-template-rows: 64px 1fr 32px;
+  }
+  @media(min-width:1200px) {
+    grid-template-columns: 1fr 170px 1000px 1fr;
+    grid-template-rows: 64px 1fr 32px;
+  }
+
+  .cell {
+    background: $bgalt;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    transition: 0.4s;
+  }
+
+  .wsleft {
+    grid-area: wsleft;
+    background: $bg;
+  }
+  .wsright {
+    grid-area: wsright;
+    background: $bg;
+  }
+  .logo {
+    grid-area: logo;
+    background: $medi;
+  }
+  .menu {
+    grid-area: menu;
+  }
+
+  .main {
+    grid-area: main;
+    display: flex;
+    height: 100%;
+
+    .content {
+      padding: 15px;
+      height: auto;
+      width: 100%;
+    }
+  }
+
+  .footer {
+    grid-area: footer;
+    background: $medi;
+  }
+
 }

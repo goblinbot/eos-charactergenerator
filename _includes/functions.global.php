@@ -31,3 +31,41 @@ function EMSincludeJS() {
   }
   return $printresult;
 }
+
+
+// builds the left menu
+function generateMenu($param = 'Home') {
+
+  global $APP;
+
+  class moduleObj {
+
+    var $title = "title";
+    var $icon = "fa fa-home";
+    var $url = "/";
+
+     function __construct() {
+        //  print "In moduleObj constructor\n";
+     }
+  }
+
+  $menuItems = array();
+
+  $menuItems['home'] = new moduleObj();
+  $menuItems['home']->title = 'Home';
+  $menuItems['home']->url = '/';
+  $menuItems['home']->icon = 'fa fa-home';
+
+  $menuItems['characters'] = new moduleObj();
+  $menuItems['characters']->title = 'Characters';
+  $menuItems['characters']->url = '/';
+  $menuItems['characters']->icon = 'fa fa-user';
+
+  $menuItems['back'] = new moduleObj();
+  $menuItems['back']->title = 'Back to site';
+  $menuItems['back']->url = '/';
+  $menuItems['back']->icon = 'fa fa-arrow-left';
+
+
+
+}

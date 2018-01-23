@@ -14,5 +14,9 @@
 
   <?=EMSincludeCSS()?>
 </head>
-<body class="notransition">
-  <div class="content">
+<body>
+  <div class="grid">
+
+    <div class="logo cell">
+
+    </div>

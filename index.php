@@ -12,14 +12,24 @@
   }
 
 ?>
+<div class="wsleft cell"></div>
 
-<div class="main">
-
-<h1>proto</h1>
-
-
-
+<div class="menu cell">
+  <?=generateMenu('home');?>
 </div>
+
+<div class="main cell">
+  <div class="content">
+
+    <h1>proto</h1>
+
+  </div>
+</div>
+
+<div class="wsright cell"></div>
+
+
+
 
 <?php
   include_once($APP["root"] . "/footer.php");

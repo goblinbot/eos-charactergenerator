@@ -1,4 +1,9 @@
-</div>
+
+  <div class="footer cell">
+
+  </div>
+
+</div> <!-- grid -->
   <?=EMSincludeJS()?>
   <script type="text/javascript">
     $(document).ready(function(){

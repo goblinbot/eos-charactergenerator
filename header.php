@@ -2,6 +2,12 @@
   // if(!isset($APP)) {
   //   header("location: /");
   // }
+
+
+
+
+  $TIJDELIJKEID = 451;
+  $sheetArr = getCharacterSheets();
 ?>
 
 <!DOCTYPE html>

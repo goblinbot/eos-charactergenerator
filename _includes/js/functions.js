@@ -12,6 +12,7 @@ function checkGridSupport() {
 
 	if(result == false) {
 		/*Current browser does not support CSS grids, but DOES understand the CSS.supports command. There may be hope yet. */
+		$('.logo').html('<p style="padding:8px">Your browser does not support CSS grids.</p>');
 
 	} else {
 		/* Grid support detected! This is a nice browser.*/

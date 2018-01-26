@@ -21,7 +21,27 @@
 <div class="main cell">
   <div class="content">
 
-    <h1>proto</h1>
+    <h1>Eos Character Creator</h1>
+
+    <button type="button" class="green" name="button">New character</button>
+    <br>
+    <button type="button" class="cyan" name="button">Add existing character</button>
+    <br>
+    <button type="button" class="blue" name="button">Edit a character</button>
+    <br>
+    <button type="button" class="" name="button">Placeholder</button>
+    <br>
+    <button type="button" class="disabled" name="button">Placeholder</button>
+    <br><br><br>
+
+    <button type="button" class="no-bg" name="button">Placeholder</button>
+    <br>
+    <button type="button" class="no-bg green" name="button">Placeholder</button>
+    <br>
+    <button type="button" class="no-bg cyan" name="button">Placeholder</button>
+    <br>
+    <button type="button" class="no-bg blue" name="button">Placeholder</button>
+    <br>
 
   </div>
 </div>

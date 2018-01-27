@@ -23,7 +23,6 @@
 
     <h1>Eos Character Creator</h1>
 
-<<<<<<< HEAD
     <div class="row">
 
       <div class="box33">
@@ -50,27 +49,6 @@
 
 
 
-=======
-    <button type="button" class="green" name="button">New character</button>
-    <br>
-    <button type="button" class="cyan" name="button">Add existing character</button>
-    <br>
-    <button type="button" class="blue" name="button">Edit a character</button>
-    <br>
-    <button type="button" class="" name="button">Placeholder</button>
-    <br>
-    <button type="button" class="disabled" name="button">Placeholder</button>
-    <br><br><br>
-
-    <button type="button" class="no-bg" name="button">Placeholder</button>
-    <br>
-    <button type="button" class="no-bg green" name="button">Placeholder</button>
-    <br>
-    <button type="button" class="no-bg cyan" name="button">Placeholder</button>
-    <br>
-    <button type="button" class="no-bg blue" name="button">Placeholder</button>
-    <br>
->>>>>>> f6ecf7c985e6fb5617e15f20b9d5548c8da0f1a4
 
   </div>
 </div>

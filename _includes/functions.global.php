@@ -49,7 +49,11 @@ function generateMenu($param = 'Home') {
   $class = (strtolower($param) == 'myaccount') ? 'active' : '';
     $printresult .= "<a href=\"".$APP['header']."/myaccount.php\" class=\"menuitem $class\"><i class=\"fa fa-cog\"></i><span>&nbsp;My account</span></a>";
 
+<<<<<<< HEAD
   $class = 'disabled';
+=======
+  $class = '';
+>>>>>>> f6ecf7c985e6fb5617e15f20b9d5548c8da0f1a4
     $printresult .= "<a href=\"/\" class=\"menuitem $class\"><i class=\"fa fa-arrow-left\"></i><span>&nbsp;Back to site</span></a>";
 
   return $printresult;
@@ -115,7 +119,11 @@ function getCharacterSheets() {
 
     } else {
 
+<<<<<<< HEAD
       $return['status'] = "noChar";
+=======
+      $return['status'] = "noChars";
+>>>>>>> f6ecf7c985e6fb5617e15f20b9d5548c8da0f1a4
     }
 
   } else {

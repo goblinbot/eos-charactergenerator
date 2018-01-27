@@ -63,6 +63,7 @@ a {
     color: $textcolor;
   }
 }
+<<<<<<< HEAD
 
 hr {
   background-color: $textcolor;
@@ -77,6 +78,20 @@ hr {
 .disabled {
   pointer-events : none;
 }
+=======
+.text-muted {
+  color: $textmuted;
+}
+.disabled {
+  pointer-events : none;
+}
+
+
+
+
+/////////////////////// GRID ///////////////////////////////
+.grid {
+>>>>>>> f6ecf7c985e6fb5617e15f20b9d5548c8da0f1a4
 
 
 /////////////////////// GRID ///////////////////////////////
@@ -108,10 +123,16 @@ hr {
     height: auto;
     margin-top: 0;
     grid-template-columns: 110px 1fr;
+<<<<<<< HEAD
     grid-template-rows: 64px 64px 1fr 32px;
     grid-template-areas:
       "logo logo"
       "menu menu"
+=======
+    grid-template-rows: 64px 1fr 32px;
+    grid-template-areas:
+      "logo menu"
+>>>>>>> f6ecf7c985e6fb5617e15f20b9d5548c8da0f1a4
       "main main"
       "footer footer";
   }
@@ -250,10 +271,13 @@ button {
   margin-bottom: 0.5rem;
   text-shadow: 1px 1px rgba($btnshadow, 0.33);
 
+<<<<<<< HEAD
   &:hover {
     background: $inputbg;
   }
 
+=======
+>>>>>>> f6ecf7c985e6fb5617e15f20b9d5548c8da0f1a4
   // cyan button variant
   &.cyan {
     color: #FFF;
@@ -309,6 +333,16 @@ button {
     background: $btndisabled;
     border-color: $lite;
     color: $textmuted;
+<<<<<<< HEAD
+=======
+  }
+
+  &.no-bg {
+    background: none;
+    &:focus, &:active, &:hover {
+      color: #FFF;
+    }
+>>>>>>> f6ecf7c985e6fb5617e15f20b9d5548c8da0f1a4
   }
 
   &.no-bg {

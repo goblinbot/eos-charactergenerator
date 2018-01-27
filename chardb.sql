@@ -3,7 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
+<<<<<<< HEAD
 -- Gegenereerd op: 27 jan 2018 om 17:52
+=======
+-- Gegenereerd op: 25 jan 2018 om 01:29
+>>>>>>> f6ecf7c985e6fb5617e15f20b9d5548c8da0f1a4
 -- Serverversie: 10.1.26-MariaDB
 -- PHP-versie: 7.1.8
 
@@ -21,6 +25,11 @@ SET time_zone = "+00:00";
 --
 -- Database: `chardb`
 --
+<<<<<<< HEAD
+=======
+CREATE DATABASE IF NOT EXISTS `chardb` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `chardb`;
+>>>>>>> f6ecf7c985e6fb5617e15f20b9d5548c8da0f1a4
 
 -- --------------------------------------------------------
 
@@ -35,18 +44,27 @@ CREATE TABLE `characters` (
   `character_name` varchar(100) NOT NULL,
   `oc_name` varchar(75) NOT NULL,
   `faction` varchar(25) NOT NULL,
+<<<<<<< HEAD
   `aantal_events` int(11) NOT NULL DEFAULT '0',
   `status` varchar(20) NOT NULL DEFAULT 'design'
+=======
+  `aantal_events` int(11) NOT NULL DEFAULT '0'
+>>>>>>> f6ecf7c985e6fb5617e15f20b9d5548c8da0f1a4
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `characters`
 --
 
+<<<<<<< HEAD
 INSERT INTO `characters` (`characterID`, `accountID`, `character_name`, `oc_name`, `faction`, `aantal_events`, `status`) VALUES
 (1, 451, 'Maati Infor Danam', 'Thijs Test', 'Dugo', 5, 'in design'),
 (2, 451, 'Bakal Duguan Tulos', 'Thijs Boerma', 'Dugo', 4, 'deceased'),
 (3, 451, 'Kadh Rusks', 'Thijs Boerma', 'Aquila', 1, 'inactive');
+=======
+INSERT INTO `characters` (`characterID`, `accountID`, `character_name`, `oc_name`, `faction`, `aantal_events`) VALUES
+(1, 451, 'Maati Infor Danam', 'Thijs Test', 'Dugo', 5);
+>>>>>>> f6ecf7c985e6fb5617e15f20b9d5548c8da0f1a4
 
 -- --------------------------------------------------------
 
@@ -202,7 +220,11 @@ ALTER TABLE `skills_primair`
 -- AUTO_INCREMENT voor een tabel `characters`
 --
 ALTER TABLE `characters`
+<<<<<<< HEAD
   MODIFY `characterID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+=======
+  MODIFY `characterID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+>>>>>>> f6ecf7c985e6fb5617e15f20b9d5548c8da0f1a4
 --
 -- AUTO_INCREMENT voor een tabel `char_sheet`
 --

@@ -21,6 +21,7 @@
 <div class="main cell">
   <div class="content">
 
+<<<<<<< HEAD
     <?php
       // echo "<pre>";
       // var_dump($sheetArr);
@@ -115,6 +116,14 @@
       echo $printresult;
       unset($printresult);
 
+=======
+    <h1>Character Sheets</h1>
+
+    <?php
+      echo "<pre>";
+      var_dump($sheetArr);
+      echo "</pre>";
+>>>>>>> f6ecf7c985e6fb5617e15f20b9d5548c8da0f1a4
     ?>
 
   </div>

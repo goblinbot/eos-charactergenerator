@@ -1,24 +1,35 @@
 @import 'fonts.scss';
 
-// blus
+// primary color scheme
 $bg    : #262e3e;
 $bgalt : #2c3445;
 $medi  : #323846;
 $lite  : #3b414e;
 
-// bright
-$wit   : #ccd1dd;
-$groen : #31e184;
+// bright colors.
+$wit   : #ccd1dd; // text color
+$green : #31e184;
 $cyan  : #38e8de;
 $blue  : #386ae8;
 
-// details
-$btnshadow : #262e3e; //zelfde als BG
+// button detail colors.
+$btnshadow   : $bg;
+$btndisabled : $medi;
+  $bluHover  : #507ef2;
+  $bluActive : #4975e3;
+  $cyaHover  : #67dfd8;
+  $cyaActive : #19d8cd;
+
+// form element colors
+$inputbg : #424959;
+$inputselected : $lite;
 
 // fonts
 $fontstack  : 'Roboto-regular', sans-serif, arial;
 $fontbold   : 'Roboto-medium','Roboto-regular', sans-serif, arial;
 $fonttitle  : 'Roboto-Light','Roboto-Thin', sans-serif, arial;
+  $textcolor : $wit;
+  $textmuted : #838795;
 
 
 html {
@@ -26,7 +37,7 @@ html {
 }
 body {
   background: $bg;
-  color: $wit;
+  color: $textcolor;
   font-family: $fontstack;
 }
 
@@ -36,36 +47,76 @@ h1,h2 {
 h1,h2,h3,h4,h5,h6 {
   font-family: $fonttitle;
 }
+
 p {
   font-family: $fontstack;
 }
 
-.grid {
+a {
+  color: $textmuted;
+  transition: 0.3s;
+  text-decoration: none;
+  &:link {
+    color: $textmuted;
+  }
+  &:hover, &:focus, &:active, &.active {
+    color: $textcolor;
+  }
+}
 
+hr {
+  background-color: $textcolor;
+  border: 1px solid $textcolor;
+  margin: 1.5rem 1px;
+}
+
+.text-muted {
+  color: $textmuted;
+}
+
+.disabled {
+  pointer-events : none;
+}
+
+
+/////////////////////// GRID ///////////////////////////////
+.grid {
   width: 100%;
   height: 99vh;
   transition: 0.4s;
   margin-top: 1vh;
 
+  display: grid;
+
+  grid-template-columns: 1fr 170px 1000px 1fr;
+  grid-template-rows: 64px 1fr 32px;
+  grid-gap: 2px 2px;
   grid-template-areas:
     "wsleft logo main wsright"
     "wsleft menu main wsright"
     "wsleft footer footer wsright";
 
-  display: grid;
-  grid-template-columns: 1fr 10px 100% 1fr;
-  grid-template-rows: 64px 1fr 32px;
-  grid-gap: 2px 2px;
-
-  @media(min-width:992px) {
+  @media(max-width:1200px) {
     grid-template-columns: 1fr 150px 820px 1fr;
     grid-template-rows: 64px 1fr 32px;
+    grid-template-areas:
+      "wsleft logo main wsright"
+      "wsleft menu main wsright"
+      "wsleft footer footer wsright";
   }
-  @media(min-width:1200px) {
-    grid-template-columns: 1fr 170px 1000px 1fr;
-    grid-template-rows: 64px 1fr 32px;
+  @media(max-width:992px) {
+    height: auto;
+    margin-top: 0;
+    grid-template-columns: 110px 1fr;
+    grid-template-rows: 64px 64px 1fr 32px;
+    grid-template-areas:
+      "logo logo"
+      "menu menu"
+      "main main"
+      "footer footer";
   }
 
+  // class for every grid item
   .cell {
     background: $bgalt;
     width: 100%;
@@ -74,20 +125,71 @@ p {
     transition: 0.4s;
   }
 
+  // whitespace left
   .wsleft {
     grid-area: wsleft;
     background: $bg;
+    @media(max-width:768px) {
+      display: none;
+    }
   }
+
+  // whitespace right
   .wsright {
     grid-area: wsright;
     background: $bg;
+    @media(max-width:768px) {
+      display: none;
+    }
   }
+
   .logo {
     grid-area: logo;
     background: $medi;
   }
+
   .menu {
     grid-area: menu;
+    display: flex;
+    flex-direction: column;
+    font-family: $fonttitle;
+
+    a.menuitem {
+      width: auto;
+      padding: 15px;
+      background: $medi;
+      border-bottom: 2px solid $bg;
+      font-size: 1.6rem;
+      &:hover, &:focus, &:active, &.active {
+        background: $lite;
+        border-bottom: 2px solid $textcolor;
+      }
+
+      &.disabled {
+        color: rgba($textmuted, 0.33);
+        background: rgba($medi, 0.33);
+        &:hover {
+          border-color: $bg;
+        }
+      }
+    }
+
+    @media(max-width:992px) {
+      flex-direction: row;
+      a.menuitem {
+        border-bottom: 2px solid $medi;
+        text-align: center;
+        height: auto;
+        width: 100%;
+        flex: 1;
+        font-size: 2.4rem;
+        border-right: 2px solid $bg;
+        span {
+          display: none;
+        }
+      }
+    }
+
   }
 
   .main {
@@ -99,12 +201,173 @@ p {
       padding: 15px;
       height: auto;
       width: 100%;
+
+      .row {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+
+        @media(max-width:992px) {
+          flex-direction: column;
+        }
+
+        .box33 {
+          flex: 1;
+          width: auto;
+          padding: 15px;
+        }
+
+        &.flexcolumn {
+          flex-direction: column;
+        }
+
+      }
+
     }
   }
 
   .footer {
     grid-area: footer;
     background: $medi;
+
+    p {
+      margin: 0.8rem;
+    }
   }
 
+}
+
+button {
+
+  // button DEFAULTS
+  cursor: pointer;
+  color: $textcolor;
+  background: $lite;
+  border: 1px solid $wit;
+  border-radius: 5px;
+  padding: 0.75rem 1.75rem;
+  transition: 0.4s;
+  margin-bottom: 0.5rem;
+  text-shadow: 1px 1px rgba($btnshadow, 0.33);
+
+  &:hover {
+    background: $inputbg;
+  }
+
+  // cyan button variant
+  &.cyan {
+    color: #FFF;
+    background: $cyan;
+    border-color: $cyaActive;
+    &:hover {
+      background: $cyaHover;
+      border-color: $cyaHover;
+    }
+    &:focus, &:active {
+      background: $cyaActive;
+    }
+    &.no-bg {
+      color: $cyan;
+    }
+  }
+
+  // blue button variant
+  &.blue {
+    color: #FFF;
+    background: $blue;
+    border-color: $bluActive;
+    &:hover {
+      background: $bluHover;
+      border-color: $bluHover;
+    }
+    &:focus, &:active {
+      background: $bluActive;
+    }
+    &.no-bg {
+      color: $blue;
+    }
+  }
+
+  // green button variant
+  &.green {
+    color: #FFF;
+    background: $green;
+    border-color: $green;
+    &:hover {
+      background: $green;
+      border-color: $green;
+    }
+    &:focus, &:active {
+      background: $green;
+    }
+    &.no-bg {
+      color: $green;
+    }
+  }
+
+  &.disabled {
+    background: $btndisabled;
+    border-color: $lite;
+    color: $textmuted;
+  }
+
+  &.no-bg {
+    background: none;
+    &:focus, &:active, &:hover {
+      color: #FFF;
+    }
+  }
+
+  &.bar {
+    width: 100%;
+  }
+
+}
+
+
+// character rows - select screen
+.character {
+
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  flex: 1;
+
+  padding: 0 0.75rem;
+  margin-bottom: 0.5rem;
+
+  background: $medi;
+
+  .block {
+    flex: 1;
+    padding: 0.75rem 0.25rem;
+    text-align: center;
+    &.smflex {
+      flex: 0.2;
+    }
+  }
+
+}
+
+.fa {
+  &.cyan {
+    color: $cyan;
+  }
+  &.green {
+    color: $green;
+  }
+  &.blue {
+    color: $blue;
+  }
+  &.mute {
+    color: $textmuted;
+  }
+}
+
+.hidden-xs {
+  @media(max-width: 768px) {
+    display: none;
+  }
 }

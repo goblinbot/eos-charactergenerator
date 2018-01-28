@@ -11,6 +11,36 @@
     session_start();
   }
 
+
+  if(isset($_POST['newchar']) && $_POST['newchar'] != "") {
+
+    $_POST['newchar'] = strTolower($_POST['newchar']);
+
+    if($_POST['newchar'] == "aquila"
+    || $_POST['newchar'] == "dugo"
+    || $_POST['newchar'] == "ekanesh"
+    || $_POST['newchar'] == "pendzal"
+    || $_POST['newchar'] == "sona") {
+
+      $sql = "INSERT INTO `characters` (`accountID`, `faction`, `aantal_events`, `status`
+        ) VALUES (
+          '".(int)$TIJDELIJKEID."',
+          '".mysqli_real_escape_string($UPLINK,$_POST['newchar'])."',
+          '0',
+          'in design'
+        );";
+      $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
+
+      header("location: ".$APP['header']."/characters.php");
+      exit();
+
+    } else {
+      // invalid
+    }
+
+  }
+  
+
 ?>
 <div class="wsleft cell"></div>
 
@@ -30,7 +60,41 @@
 
       if(isset($_GET['newChar'])) {
         // create a new Char.
-        $printresult = "<h1>Create a character</h1><hr/>";
+        $printresult = "<h1>Create a character</h1>"."<hr/>";
+
+        $printresult .= "<p>First, choose your faction.</p>";
+
+        $printresult .= "<form method=\"POST\" action=\"".$APP['header']."/characters.php\">";
+
+        $printresult .=
+          "<div class=\"formitem\">"
+            ."<label>Faction</label>"
+          ."</div>";
+
+        $printresult .=
+          "<div class=\"formitem\">"
+            ."<select name=\"newchar\">"
+              . "<option value=\"aquila\">Aquila</option>"
+              . "<option value=\"dugo\">Dugo</option>"
+              . "<option value=\"ekanesh\">Ekanesh</option>"
+              . "<option value=\"pendzal\">Pendzal</option>"
+              . "<option value=\"sona\">Sona</option>"
+            . "</select>"
+          ."</div>";
+
+        $printresult .=
+          "<div class=\"formitem\">"
+            ."<input type=\"submit\" class=\"button blue\" value=\"Create character\"></input>"
+          ."</div>";
+
+        $printresult .= "</form>";
+
+        $printresult .=
+          "<div class=\"formitem\">"
+            ."<p>(( korte omschrijving van de factie in 2 tot 5 zinnen. ))</p>"
+          ."</div>";
+
+           // "De Aquilaanse Republiek is een parlementaire democratie waar alle inwoners stemrecht moeten verdienen door dienstbaarheid, veelal in het leger. Hierdoor staan de Legioenen centraal in de maatschappij en zorgt voor een samenleving met plichtbesef, offergezindheid en grote politieke betrokkenheid. De keerzijde is het nodige misplaatste patriottisme en het neerkijken op zij die niet willen dienen, de Mulum. Als Aquilaan vind je spelmogelijkheden op alle lagen behalve misschien economie, vrijwel altijd met een militair tintje en een nadruk op teamwerk boven individueel gewin."
 
       } else if(isset($_GET['viewChar']) && $_GET['viewChar'] != "") {
 
@@ -40,10 +104,10 @@
       } else {
 
         // else: show the character list, or redirect to NEW CHAR if there are none.
-        if(isset($sheetArr['status']) && $sheetArr['status'] == 'noChar') {
-          header("location: ".$APP['header']."/characters.php?newChar");
-          exit();
-        }
+        // if(isset($sheetArr['status']) && $sheetArr['status'] == 'noChar') {
+        //   header("location: ".$APP['header']."/characters.php?newChar");
+        //   exit();
+        // }
 
         $printresult = "<h1>Your character(s)</h1><hr/>";
 
@@ -98,7 +162,6 @@
                 . "<div class=\"block smflex\">" . (int)$character['aantal_events'] . "&nbsp;times</div>" // amount of events played
                 . "<div class=\"block\">" . $character['status'] . "</div>" // status of character (active, design, deceased, etc)
                 . "<div class=\"block\"><button class=\"blue bar\"><i class=\"fa fa-folder\"></i>&nbsp;View</button></div>" // edit
-
               . "</div>";
 
             }
@@ -108,6 +171,14 @@
 
           }
           $printresult .= "</div>";
+
+          $printresult .=
+            "<div class=\"row\">"
+              ."<a href=\"".$APP['header']."/characters.php?newChar\">"
+                ."<button type=\"button\" class=\"green\" name=\"button\"><i class=\"fa fa-user-plus\"></i>&nbsp;New character</button>"
+              ."</a>"
+            ."</div>";
+
         }
 
       }

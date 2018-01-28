@@ -8,7 +8,7 @@ function EMSincludeCSS() {
 
   if(isset($APP["includes"]["css"]) && count($APP["includes"]["css"]) > 0) {
     foreach($APP["includes"]["css"] AS $stylesheetUrl){
-      $printresult .=  "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$APP["header"] . $stylesheetUrl."\" />\n";
+      $printresult .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$APP["header"] . $stylesheetUrl."\" />\n";
     }
   } else {
     // ERR:
@@ -99,14 +99,10 @@ function getCharacterSheets() {
                 foreach($xROW AS $xKEY => $xVALUE) {
                   $return['characters'][$i]['sheets'][$xROW['charSheetID']][$xKEY] = EMS_echo($xVALUE);
                 }
-
               }
             }
-
           }//foreach
-
         }
-
         $i++;
 
       }

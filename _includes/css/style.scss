@@ -153,6 +153,8 @@ hr {
     display: flex;
     flex-direction: column;
     font-family: $fonttitle;
+    overflow-y: auto;
+    overflow-x: hidden;
 
     a.menuitem {
       width: auto;
@@ -196,6 +198,14 @@ hr {
     grid-area: main;
     display: flex;
     height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-top: 2px dashed $bgalt;
+    transition: 0.4s;
+
+    &.offsetTop {
+      border-top: 2px dashed $lite;
+    }
 
     .content {
       padding: 15px;
@@ -235,6 +245,7 @@ hr {
       margin: 0.8rem;
     }
   }
+
 
 }
 

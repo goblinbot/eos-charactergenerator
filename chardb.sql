@@ -1,113 +1,154 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
--- https://www.phpmyadmin.net/
+-- version 3.5.3
+-- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Gegenereerd op: 27 jan 2018 om 17:52
--- Serverversie: 10.1.26-MariaDB
--- PHP-versie: 7.1.8
+-- Machine: 127.0.0.1
+-- Genereertijd: 30 jan 2018 om 16:01
+-- Serverversie: 5.4.3-beta-community-log
+-- PHP-versie: 7.0.0
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
--- Database: `chardb`
+-- Databank: `thijsboerma_chardb`
 --
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `characters`
+-- Tabelstructuur voor tabel `ecc_characters`
 --
 
-DROP TABLE IF EXISTS `characters`;
-CREATE TABLE `characters` (
-  `characterID` int(11) NOT NULL,
+DROP TABLE IF EXISTS `ecc_characters`;
+CREATE TABLE IF NOT EXISTS `ecc_characters` (
+  `characterID` int(11) NOT NULL AUTO_INCREMENT,
   `accountID` int(11) NOT NULL,
-  `character_name` varchar(100) NOT NULL,
-  `oc_name` varchar(75) NOT NULL,
+  `character_name` varchar(100) DEFAULT NULL,
+  `oc_name` varchar(75) DEFAULT NULL,
   `faction` varchar(25) NOT NULL,
   `aantal_events` int(11) NOT NULL DEFAULT '0',
-  `status` varchar(20) NOT NULL DEFAULT 'design'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `status` varchar(20) NOT NULL DEFAULT 'in design',
+  `ic_age` int(11) NOT NULL DEFAULT '0',
+  `birthplanet` varchar(25) DEFAULT NULL,
+  `homeplanet` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`characterID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
 
 --
--- Gegevens worden geëxporteerd voor tabel `characters`
+-- Gegevens worden uitgevoerd voor tabel `ecc_characters`
 --
 
-INSERT INTO `characters` (`characterID`, `accountID`, `character_name`, `oc_name`, `faction`, `aantal_events`, `status`) VALUES
-(1, 451, 'Maati Infor Danam', 'Thijs Test', 'Dugo', 5, 'in design'),
-(2, 451, 'Bakal Duguan Tulos', 'Thijs Boerma', 'Dugo', 4, 'deceased'),
-(3, 451, 'Kadh Rusks', 'Thijs Boerma', 'Aquila', 1, 'inactive');
+INSERT INTO `ecc_characters` (`characterID`, `accountID`, `character_name`, `oc_name`, `faction`, `aantal_events`, `status`, `ic_age`, `birthplanet`, `homeplanet`) VALUES
+(1, 451, 'Maati Infor Danam', 'Thijs Test', 'Dugo', 5, 'in design', 0, NULL, NULL),
+(2, 451, 'Bakal Duguan Tulos', 'Thijs Boerma', 'Dugo', 4, 'deceased', 0, NULL, NULL),
+(3, 451, 'Kadh Rusks', 'Thijs Boerma', 'Aquila', 1, 'inactive', 0, NULL, NULL),
+(21, 451, NULL, NULL, 'ekanesh', 0, 'in design', 0, NULL, NULL),
+(22, 452, NULL, NULL, 'sona', 0, 'in design', 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `char_sheet`
+-- Tabelstructuur voor tabel `ecc_char_implants`
 --
 
-DROP TABLE IF EXISTS `char_sheet`;
-CREATE TABLE `char_sheet` (
-  `charSheetID` int(11) NOT NULL,
+DROP TABLE IF EXISTS `ecc_char_implants`;
+CREATE TABLE IF NOT EXISTS `ecc_char_implants` (
+  `modifierID` int(11) NOT NULL AUTO_INCREMENT,
+  `characterID` int(11) NOT NULL,
+  `type` varchar(25) NOT NULL DEFAULT 'cybernetic',
+  `skillgroup_level` int(11) NOT NULL DEFAULT '0',
+  `skillgroup_siteindex` varchar(15) DEFAULT NULL,
+  `status` varchar(15) NOT NULL DEFAULT 'active',
+  PRIMARY KEY (`modifierID`),
+  KEY `characterID` (`characterID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `ecc_char_sheet`
+--
+
+DROP TABLE IF EXISTS `ecc_char_sheet`;
+CREATE TABLE IF NOT EXISTS `ecc_char_sheet` (
+  `charSheetID` int(11) NOT NULL AUTO_INCREMENT,
   `characterID` int(11) NOT NULL,
   `accountID` int(11) NOT NULL,
   `status` varchar(25) NOT NULL DEFAULT 'ontwerp',
   `eventName` varchar(25) DEFAULT NULL,
-  `versionNumber` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `versionNumber` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`charSheetID`),
+  KEY `characterID` (`characterID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
--- Gegevens worden geëxporteerd voor tabel `char_sheet`
+-- Gegevens worden uitgevoerd voor tabel `ecc_char_sheet`
 --
 
-INSERT INTO `char_sheet` (`charSheetID`, `characterID`, `accountID`, `status`, `eventName`, `versionNumber`) VALUES
+INSERT INTO `ecc_char_sheet` (`charSheetID`, `characterID`, `accountID`, `status`, `eventName`, `versionNumber`) VALUES
 (1, 1, 451, 'ontwerp', 'Frontier9', 1);
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `skills_details`
+-- Tabelstructuur voor tabel `ecc_factionmodifiers`
 --
 
-DROP TABLE IF EXISTS `skills_details`;
-CREATE TABLE `skills_details` (
-  `skills_id` int(11) NOT NULL,
-  `label` varchar(50) NOT NULL,
-  `skill_index` varchar(15) NOT NULL,
-  `parent` varchar(15) NOT NULL,
-  `level` int(11) NOT NULL,
-  `version` int(11) NOT NULL,
-  `description` varchar(255) NOT NULL
+DROP TABLE IF EXISTS `ecc_factionmodifiers`;
+CREATE TABLE IF NOT EXISTS `ecc_factionmodifiers` (
+  `factionID` int(11) NOT NULL,
+  `faction_siteindex` varchar(20) NOT NULL DEFAULT 'aquila',
+  `type` varchar(15) NOT NULL DEFAULT 'weakness',
+  `skillgroup_siteindex` varchar(15) NOT NULL,
+  `cost_modifier` int(11) NOT NULL DEFAULT '5'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `skills_primair`
+-- Tabelstructuur voor tabel `ecc_skills_allskills`
 --
 
-DROP TABLE IF EXISTS `skills_primair`;
-CREATE TABLE `skills_primair` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `ecc_skills_allskills`;
+CREATE TABLE IF NOT EXISTS `ecc_skills_allskills` (
+  `skill_id` int(11) NOT NULL AUTO_INCREMENT,
+  `label` varchar(50) NOT NULL,
+  `skill_index` varchar(15) NOT NULL,
+  `parent` varchar(15) NOT NULL,
+  `level` int(11) NOT NULL,
+  `version` int(11) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  PRIMARY KEY (`skill_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `ecc_skills_groups`
+--
+
+DROP TABLE IF EXISTS `ecc_skills_groups`;
+CREATE TABLE IF NOT EXISTS `ecc_skills_groups` (
+  `primaryskill_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `siteindex` varchar(15) NOT NULL,
   `parent` varchar(15) DEFAULT 'none',
-  `status` varchar(15) DEFAULT 'active'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `status` varchar(15) DEFAULT 'active',
+  PRIMARY KEY (`primaryskill_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12056 ;
 
 --
--- Gegevens worden geëxporteerd voor tabel `skills_primair`
+-- Gegevens worden uitgevoerd voor tabel `ecc_skills_groups`
 --
 
-INSERT INTO `skills_primair` (`id`, `name`, `siteindex`, `parent`, `status`) VALUES
+INSERT INTO `ecc_skills_groups` (`primaryskill_id`, `name`, `siteindex`, `parent`, `status`) VALUES
 (12000, 'Ballistiek', 'guns', 'none', 'active'),
 (12001, 'Melee', 'melee', 'none', 'active'),
 (12002, 'Bescherming', 'besch', 'none', 'active'),
@@ -164,60 +205,6 @@ INSERT INTO `skills_primair` (`id`, `name`, `siteindex`, `parent`, `status`) VAL
 (12053, 'Factiepoliticus', 'factiepoli', 'politic', 'active'),
 (12054, 'ICC lobbyist', 'icclobby', 'politic', 'active'),
 (12055, 'Generalist', 'polgener', 'politic', 'active');
-
---
--- Indexen voor geëxporteerde tabellen
---
-
---
--- Indexen voor tabel `characters`
---
-ALTER TABLE `characters`
-  ADD PRIMARY KEY (`characterID`);
-
---
--- Indexen voor tabel `char_sheet`
---
-ALTER TABLE `char_sheet`
-  ADD PRIMARY KEY (`charSheetID`),
-  ADD KEY `characterID` (`characterID`);
-
---
--- Indexen voor tabel `skills_details`
---
-ALTER TABLE `skills_details`
-  ADD PRIMARY KEY (`skills_id`);
-
---
--- Indexen voor tabel `skills_primair`
---
-ALTER TABLE `skills_primair`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT voor geëxporteerde tabellen
---
-
---
--- AUTO_INCREMENT voor een tabel `characters`
---
-ALTER TABLE `characters`
-  MODIFY `characterID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT voor een tabel `char_sheet`
---
-ALTER TABLE `char_sheet`
-  MODIFY `charSheetID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT voor een tabel `skills_details`
---
-ALTER TABLE `skills_details`
-  MODIFY `skills_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT voor een tabel `skills_primair`
---
-ALTER TABLE `skills_primair`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12056;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

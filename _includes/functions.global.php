@@ -56,6 +56,21 @@ function generateMenu($param = 'Home') {
 
 }
 
+// large update function to make updating a character's info easier.
+function updateCharacterInfo($charID) {
+  global $TIJDELIJKEID, $UPLINK;
+
+  if(isset($charID) && (int)$charID !== 0) {
+
+
+
+
+  } else {
+    return false;
+  }
+
+}
+
 
 // get character sheets
 function getCharacterSheets() {
@@ -67,51 +82,56 @@ function getCharacterSheets() {
 
   if(isset($UPLINK) && isset($TIJDELIJKEID) && $TIJDELIJKEID != "") {
 
-    $sql = "SELECT * FROM characters WHERE accountID = '".(int)$TIJDELIJKEID."'";
+    $sql = "SELECT * FROM ecc_characters WHERE accountID = '".(int)$TIJDELIJKEID."'";
     $res = $UPLINK->query($sql);
 
-    if(mysqli_num_rows($res) > 0) {
+    if($res) {
+      if(mysqli_num_rows($res) > 0) {
 
-      $i = 0;
+        while($row = mysqli_fetch_assoc($res)){
 
-      while($row = mysqli_fetch_assoc($res)){
-
-        $return['characters'][$i] = array();
-
-        foreach($row AS $KEY => $VALUE) {
-
-          $return['characters'][$i][$KEY] = EMS_echo($VALUE);
-
-        }//foreach
-
-        if(count($return['characters']) > 0) {
-
-          $return['characters'][$i]['sheets'] = array();
+          $return['characters'][$row['characterID']] = array();
 
           foreach($row AS $KEY => $VALUE) {
 
-            $xSQL = "SELECT * FROM char_sheet WHERE characterID = '".(int)$return['characters'][$i]['characterID']."' ORDER BY charSheetID DESC";
-            $xRES = $UPLINK->query($xSQL);
+            $return['characters'][$row['characterID']][$KEY] = EMS_echo($VALUE);
 
-            if(mysqli_num_rows($xRES) > 0) {
-              while($xROW = mysqli_fetch_assoc($xRES)){
-
-                foreach($xROW AS $xKEY => $xVALUE) {
-                  $return['characters'][$i]['sheets'][$xROW['charSheetID']][$xKEY] = EMS_echo($xVALUE);
-                }
-              }
-            }
           }//foreach
+
+          if(count($return['characters']) > 0) {
+
+            $return['characters'][$row['characterID']]['sheets'] = array();
+
+            foreach($row AS $KEY => $VALUE) {
+
+              $xSQL = "SELECT * FROM ecc_char_sheet WHERE characterID = '".(int)$return['characters'][$row['characterID']]['characterID']."' ORDER BY charSheetID DESC";
+              $xRES = $UPLINK->query($xSQL);
+
+              if(mysqli_num_rows($xRES) > 0) {
+                while($xROW = mysqli_fetch_assoc($xRES)){
+
+                  foreach($xROW AS $xKEY => $xVALUE) {
+                    $return['characters'][$row['characterID']]['sheets'][$xROW['charSheetID']][$xKEY] = EMS_echo($xVALUE);
+                  }
+                }
+
+                $xRES->free();
+              }
+            }//foreach
+          }
+
         }
-        $i++;
 
+        $res->free();
+
+        $return['status'] = "ok";
+
+      } else {
+
+        $return['status'] = "noChar";
       }
-
-      $return['status'] = "ok";
-
     } else {
 
-      $return['status'] = "noChar";
     }
 
   } else {

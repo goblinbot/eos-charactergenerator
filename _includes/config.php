@@ -1,5 +1,5 @@
 <?php
-// include the db.php connection. This file is not available on github for security reasons.
+// include the db.php connection. This file is not available on my github for security reasons.
 // to make your own, see db.sample.php
 include_once('db.php');
 

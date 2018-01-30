@@ -39,7 +39,7 @@
     }
 
   }
-  
+
 
 ?>
 <div class="wsleft cell"></div>
@@ -52,9 +52,6 @@
   <div class="content">
 
     <?php
-      // echo "<pre>";
-      // var_dump($sheetArr);
-      // echo "</pre>";
 
       $printresult = "";
 
@@ -65,11 +62,6 @@
         $printresult .= "<p>First, choose your faction.</p>";
 
         $printresult .= "<form method=\"POST\" action=\"".$APP['header']."/characters.php\">";
-
-        $printresult .=
-          "<div class=\"formitem\">"
-            ."<label>Faction</label>"
-          ."</div>";
 
         $printresult .=
           "<div class=\"formitem\">"
@@ -98,8 +90,94 @@
 
       } else if(isset($_GET['viewChar']) && $_GET['viewChar'] != "") {
 
-        // show the character sheet and link to the skill calculator.
-        $printresult = "<h1>(((character name)))</h1><hr/>";
+        // check if characters is valid
+        if(is_array($sheetArr['characters'])) {
+          if(count($sheetArr['characters']) > 0) {
+
+            if(isset($sheetArr["characters"][$_GET['viewChar']]['accountID']) && EMS_echo($sheetArr["characters"][$_GET['viewChar']]['accountID']) == $TIJDELIJKEID) {
+
+              // put the character into an easier to access variable for laziness.
+              $character = $sheetArr["characters"][$_GET['viewChar']];
+
+              $printresult .= "<div class=\"row\">"
+                ."<a href=\"".$APP['header']."/characters.php\"><button><i class=\"fa fa-arrow-left\"></i>&nbsp;Back</button></a>"
+              ."</div>";
+
+              if(EMS_echo($character['character_name']) != "") {
+                $printresult .= "<h1>".$character['character_name']." - ".$character['faction']."</h1><hr/>";
+              } else {
+                $printresult .= "<h1>[character name] - ".$character['faction']."</h1><hr/>";
+              }
+
+
+              if(1==2) {
+
+              } else if (1==3) {
+
+              } else if (1==4) {
+
+              } else {
+                // default: character menu.
+                $printresult .= "<div class=\"row\">";
+
+                $printresult .= "<div class=\"box33\">"
+                  ."<a href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\">"
+                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fa fa-id-card-o\"></i>&nbsp;Edit info</button>"
+                  ."</a>"
+                ."</div>";
+
+                $printresult .= "<div class=\"box33\">"
+                  ."<a href=\"".$APP['header']."/stats/skills.php?viewChar=".$character['characterID']."\">"
+                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fa fa-graduation-cap\"></i>&nbsp;Skills</button>"
+                  ."</a>"
+                ."</div>";
+
+                $printresult .= "<div class=\"box33\">"
+                  ."<a href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\">"
+                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fa fa-user-plus\"></i>&nbsp;Placeholder</button>"
+                  ."</a>"
+                ."</div>";
+
+                $printresult .= "</div>";
+
+                $printresult .= "<div class=\"row\">";
+
+                $printresult .= "<div class=\"box33\">"
+                  ."<a href=\"".$APP['header']."/stats/implants.php?viewChar=".$character['characterID']."\">"
+                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fa fa-microchip\"></i>&nbsp;Cybernetics &amp; Symbionts</button>"
+                  ."</a>"
+                ."</div>";
+
+                $printresult .= "<div class=\"box33\">"
+                  ."<a class=\"disabled\" href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\">"
+                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fa fa-id-card-o\"></i>&nbsp;Placeholder</button>"
+                  ."</a>"
+                ."</div>";
+
+                $printresult .= "<div class=\"box33\">"
+                  ."&nbsp;"
+                ."</div>";
+
+                $printresult .= "</div>";
+              }
+
+
+
+            } else {
+              // error : account ID  doesn't match the logged in account ID !!
+              $printresult .= "ERROR: NO MATCH.";
+
+            }
+
+          } else {
+            header("location: ".$APP['header']."/characters.php");
+            exit();
+          }
+        } else {
+          header("location: ".$APP['header']."/characters.php");
+          exit();
+        }
+
 
       } else {
 
@@ -161,7 +239,11 @@
                 . "<div class=\"block\">" . $character['faction'] . "</div>" // faction
                 . "<div class=\"block smflex\">" . (int)$character['aantal_events'] . "&nbsp;times</div>" // amount of events played
                 . "<div class=\"block\">" . $character['status'] . "</div>" // status of character (active, design, deceased, etc)
-                . "<div class=\"block\"><button class=\"blue bar\"><i class=\"fa fa-folder\"></i>&nbsp;View</button></div>" // edit
+                . "<div class=\"block\">"
+                    ."<a href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\">"
+                      ."<button class=\"blue bar\"><i class=\"fa fa-folder\"></i>&nbsp;View</button>"
+                    ."</a>"
+                  ."</div>" // edit
               . "</div>";
 
             }

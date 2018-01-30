@@ -25,30 +25,9 @@
 
     <div class="row">
 
-      <div class="box33">
-        <a href="#">
-          <button type="button" class="green bar" name="button"><i class="fa fa-user-plus"></i>&nbsp;New character</button>
-        </a>
-      </div>
-
-      <div class="box33">
-        <a href="#">
-          <button type="button" class="blue bar" name="button"><i class="fa fa-user-plus"></i>&nbsp;Add an existing character</button>
-        </a>
-      </div>
-
-      <div class="box33">
-        <a href="#">
-          <button type="button" class="blue bar" name="button"><i class="fa fa-user"></i>&nbsp;Edit a character</button>
-        </a>
-      </div>
+      <p>Welcome back.</p>
 
     </div>
-
-
-
-
-
 
   </div>
 </div>

@@ -199,7 +199,7 @@ function sanitize_spaces($input = null) {
 // spam / escape filter, named after a friend of mine who taught me the importance of filtering user input.
 function huizingfilter($input = null) {
 
-  $triggers    = array('tps:/','tp:/',"src=","src =",'<','>','><','.js',';','$','[',']','(',')');
+  $triggers    = array('tps:/','tp:/',"src=","src =",'<','>','><','.js',';','$','[',']','(',')','@S','@s','GOTO ','DBCC ');
   $error       = false;
 
   foreach ($triggers as $trigger) { // loops through the huizing-huizingtriggertriggertrigger
@@ -209,7 +209,7 @@ function huizingfilter($input = null) {
   }
 
   if($error == true) {
-    echo "<h2>Forbidden input found - operations ended. Please try and avoid using code like symbols.</h2>";
+    echo "<h2>Operations interrupted: Some of your input was flagged as malicious.</h2>";
     exit();
   } else {
     return "clear";

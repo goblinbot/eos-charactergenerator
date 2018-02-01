@@ -32,6 +32,12 @@ function EMSincludeJS() {
   return $printresult;
 }
 
+// show errorpage function
+function showErrorPage($message = '451') {
+  echo "<html style=\"background:#222; color: #EEE;\"><h1 style=\"color: #EEE;\">".$message."</h1></html>";
+  exit();
+}
+
 
 // builds the left menu
 function generateMenu($param = 'Home') {
@@ -57,12 +63,45 @@ function generateMenu($param = 'Home') {
 }
 
 // large update function to make updating a character's info easier.
-function updateCharacterInfo($charID) {
+function updateCharacterInfo($params = array(), $charID = 0) {
   global $TIJDELIJKEID, $UPLINK;
 
+  // is charID set?
   if(isset($charID) && (int)$charID !== 0) {
 
+    // check if charID belongs to the active account.
+    $sql = "SELECT characterID, accountID FROM `ecc_characters` WHERE characterID = '".mysqli_real_escape_string($UPLINK,(int)$charID)."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."' LIMIT 1";
+    $res = $UPLINK->query($sql);
 
+    if($res && mysqli_num_rows($res) == 1) {
+
+      if(is_array($params) && count($params) > 0) {
+
+        // echo (int)$charID . "<br/>";
+
+        foreach($params as $key => $value){
+
+          $key = sanitize_spaces($key);
+          $value = sanitize_spaces($value);
+          huizingfilter($key);
+          huizingfilter($value);
+
+          $sql = "UPDATE `ecc_characters`
+            SET ".$key." = '".mysqli_real_escape_string($UPLINK,$value)."'
+            WHERE characterID = '".mysqli_real_escape_string($UPLINK,(int)$charID)."'
+            AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."'
+            LIMIT 1";
+          $update = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
+        }
+
+      } else {
+        showErrorPage("Error code 0734");
+        return false;
+      }
+    } else {
+      showErrorPage("Error code 0731");
+      return false;
+    }
 
 
   } else {
@@ -132,6 +171,7 @@ function getCharacterSheets() {
       }
     } else {
 
+      $return['status'] = "noChar";
     }
 
   } else {
@@ -139,24 +179,37 @@ function getCharacterSheets() {
     $return['status'] = "noDB";
   }
 
-
   return $return;
 }
 
-// spam / escape filter, named after a friend of mine.
+
+// Wash away all unnecessary spaces, by brutishly looping for all them.
+function sanitize_spaces($input = null) {
+
+  $spaces = substr_count($input, " ");
+  if($spaces > 0) {
+    for($i = 0; $i < $spaces; $i++) {
+      $input = str_replace("  "," ",$input);
+    }
+  }
+
+  return $input;
+}
+
+// spam / escape filter, named after a friend of mine who taught me the importance of filtering user input.
 function huizingfilter($input = null) {
 
-  $triggers    = array('tps:/','tp:/',"src=","src =",'<','>','><','.js',';','$','[',']','(',')',':');
+  $triggers    = array('tps:/','tp:/',"src=","src =",'<','>','><','.js',';','$','[',']','(',')');
   $error       = false;
 
   foreach ($triggers as $trigger) { // loops through the huizing-huizingtriggertriggertrigger
-    if (strpos($input,$trigger) !== false) {
+    if (stripos($input,$trigger) !== false) {
       $error = true;
     }
   }
 
   if($error == true) {
-    echo "<h1>Invalid input detected. Operations ended.</h1>";
+    echo "<h2>Forbidden input found - operations ended. Please try and avoid using code like symbols.</h2>";
     exit();
   } else {
     return "clear";

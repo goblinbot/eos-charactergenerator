@@ -22,7 +22,7 @@
     || $_POST['newchar'] == "pendzal"
     || $_POST['newchar'] == "sona") {
 
-      $sql = "INSERT INTO `characters` (`accountID`, `faction`, `aantal_events`, `status`
+      $sql = "INSERT INTO `ecc_characters` (`accountID`, `faction`, `aantal_events`, `status`
         ) VALUES (
           '".(int)$TIJDELIJKEID."',
           '".mysqli_real_escape_string($UPLINK,$_POST['newchar'])."',
@@ -90,6 +90,10 @@
 
       } else if(isset($_GET['viewChar']) && $_GET['viewChar'] != "") {
 
+        if(isset($_GET['u']) && $_GET['u'] == 1) {
+          $printresult .= "<p><i class=\"\"></i>&nbsp;Updated succesfully.</p>";
+        }
+
         // check if characters is valid
         if(is_array($sheetArr['characters'])) {
           if(count($sheetArr['characters']) > 0) {
@@ -110,18 +114,73 @@
               }
 
 
-              if(1==2) {
+              if(isset($_GET['editInfo']) && $_GET['editInfo'] == true) {
+
+                // edit char set? Validate.
+                if(isset($_POST['editchar']) && $_POST['editchar'] != "") {
+
+                  updateCharacterInfo($_POST['editchar'], $character['characterID']);
+                  header("location: ".$APP['header']."/characters.php?viewChar=".$character['characterID']."&editInfo=true&u=1");
+                  exit();
+                }
+
+                $printresult .= "<div class=\"row flexcolumn\">";
+
+                $printresult .= "<p>This is where you edit your character's basic information</p>"
+                  ."<p>&nbsp;</p>"
+                  ."<form action=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."&editInfo=true\" method=\"post\">";
+
+                $printresult .=
+                  "<div class=\"formitem\">"
+                    ."<h3>Character Name</h3>"
+                    ."<input type=\"text\" placeholder=\"Character Name\" maxlength=\"99\" name=\"editchar[character_name]\" value=\"".EMS_echo($character['character_name'])."\"></input>"
+                  ."</div>";
+
+                $printresult .=
+                  "<div class=\"formitem\">"
+                    ."<h3>Amount of events played (0 for new characters)</h3>"
+                    ."<input type=\"number\" placeholder=\"0\" maxlength=\"20\" name=\"editchar[aantal_events]\" value=\"".(int)$character['aantal_events']."\"></input>"
+                  ."</div>"
+
+                  ."<div class=\"formitem\">"
+                    ."<h3>Faction</h3>"
+                    ."<p class=\"text-muted\">".EMS_echo($character['faction'])."</p>"
+                  ."</div>"
+
+                  ."<div class=\"formitem\">"
+                    ."<h3>Birth date</h3>"
+                    ."<input type=\"text\" placeholder=\"...\" maxlength=\"24\" name=\"editchar[ic_birthday]\" value=\"".EMS_echo($character['ic_birthday'])."\"></input>"
+                  ."</div>";
+
+                $printresult .=
+                  "<div class=\"formitem\">"
+                    ."<h3>Birth planet</h3>"
+                    ."<input type=\"text\" placeholder=\"...\" maxlength=\"99\" name=\"editchar[birthplanet]\" value=\"".EMS_echo($character['birthplanet'])."\"></input>"
+                  ."</div>"
+                  ."<div class=\"formitem\">"
+                    ."<h3>Current/home planet</h3>"
+                    ."<input type=\"text\" placeholder=\"...\" maxlength=\"99\" name=\"editchar[homeplanet]\" value=\"".EMS_echo($character['homeplanet'])."\"></input>"
+                  ."</div>";
+
+                $printresult .=
+                  "<div class=\"formitem\">"
+                    ."<p>&nbsp;</p>"
+                    ."<input type=\"submit\" class=\"button green\" value=\"Save changes\"></input>"
+                  ."</div>"
+                ."</div>"
+                ."</form>";
 
               } else if (1==3) {
 
               } else if (1==4) {
 
               } else {
+
                 // default: character menu.
                 $printresult .= "<div class=\"row\">";
 
                 $printresult .= "<div class=\"box33\">"
-                  ."<a href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\">"
+                  ."<a href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."&editInfo=true\">"
                     ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fa fa-id-card-o\"></i>&nbsp;Edit info</button>"
                   ."</a>"
                 ."</div>";
@@ -138,9 +197,8 @@
                   ."</a>"
                 ."</div>";
 
-                $printresult .= "</div>";
-
-                $printresult .= "<div class=\"row\">";
+                $printresult .= "</div>"
+                              . "<div class=\"row\">";
 
                 $printresult .= "<div class=\"box33\">"
                   ."<a href=\"".$APP['header']."/stats/implants.php?viewChar=".$character['characterID']."\">"
@@ -156,9 +214,9 @@
 
                 $printresult .= "<div class=\"box33\">"
                   ."&nbsp;"
-                ."</div>";
+                ."</div>"
 
-                $printresult .= "</div>";
+                . "</div>";
               }
 
 
@@ -274,9 +332,6 @@
 </div>
 
 <div class="wsright cell"></div>
-
-
-
 
 <?php
   include_once($APP["root"] . "/footer.php");

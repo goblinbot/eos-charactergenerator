@@ -2,7 +2,6 @@
   // globals
   include_once($_SERVER["DOCUMENT_ROOT"] . "/eos-charactergenerator/_includes/config.php");
   include_once($APP["root"] . "/_includes/functions.global.php");
-  // include_once($_CONFIG["root"] . "/_includes/includes.php");
 
 
   include_once($APP["root"] . "/header.php");
@@ -91,7 +90,7 @@
       } else if(isset($_GET['viewChar']) && $_GET['viewChar'] != "") {
 
         if(isset($_GET['u']) && $_GET['u'] == 1) {
-          $printresult .= "<p><i class=\"\"></i>&nbsp;Updated succesfully.</p>";
+          $printresult .= "<p class=\"dialog\"><i class=\"fa fa-check green\"></i>&nbsp;Updated succesfully.</p>";
         }
 
         // check if characters is valid
@@ -238,12 +237,6 @@
 
 
       } else {
-
-        // else: show the character list, or redirect to NEW CHAR if there are none.
-        // if(isset($sheetArr['status']) && $sheetArr['status'] == 'noChar') {
-        //   header("location: ".$APP['header']."/characters.php?newChar");
-        //   exit();
-        // }
 
         $printresult = "<h1>Your character(s)</h1><hr/>";
 

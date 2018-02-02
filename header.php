@@ -1,9 +1,5 @@
 <?php
-  // if(!isset($APP)) {
-  //   header("location: /");
-  // }
-
-
+  if (!isset($APP)) die('No direct access allowed');
 
 
   $TIJDELIJKEID = 451;

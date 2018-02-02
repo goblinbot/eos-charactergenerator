@@ -24,6 +24,9 @@ $btndisabled : $medi;
 $inputbg : #424959;
 $inputselected : $lite;
 
+
+$hr : #3d4351;
+
 // fonts
 $fontstack  : 'Roboto-regular', sans-serif, arial;
 $fontbold   : 'Roboto-medium','Roboto-regular', sans-serif, arial;
@@ -65,8 +68,8 @@ a {
 }
 
 hr {
-  background-color: $textcolor;
-  border: 1px solid $textcolor;
+  background-color: $hr;
+  border: 1px solid $hr;
   margin: 1.5rem 1px;
 }
 
@@ -341,42 +344,39 @@ button, .button {
 }
 
 // form
-form {
 
-  .formitem {
-    width: auto;
-    flex: 1;
-    padding: 0.75rem 0;
+.formitem {
+  width: auto;
+  flex: 1;
+  padding: 0.75rem 0;
 
-    h3 {
+  h3 {
+    color: $textcolor;
+    margin: 0.8rem 0;
+  }
+
+  input[type="text"], input[type="number"] {
+
+    background: none;
+    border: 0;
+    border-bottom: 2px solid $textmuted;
+    color: $textmuted;
+    padding: 0.8rem 0.25rem;
+    transition: 0.3s;
+
+    &:hover, &:active, &:focus {
       color: $textcolor;
-      margin: 0.8rem 0;
+      border-color: $bluHover;
     }
 
-    input[type="text"], input[type="number"] {
+  }
 
-      background: none;
-      border: 0;
-      border-bottom: 2px solid $textmuted;
-      color: $textmuted;
-      padding: 0.8rem 0.25rem;
-      transition: 0.3s;
+  input[type="text"] {
+    min-width: 24rem;
+  }
 
-      &:hover, &:active, &:focus {
-        color: $textcolor;
-        border-color: $bluHover;
-      }
-
-    }
-
-    input[type="text"] {
-      min-width: 24rem;
-    }
-
-    input[type="number"] {
-      min-width: 8rem;
-    }
-
+  input[type="number"] {
+    min-width: 8rem;
   }
 
   select {
@@ -441,6 +441,13 @@ form {
     }
   }
 
+}
+
+.dialog {
+  padding: 2rem 1.5rem;
+  background: $inputbg;
+  margin: 0.5rem 0 1.5rem 0;
+  border-radius: 5px;
 }
 
 .fa {

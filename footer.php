@@ -1,3 +1,6 @@
+<?php
+if (!isset($APP)) die('No direct access allowed');
+?>
 
   <div class="footer cell">
 

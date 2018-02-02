@@ -2,7 +2,6 @@
   // globals
   include_once($_SERVER["DOCUMENT_ROOT"] . "/eos-charactergenerator/_includes/config.php");
   include_once($APP["root"] . "/_includes/functions.global.php");
-  // include_once($_CONFIG["root"] . "/_includes/includes.php");
 
 
   include_once($APP["root"] . "/header.php");
@@ -23,11 +22,9 @@
 
     <h1>Eos Character Creator</h1>
 
-    <div class="row">
+    <p>Welcome back.</p>
 
-      <p>Welcome back.</p>
-
-    </div>
+    <br/><br/>
 
   </div>
 </div>

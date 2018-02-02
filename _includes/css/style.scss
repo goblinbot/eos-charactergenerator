@@ -23,9 +23,7 @@ $btndisabled : $medi;
 // form element colors
 $inputbg : #424959;
 $inputselected : $lite;
-
-
-$hr : #3d4351;
+$hr : $inputbg;
 
 // fonts
 $fontstack  : 'Roboto-regular', sans-serif, arial;
@@ -68,8 +66,8 @@ a {
 }
 
 hr {
-  background-color: $hr;
-  border: 1px solid $hr;
+  border: 0;
+  border-top: 1px solid $textmuted;
   margin: 1.5rem 1px;
 }
 

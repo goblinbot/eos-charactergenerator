@@ -56,8 +56,8 @@ a:hover, a:focus, a:active, a.active {
 }
 
 hr {
-  background-color: #3d4351;
-  border: 1px solid #3d4351;
+  border: 0;
+  border-top: 1px solid #838795;
   margin: 1.5rem 1px;
 }
 

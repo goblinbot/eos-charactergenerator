@@ -1,7 +1,7 @@
 <?php
 // include the db.php connection. This file is not available on my github for security reasons.
 // to make your own, see db.sample.php
-include_once('db.php');
+include_once($_SERVER["DOCUMENT_ROOT"] .'/eos-charactergenerator/db.php');
 
 // config variable.
 $APP = array();

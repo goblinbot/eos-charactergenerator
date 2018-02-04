@@ -3,6 +3,7 @@
 
 
   $TIJDELIJKEID = 451;
+  $COMINGEVENT = "Frontier9";
   $sheetArr = getCharacterSheets();
 ?>
 

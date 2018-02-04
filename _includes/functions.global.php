@@ -143,7 +143,7 @@ function getCharacterSheets() {
 
             foreach($row AS $KEY => $VALUE) {
 
-              $xSQL = "SELECT * FROM ecc_char_sheet WHERE characterID = '".(int)$return['characters'][$row['characterID']]['characterID']."' ORDER BY charSheetID DESC";
+              $xSQL = "SELECT * FROM ecc_char_sheet WHERE characterID = '".(int)$return['characters'][$row['characterID']]['characterID']."' ORDER BY versionNumber DESC";
               $xRES = $UPLINK->query($xSQL);
 
               if(mysqli_num_rows($xRES) > 0) {

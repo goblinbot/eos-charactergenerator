@@ -22,6 +22,8 @@
 
     <h1>Eos Character Creator</h1>
 
+    <hr>
+
     <p>Welcome back.</p>
 
     <br/><br/>

@@ -185,37 +185,19 @@
                 ."</div>";
 
                 $printresult .= "<div class=\"box33\">"
-                  ."<a href=\"".$APP['header']."/stats/skills.php?viewChar=".$character['characterID']."\">"
-                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fa fa-graduation-cap\"></i>&nbsp;Skills</button>"
-                  ."</a>"
-                ."</div>";
-
-                $printresult .= "<div class=\"box33\">"
-                  ."<a href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\">"
-                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fa fa-user-plus\"></i>&nbsp;Placeholder</button>"
-                  ."</a>"
-                ."</div>";
-
-                $printresult .= "</div>"
-                              . "<div class=\"row\">";
-
-                $printresult .= "<div class=\"box33\">"
-                  ."<a href=\"".$APP['header']."/stats/implants.php?viewChar=".$character['characterID']."\">"
-                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fa fa-microchip\"></i>&nbsp;Cybernetics &amp; Symbionts</button>"
+                  ."<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$character['characterID']."\">"
+                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fa fa-id-card-o\"></i>&nbsp;Character Sheets</button>"
                   ."</a>"
                 ."</div>";
 
                 $printresult .= "<div class=\"box33\">"
                   ."<a class=\"disabled\" href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\">"
-                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fa fa-id-card-o\"></i>&nbsp;Placeholder</button>"
+                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fa fa-user-o\"></i>&nbsp;Placeholder</button>"
                   ."</a>"
                 ."</div>";
 
-                $printresult .= "<div class=\"box33\">"
-                  ."&nbsp;"
-                ."</div>"
+                $printresult .= "</div>";
 
-                . "</div>";
               }
 
 

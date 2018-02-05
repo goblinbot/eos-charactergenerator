@@ -88,3 +88,42 @@ include_once($APP["root"] . "/_includes/functions.sheet.php");
 // echo "<pre>";
 // var_dump($result);
 // echo "</pre>";
+
+
+
+// $sql = "SELECT skill_id,skill_index,parent FROM `ecc_skills_allskills`";
+// $res = $UPLINK->query($sql);
+//
+//
+// while($row = mysqli_fetch_assoc($res)) {
+//
+//   echo "<p>";
+//   echo $row['skill_index'] . ", parent = ". $row['parent'];
+//   echo "  ======>  ";
+//
+//   $xSQL = "SELECT primaryskill_id FROM ecc_skills_groups WHERE siteindex = '".$row['parent']."' LIMIT 1";
+//   $xRES = $UPLINK->query($xSQL);
+//
+//   $xROW = mysqli_fetch_assoc($xRES);
+//
+//   echo (int)$xROW['primaryskill_id'];
+//
+//   $sql2 = "UPDATE `ecc_skills_allskills` SET `parent` = '".(int)$xROW['primaryskill_id']."' WHERE `skill_id` = ".$row['skill_id'].";";
+//   $res2 = $UPLINK->query($sql2) OR trigger_error(mysqli_error($UPLINK));
+//
+//   echo "</p>";
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+// EINDE

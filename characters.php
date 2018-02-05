@@ -21,11 +21,10 @@
     || $_POST['newchar'] == "pendzal"
     || $_POST['newchar'] == "sona") {
 
-      $sql = "INSERT INTO `ecc_characters` (`accountID`, `faction`, `aantal_events`, `status`
+      $sql = "INSERT INTO `ecc_characters` (`accountID`, `faction`, `status`
         ) VALUES (
           '".(int)$TIJDELIJKEID."',
           '".mysqli_real_escape_string($UPLINK,$_POST['newchar'])."',
-          '0',
           'in design'
         );";
       $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
@@ -136,12 +135,12 @@
                   ."</div>";
 
                 $printresult .=
-                  "<div class=\"formitem\">"
-                    ."<h3>Amount of events played (0 for new characters)</h3>"
-                    ."<input type=\"number\" placeholder=\"0\" maxlength=\"20\" name=\"editchar[aantal_events]\" value=\"".(int)$character['aantal_events']."\"></input>"
-                  ."</div>"
+                  // "<div class=\"formitem\">"
+                  //   ."<h3>Amount of events played (0 for new characters)</h3>"
+                  //   ."<input type=\"number\" placeholder=\"0\" maxlength=\"20\" name=\"editchar[aantal_events]\" value=\"".(int)$character['aantal_events']."\"></input>"
+                  // ."</div>"
 
-                  ."<div class=\"formitem\">"
+                  "<div class=\"formitem\">"
                     ."<h3>Faction</h3>"
                     ."<p class=\"text-muted\">".EMS_echo($character['faction'])."</p>"
                   ."</div>"
@@ -270,7 +269,7 @@
                 . "<div class=\"block smflex hidden-xs\">".$xICON."</div>" // user icon
                 . "<div class=\"block\">" . $character['character_name'] . "</div>" // char name
                 . "<div class=\"block\">" . $character['faction'] . "</div>" // faction
-                . "<div class=\"block smflex\">" . (int)$character['aantal_events'] . "&nbsp;times</div>" // amount of events played
+                //. "<div class=\"block smflex\">" . (int)$character['aantal_events'] . "&nbsp;times</div>" // amount of events played
                 . "<div class=\"block\">" . $character['status'] . "</div>" // status of character (active, design, deceased, etc)
                 . "<div class=\"block\">"
                     ."<a href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\">"

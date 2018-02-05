@@ -22,11 +22,16 @@
 
       foreach($activeCharacter['sheets'] AS $sheetRow) {
         $activeCharacter['sheets'][$sheetRow['charSheetID']] = getFullCharSheet($sheetRow['charSheetID']);
+        $activeCharacter['sheets'][$sheetRow['charSheetID']]['exp_total'] = calcTotalExp($sheetRow['aantal_events']);
       }
 
       if(count($activeCharacter['sheets'][$sheetRow['charSheetID']]) > 0) {
 
+        if(isset($_GET['viewSheet']) && (int)$_GET['viewSheet'] != 0) {
 
+          $activeCharacter['sheets'][$_GET['viewSheet']]['exp_used'] = calcUsedExp($activeCharacter['sheets'][$_GET['viewSheet']]['skills'], $activeCharacter['faction']);
+
+        }
 
       } else {
         $activeCharacter['sheets'][$sheetRow['charSheetID']]['status'] = 'noskill';
@@ -56,15 +61,13 @@
 
     <?php
       echo "<pre>";
+      echo "charactersheet<br/><br/>";
       var_dump($activeCharacter);
       echo "</pre>";
 
       //INSERT INTO `ecc_char_sheet` (`charSheetID`, `characterID`, `accountID`, `status`, `eventName`, `versionNumber`) VALUES (NULL, '1', '451', 'ontwerp', 'Frontier9', '0');
 
-
       if(isset($activeCharacter['sheets'])) {
-
-
 
         if(count($activeCharacter['sheets']) > 0) {
 
@@ -77,13 +80,14 @@
             (
               `characterID`,
               `accountID`,
-              `eventName`
+              `aantal_events`
             ) VALUES (
               '".mysqli_real_escape_string($UPLINK,(int)$_GET['viewChar'])."',
               '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."',
-              '".mysqli_real_escape_string($UPLINK,$COMINGEVENT)."'
+              '0'
             );";
 
+          // $res = $UPLINK->query($sql) or die(mysqli_error($UPLINK));
           $res = $UPLINK->query($sql);
 
           header("location: ".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']);

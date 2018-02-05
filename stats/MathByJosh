@@ -1,0 +1,12 @@
+
+BASIC
+(n/2)*(1+n)   <--- Eos EXP calculation (carl gauss formula)
+
+
+SPECIALTY
+"because you have to have levels 1-5 first
+so for the 6+ skills, you can do (n/2)*(6+n)"
+
+doesn't work for level 6 though, so:
+
+SEE: SKILLCALC.PHP

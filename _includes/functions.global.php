@@ -56,7 +56,7 @@ function generateMenu($param = 'Home') {
     $printresult .= "<a href=\"".$APP['header']."/myaccount.php\" class=\"menuitem $class\"><i class=\"fa fa-cog\"></i><span>&nbsp;My account</span></a>";
 
   $class = 'disabled';
-    $printresult .= "<a href=\"/\" class=\"menuitem $class\"><i class=\"fa fa-arrow-left\"></i><span>&nbsp;Back to site</span></a>";
+    $printresult .= "<a href=\"http://www.eosfrontier.space\" class=\"menuitem $class\"><i class=\"fa fa-arrow-left\"></i><span>&nbsp;Back to site</span></a>";
 
   return $printresult;
 
@@ -77,14 +77,16 @@ function updateCharacterInfo($params = array(), $charID = 0) {
 
       if(is_array($params) && count($params) > 0) {
 
-        // echo (int)$charID . "<br/>";
-
         foreach($params as $key => $value){
 
           $key = sanitize_spaces($key);
           $value = sanitize_spaces($value);
+
           huizingfilter($key);
           huizingfilter($value);
+
+          $key = silvesterFilter($key);
+          $value = silvesterFilter($value);
 
           $sql = "UPDATE `ecc_characters`
             SET ".$key." = '".mysqli_real_escape_string($UPLINK,$value)."'
@@ -133,7 +135,7 @@ function getCharacterSheets() {
 
           foreach($row AS $KEY => $VALUE) {
 
-            $return['characters'][$row['characterID']][$KEY] = EMS_echo($VALUE);
+            $return['characters'][$row['characterID']][$KEY] = silvesterFilter(EMS_echo($VALUE));
 
           }//foreach
 
@@ -182,6 +184,13 @@ function getCharacterSheets() {
   return $return;
 }
 
+// Removes Emojis from user input. Yup. This is a thing. (specificly: unicode. 😀🤬✌🏻✌🏻💎 )
+// Named after Silvester, who hilariously discovered you could make full Emoji based characters.
+function silvesterFilter($input = null) {
+  $output = preg_replace("/[^[:alnum:][:space:]]/u", '', $input);
+  return $output;
+}
+
 
 // Wash away all unnecessary spaces, by brutishly looping for all them.
 function sanitize_spaces($input = null) {
@@ -199,7 +208,7 @@ function sanitize_spaces($input = null) {
 // spam / escape filter, named after a friend of mine who taught me the importance of filtering user input.
 function huizingfilter($input = null) {
 
-  $triggers    = array('tps:/','tp:/',"src=","src =",'<','>','><','.js',';','$','[',']','(',')','@S','@s','GOTO ','DBCC ');
+  $triggers    = array('http','tps:/','tp:/',"src=","src =",'<','>','><','.js',';','$','[',']','(',')','@S','@s','GOTO ','DBCC ');
   $error       = false;
 
   foreach ($triggers as $trigger) { // loops through the huizing-huizingtriggertriggertrigger

@@ -20,7 +20,7 @@ function checkGridSupport() {
 
 $(document).ready(function(){
 
-	var maincell = $('.main');
+	/*var maincell = $('.main');
 
 	if(maincell && $(window).width() > 768) {
 
@@ -35,22 +35,22 @@ $(document).ready(function(){
 				maincell.removeClass('offsetTop');
 			}
 
-		}
+		}*/
 
 		/* adds the scroll function to the MAIN div. */
-		maincell.scroll(function() {
-		    scrollMain();
-		});
+		/*maincell.scroll(function() {
+			scrollMain();
+		});*/
 
 		/* run the function at start incase of refresh. */
-		scrollMain();
+		/*scrollMain();
 
-	}
+	}*/
 
 	/* init */
 	setTimeout(function(){
 		$('body').removeClass('notransition');
-	},400);
+	},200);
 
 	checkGridSupport();
 });

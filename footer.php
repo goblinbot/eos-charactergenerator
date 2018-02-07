@@ -9,9 +9,9 @@ if (!isset($APP)) die('No direct access allowed');
   </div>
 
 </div> <!-- grid -->
-  <?=EMSincludeJS()?>
-  <script type="text/javascript">
-  </script>
+
+  <script type="text/javascript" src="<?=$APP["header"]?>/_assets/js/jquery.min.js"></script>
+  <script type="text/javascript" src="<?=$APP["header"]?>/_includes/js/functions.js"></script>
 </body>
 </html>
 <?php

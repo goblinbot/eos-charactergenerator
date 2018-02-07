@@ -15,9 +15,11 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>CHARGEN</title>
 
-  <?=EMSincludeCSS()?>
+  <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/reset.css" />
+  <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/style.css" />
+
 </head>
-<body>
+<body class="notransition">
   <div class="grid">
 
     <div id="topcell" class="logo cell">

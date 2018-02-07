@@ -40,6 +40,9 @@ body {
   background: $bg;
   color: $textcolor;
   font-family: $fontstack;
+  &.notransition * {
+    transition: none!important;
+  }
 }
 
 h1,h2 {

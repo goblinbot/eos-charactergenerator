@@ -366,8 +366,9 @@ button, .button {
     transition: 0.3s;
 
     &:hover, &:active, &:focus {
+      border: 0;
       color: $textcolor;
-      border-color: $bluHover;
+      border-bottom: 2px solid $bluHover;
     }
 
   }
@@ -378,6 +379,19 @@ button, .button {
 
   input[type="number"] {
     min-width: 8rem;
+  }
+
+  textarea {
+    min-height: 12.5rem;
+    min-width: 22rem;
+    background: $inputbg;
+    margin-top: 1rem;
+    padding: 5px 5px 0 5px;
+    border: 1px solid $textmuted;
+    &:hover, &:focus, &:active {
+      border: 1px solid $bluHover;
+      color: $textcolor;
+    }
   }
 
   select {

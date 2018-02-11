@@ -101,18 +101,18 @@
               // put the character into an easier to access variable for laziness.
               $character = $sheetArr["characters"][$_GET['viewChar']];
 
-              $printresult .= "<div class=\"row\">"
-                ."<a href=\"".$APP['header']."/characters.php\"><button><i class=\"fa fa-arrow-left\"></i>&nbsp;Back</button></a>"
-              ."</div>";
-
               if(EMS_echo($character['character_name']) != "") {
-                $printresult .= "<h1>".$character['character_name']." - ".$character['faction']."</h1><hr/>";
+                $printresult .= "<h1>".$character['character_name']." - ".$character['faction']."</h1>";
               } else {
-                $printresult .= "<h1>[character name] - ".$character['faction']."</h1><hr/>";
+                $printresult .= "<h1>[character name] - ".$character['faction']."</h1>";
               }
 
-
               if(isset($_GET['editInfo']) && $_GET['editInfo'] == true) {
+
+                $printresult .= "<div class=\"row\">"
+                    ."<a href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\"><button><i class=\"fa fa-arrow-left\"></i>&nbsp;Back</button></a>"
+                  ."</div>"
+                ."<hr/>";
 
                 // edit char set? Validate.
                 if(isset($_POST['editchar']) && $_POST['editchar'] != "") {
@@ -135,11 +135,6 @@
                   ."</div>";
 
                 $printresult .=
-                  // "<div class=\"formitem\">"
-                  //   ."<h3>Amount of events played (0 for new characters)</h3>"
-                  //   ."<input type=\"number\" placeholder=\"0\" maxlength=\"20\" name=\"editchar[aantal_events]\" value=\"".(int)$character['aantal_events']."\"></input>"
-                  // ."</div>"
-
                   "<div class=\"formitem\">"
                     ."<h3>Faction</h3>"
                     ."<p class=\"text-muted\">".EMS_echo($character['faction'])."</p>"
@@ -168,11 +163,16 @@
                 ."</div>"
                 ."</form>";
 
-              } else if (1==3) {
+              // } else if (1==3) {
 
-              } else if (1==4) {
+              // } else if (1==4) {
 
               } else {
+
+                $printresult .= "<div class=\"row\">"
+                    ."<a href=\"".$APP['header']."/characters.php\"><button><i class=\"fa fa-arrow-left\"></i>&nbsp;Back</button></a>"
+                  ."</div>"
+                ."<hr/>";
 
                 // default: character menu.
                 $printresult .= "<div class=\"row\">";
@@ -185,7 +185,22 @@
 
                 $printresult .= "<div class=\"box33\">"
                   ."<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$character['characterID']."\">"
-                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fa fa-id-card-o\"></i>&nbsp;Character Sheets</button>"
+                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fa fa-book\"></i>&nbsp;Character Sheets</button>"
+                  ."</a>"
+                ."</div>";
+
+                $printresult .= "<div class=\"box33\">"
+                  ."<a class=\"disabled\" href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\">"
+                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fa fa-lightbulb\"></i>&nbsp;Background story</button>"
+                  ."</a>"
+                ."</div>";
+
+                // end first row, start second row
+                $printresult .= "</div><div class=\"row\">";
+
+                $printresult .= "<div class=\"box33\">"
+                  ."<a class=\"disabled\" href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\">"
+                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fa fa-list\"></i>&nbsp;Background information</button>"
                   ."</a>"
                 ."</div>";
 
@@ -196,9 +211,9 @@
                 ."</div>";
 
                 $printresult .= "</div>";
+                // end second row
 
               }
-
 
 
             } else {

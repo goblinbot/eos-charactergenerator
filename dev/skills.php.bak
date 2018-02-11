@@ -17,18 +17,8 @@ if(isset($_POST['updateSkills']) && $_POST['updateSkills'] != "") {
   // echo "<pre>";
   // var_dump($_POST['updateSkills']);
   // echo "</pre>";
-
-  $value['description'] = EMS_echo($value['description']);
-  $value['label']       = EMS_echo($value['label']);
-
-  $value['description'] = silvesterFilter($value['description']);
-  $value['label']       = silvesterFilter($value['label']);
-
-  $value['description'] = huizingfilter($value['description']);
-  $value['label']       = huizingfilter($value['label']);
-
   foreach($_POST['updateSkills'] AS $key => $value) {
-    $sql2 = "UPDATE `ecc_skills_allskills` SET `description` = '".mysqli_real_escape_string($UPLINK,$value['description'])."', `label` = '".mysqli_real_escape_string($UPLINK,$value['label'])."' WHERE `skill_id` = ".(int)$key.";";
+    $sql2 = "UPDATE `ecc_skills_allskills` SET `description` = '".$value['description']."', `label` = '".$value['label']."' WHERE `skill_id` = ".$key.";";
     $res2 = $UPLINK->query($sql2) OR trigger_error(mysqli_error($UPLINK));
   }
 }
@@ -58,7 +48,7 @@ echo "</div>";
     if(($pageNumber-1) == $offset) {
       $printresult .= "<span style=\"padding:8px 4px; color: #31e184;\">[$pageNumber]&nbsp;</span>";
     } else {
-      $printresult .= "<a style=\"padding:8px 4px;\" href=\"/skilldata/index.php?offset=".($pageNumber-1)."\">[$pageNumber]&nbsp;</a>";
+      $printresult .= "<a style=\"padding:8px 4px;\" href=\"".$APP['header']."/dev/skills.php?offset=".($pageNumber-1)."\">[$pageNumber]&nbsp;</a>";
     }
 
     $pageNumber++;
@@ -86,7 +76,7 @@ echo "</div>";
 
     // echo $sql; exit();
 
-    $printresult = "<form name=\"updateSkills\" method=\"POST\" action=\"/skilldata/index.php?offset=$offset\">"
+    $printresult = "<form name=\"updateSkills\" method=\"POST\" action=\"".$APP['header']."/dev/skills.php?offset=$offset\">"
       ."<div class=\"formitem skillsubmitbox\">"
         ."<input type=\"submit\" class=\"button blue\" value=\"Save changes\" />"
       ."</div>"

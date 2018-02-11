@@ -9,13 +9,14 @@ function getFullCharSheet($sheetID = null) {
   if(isset($sheetID) && (int)$sheetID != 0) {
 
     // check if sheetID belongs to the active account.
-    $sql = "SELECT characterID, accountID FROM `ecc_characters` WHERE characterID = '".mysqli_real_escape_string($UPLINK,(int)$sheetID)."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."' LIMIT 1";
+    $sql = "SELECT characterID, charSheetID, accountID, aantal_events FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,(int)$sheetID)."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."' LIMIT 1";
     $res = $UPLINK->query($sql);
 
     if($res && mysqli_num_rows($res) == 1) {
 
+      $returnArr['aantal_events'] = mysqli_fetch_assoc($res)['aantal_events'];
+
       // select all skills belonging to current character.
-      $res->free();
       $sql = "SELECT skill_id FROM `ecc_char_skills` WHERE `char_sheet_id` = '$sheetID' ";
       $res = $UPLINK->query($sql);
 

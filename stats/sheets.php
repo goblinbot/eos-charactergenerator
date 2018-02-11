@@ -20,21 +20,28 @@
 
     if(count($activeCharacter['sheets']) > 0) {
 
-      foreach($activeCharacter['sheets'] AS $sheetRow) {
-        $activeCharacter['sheets'][$sheetRow['charSheetID']] = getFullCharSheet($sheetRow['charSheetID']);
-        $activeCharacter['sheets'][$sheetRow['charSheetID']]['exp_total'] = calcTotalExp($sheetRow['aantal_events']);
-      }
+      // check if a charSheet is selected.
+      if(isset($_GET['viewSheet']) && (int)$_GET['viewSheet'] != 0) {
 
-      if(count($activeCharacter['sheets'][$sheetRow['charSheetID']]) > 0) {
+        $activeCharacter['sheets'][$_GET['viewSheet']] = getFullCharSheet($_GET['viewSheet']);
 
-        if(isset($_GET['viewSheet']) && (int)$_GET['viewSheet'] != 0) {
+        if(count($activeCharacter['sheets'][$_GET['viewSheet']]) > 0) {
 
-          $activeCharacter['sheets'][$_GET['viewSheet']]['exp_used'] = calcUsedExp($activeCharacter['sheets'][$_GET['viewSheet']]['skills'], $activeCharacter['faction']);
+          if(!isset($activeCharacter['sheets'][$_GET['viewSheet']]['status']) || $activeCharacter['sheets'][$_GET['viewSheet']]['status'] != 'noskill') {
+            $activeCharacter['sheets'][$_GET['viewSheet']]['exp_total'] = calcTotalExp($activeCharacter['sheets'][$_GET['viewSheet']]['aantal_events']);
+            $activeCharacter['sheets'][$_GET['viewSheet']]['exp_used'] = calcUsedExp($activeCharacter['sheets'][$_GET['viewSheet']]['skills'], $activeCharacter['faction']);
+          }
 
+        } else {
+          $activeCharacter['sheets'][$_GET['viewSheet']]['status'] = 'noskill';
         }
 
+
+
       } else {
-        $activeCharacter['sheets'][$sheetRow['charSheetID']]['status'] = 'noskill';
+
+
+
       }
 
     }
@@ -55,23 +62,171 @@
 <div class="main cell">
   <div class="content">
 
-    <h1>[CHARACTER NAME] - Skills</h1>
+    <h1><?=EMS_echo($activeCharacter["character_name"])?>&nbsp;-&nbsp;<?=EMS_echo($activeCharacter["faction"])?></h1>
+
+    <div class="row">
+      <a href="<?=$APP['header']?>/characters.php?viewChar=<?=$activeCharacter['characterID']?>" class="button">
+        <i class="fa fa-arrow-left"></i>&nbsp;Back
+      </a>
+    </div>
 
     <hr>
 
     <?php
-      echo "<pre>";
-      echo "charactersheet<br/><br/>";
-      var_dump($activeCharacter);
-      echo "</pre>";
-
-      //INSERT INTO `ecc_char_sheet` (`charSheetID`, `characterID`, `accountID`, `status`, `eventName`, `versionNumber`) VALUES (NULL, '1', '451', 'ontwerp', 'Frontier9', '0');
 
       if(isset($activeCharacter['sheets'])) {
 
         if(count($activeCharacter['sheets']) > 0) {
 
+          if(isset($_GET['viewSheet']) && (int)$_GET['viewSheet'] != 0) {
 
+            // buttons?
+            echo "<div class=\"row\">";
+
+            echo "<div class=\"box33\">"
+              ."<a class=\"\" href=\"".$APP['header']."/stats/skills.php?viewChar=".$_GET['viewChar']."&viewsheet=".$_GET['viewSheet']."\">"
+                ."<button type=\"button\" class=\"bar\" name=\"button\"><i class=\"fa fa-book\"></i>&nbsp;Skills</button>"
+              ."</a>"
+            ."</div>";
+
+            echo "<div class=\"box33\">"
+              ."<a class=\"\" href=\"".$APP['header']."/stats/implants.php?viewChar=".$_GET['viewChar']."&viewsheet=".$_GET['viewSheet']."\">"
+                ."<button type=\"button\" class=\"bar\" name=\"button\"><i class=\"fa fa-microchip\"></i>&nbsp;Implants/Symbionts</button>"
+              ."</a>"
+            ."</div>";
+
+            echo "<div class=\"box33\">"
+              ."<a class=\"disabled\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewsheet=".$_GET['viewSheet']."\">"
+                ."<button type=\"button\" class=\"bar disabled\" name=\"button\"><i class=\"fa fa-question\"></i>&nbsp;Review</button>"
+              ."</a>"
+            ."</div>";
+
+            echo "</div>";
+
+            if(!isset($activeCharacter['sheets'][$_GET['viewSheet']]['status']) || $activeCharacter['sheets'][$_GET['viewSheet']]['status'] != "noskill") {
+
+              // sheet
+
+            } else {
+              // no skills bound to sheet yet.
+            }
+
+          } else {
+
+            if(isset($_GET['createSheet']) && $_GET['createSheet'] != "") {
+
+              if(isset($_POST['newSheet']) && $_POST['newSheet'] != "") {
+
+                $_POST['newSheet'] = (int)$_POST['newSheet'];
+
+                if($_POST['newSheet'] < 0) {
+                  $_POST['newSheet'] = 0;
+                } else if ($_POST['newSheet'] > 21 ) {
+                  $_POST['newSheet'] = 21;
+                }
+
+                $sql = "INSERT INTO `ecc_char_sheet`
+                  (
+                    `characterID`,
+                    `accountID`,
+                    `aantal_events`,
+                    `version_number`
+                  ) VALUES (
+                    '".mysqli_real_escape_string($UPLINK,(int)$_GET['viewChar'])."',
+                    '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."',
+                    '".mysqli_real_escape_string($UPLINK,(int)$_POST['newSheet'])."',
+                    '1'
+                  );";
+                $res = $UPLINK->query($sql);
+
+                header("location: ".$APP['header']."/stats/sheets.php?viewChar=".$activeCharacter['characterID']." ");
+                exit();
+
+              }
+
+              echo "<form method=\"POST\" action=\"".$APP['header']."/stats/sheets.php?viewChar=".$activeCharacter['characterID']."&createSheet=true\">"
+
+                ."<div class=\"formitem\">"
+                  ."<h3>Amount of events played as this character:</h3>"
+                  ."<input name=\"newSheet\" placeholder=\"0\" type=\"number\" min=\"0\" max=\"21\" required=\"required\"></input>"
+                ."</div>"
+
+                ."<div class=\"formitem\">"
+                  ."<input type=\"submit\" class=\"button blue\" value=\"Create sheet\"></input>"
+                ."</div>"
+              ."</form>";
+
+            } else if(isset($_GET['copySheet']) && (int)$_GET['copySheet'] != 0) {
+
+              //copy sheet
+
+            } else if(isset($_GET['deleteSheet']) && (int)$_GET['deleteSheet'] != 0) {
+
+              //delete sheet: validate eerst.
+              $sql = "SELECT charSheetID
+                FROM `ecc_char_sheet`
+                WHERE accountID = '".mysqli_real_escape_string($UPLINK,$TIJDELIJKEID)."'
+                AND charSheetID = '".mysqli_real_escape_string($UPLINK,$_GET['deleteSheet'])."'
+                AND characterID = '".mysqli_real_escape_string($UPLINK,$_GET['viewChar'])."'
+              LIMIT 1";
+              $res = $UPLINK->query($sql);
+
+              if(mysqli_num_rows($res) > 0) {
+                $sql = "DELETE FROM `ecc_char_sheet` WHERE `charSheetID` = '".mysqli_real_escape_string($UPLINK,$_GET['deleteSheet'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,$TIJDELIJKEID)."'";
+                $res = $UPLINK->query($sql);
+
+                header("location: ".$APP['header']."/stats/sheets.php?viewChar=".$activeCharacter['characterID']." ");
+                exit();
+              }
+
+            } else {
+
+              echo "<table>"
+              . "<tr>"
+                . "<th>Name</th>"
+                . "<th>Status</th>"
+                . "<th>Events played</th>"
+                . "<th>&nbsp;</th>"
+              . "</tr>";
+
+              // print sheets
+              foreach ($activeCharacter['sheets'] AS $key => $value) {
+
+                echo "<tr class=\"status".$value['status']."\">"
+                . "<td>".EMS_echo($activeCharacter["character_name"])."</td>"
+                . "<td>".$value['status']."</td>"
+                . "<td>".(int)$value['aantal_events']."</td>"
+
+                . "<td>"
+
+                  . "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&viewSheet=".$value['charSheetID']."\" class=\"button blue\">"
+                    ."<i class=\"fa fa-folder\"></i>&nbsp;Open"
+                  ."</a>"
+
+                  . "&nbsp;"
+
+                  . "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&copySheet=".$value['charSheetID']."\" class=\"button green\" onclick=\"return confirm('Are you sure?')\">"
+                    . "<i class=\"fa fa-paperclip\"></i>&nbsp;New Version"
+                  . "</a>";
+
+                if($value['status'] == 'ontwerp') {
+                  echo "&nbsp;" . "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&deleteSheet=".$value['charSheetID']."\" class=\"button\" onclick=\"return confirm('Are you sure?')\">"
+                    ."<i class=\"fa fa-trash\"></i>&nbsp;Delete"
+                  ."</a>";
+                }
+
+                echo "</td>"
+                . "</tr>";
+
+              }
+
+              echo "</table>";
+              echo "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&createSheet=true\" class=\"button green\"><i class=\"fa fa-user-plus\"></i>&nbsp;New sheet</a>";
+
+            }
+
+
+          }
 
         } else {
 

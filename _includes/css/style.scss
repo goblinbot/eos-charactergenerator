@@ -270,6 +270,10 @@ button, .button {
     padding: 0.5rem;
   }
 
+  &:link, &a:link {
+    color: $textcolor;
+  }
+
   &:hover {
     background: $inputbg;
   }
@@ -456,6 +460,39 @@ button, .button {
     }
   }
 
+}
+
+table {
+
+  border: 0;
+  width: 100%;
+  max-width: 100%;
+
+  margin-bottom: 2rem;
+
+  border-collapse: collapse;
+  border-color: transparent;
+
+  td,th {
+    text-align: left;
+    padding: 1rem;
+    background: $inputbg;
+    border-top: 1px solid $medi;
+    vertical-align: top;
+
+    button,.button {
+      padding: 0.4rem 1.5rem;
+    }
+
+  }
+  th {
+    background: $lite;
+  }
+
+  tr.statusplayed, tr.statusplayed td {
+    background: rgba($inputbg,0.9);
+    color: $textmuted;
+  }
 }
 
 .dialog {

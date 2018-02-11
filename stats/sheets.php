@@ -85,19 +85,19 @@
 
             echo "<div class=\"box33\">"
               ."<a class=\"\" href=\"".$APP['header']."/stats/skills.php?viewChar=".$_GET['viewChar']."&viewsheet=".$_GET['viewSheet']."\">"
-                ."<button type=\"button\" class=\"bar\" name=\"button\"><i class=\"fa fa-book\"></i>&nbsp;Skills</button>"
+                ."<button type=\"button\" class=\"button bar blue\" name=\"button\"><i class=\"fa fa-book\"></i>&nbsp;Skills</button>"
               ."</a>"
             ."</div>";
 
             echo "<div class=\"box33\">"
               ."<a class=\"\" href=\"".$APP['header']."/stats/implants.php?viewChar=".$_GET['viewChar']."&viewsheet=".$_GET['viewSheet']."\">"
-                ."<button type=\"button\" class=\"bar\" name=\"button\"><i class=\"fa fa-microchip\"></i>&nbsp;Implants/Symbionts</button>"
+                ."<button type=\"button\" class=\"button bar blue\" name=\"button\"><i class=\"fa fa-microchip\"></i>&nbsp;Implants/Symbionts</button>"
               ."</a>"
             ."</div>";
 
             echo "<div class=\"box33\">"
               ."<a class=\"disabled\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewsheet=".$_GET['viewSheet']."\">"
-                ."<button type=\"button\" class=\"bar disabled\" name=\"button\"><i class=\"fa fa-question\"></i>&nbsp;Review</button>"
+                ."<button type=\"button\" class=\"button bar disabled\" name=\"button\"><i class=\"fa fa-question\"></i>&nbsp;Review</button>"
               ."</a>"
             ."</div>";
 

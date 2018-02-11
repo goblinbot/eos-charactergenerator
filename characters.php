@@ -179,7 +179,7 @@
 
                 $printresult .= "<div class=\"box33\">"
                   ."<a href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."&editInfo=true\">"
-                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fa fa-id-card-o\"></i>&nbsp;Edit info</button>"
+                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fa fa-id-card-o\"></i>&nbsp;Edit basic info</button>"
                   ."</a>"
                 ."</div>";
 
@@ -191,7 +191,7 @@
 
                 $printresult .= "<div class=\"box33\">"
                   ."<a class=\"disabled\" href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\">"
-                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fa fa-lightbulb\"></i>&nbsp;Background story</button>"
+                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fa fa-lightbulb\"></i>&nbsp;Your story</button>"
                   ."</a>"
                 ."</div>";
 
@@ -200,7 +200,7 @@
 
                 $printresult .= "<div class=\"box33\">"
                   ."<a class=\"disabled\" href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\">"
-                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fa fa-list\"></i>&nbsp;Background information</button>"
+                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fa fa-list\"></i>&nbsp;Background-check info</button>"
                   ."</a>"
                 ."</div>";
 
@@ -209,6 +209,8 @@
                     ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fa fa-user-o\"></i>&nbsp;Placeholder</button>"
                   ."</a>"
                 ."</div>";
+
+                $printresult .= "<div class=\"box33\"></div>";
 
                 $printresult .= "</div>";
                 // end second row

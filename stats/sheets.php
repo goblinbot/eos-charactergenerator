@@ -197,7 +197,7 @@
                 . "<div class=\"block smflex\">".$value['status']."</div>"
                 . "<div class=\"block smflex\">".(int)$value['aantal_events']."</div>";
 
-                echo "<div class=\"block\">"
+                echo "<div class=\"block\" style=\"text-align: left;\">"
 
                   . "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&viewSheet=".$value['charSheetID']."\" class=\"button blue\">"
                     ."<i class=\"far fa-folder-open\"></i>&nbsp;Open"

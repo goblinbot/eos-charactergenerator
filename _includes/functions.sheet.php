@@ -120,25 +120,6 @@ function calcUsedExp($charSkillArr = array(), $faction = null) {
 
         }
 
-        //  else if ($details["level"] <= 5) {
-        //
-        //   $result['cost'] = ($result['cost'] + (($details["level"]/2)*(1+$details["level"])));
-        //
-        //   echo $result['cost']."&nbsp;SUB5&nbsp;".$details['label']."<br/>";
-        //
-        // } else if ($details["level"] >= 6 && $details["level"] <= 10) {
-        //
-        //   $m = 6;
-        //   $n = $details["level"];
-        //
-        //   $result['cost'] = ($result['cost'] + ((($details["level"]-$m+1) / 2)*($m+$n)));
-        //
-        //   echo $result['cost']."&nbsp;PLUS5&nbsp;".$details['label']."<br/>";
-        //
-        // } else {
-        //   // invalid
-        // }
-
       }
 
     }
@@ -146,5 +127,24 @@ function calcUsedExp($charSkillArr = array(), $faction = null) {
   }
 
   return $result;
+}
 
+function getImplants($sheetID) {
+
+  global $TIJDELIJKEID, $UPLINK;
+
+  $sql = "SELECT `modifierID`,`sheetID`,`accountID`,`type`,`skillgroup_level`,`skillgroup_siteindex`,`status`,`description` FROM `ecc_char_implants` WHERE `accountID` = '".(int)$TIJDELIJKEID."' AND `sheetID` = '".(int)$sheetID."' ";
+  $res = $UPLINK->query($sql);
+
+  // $return = mysqli_fetch_array($res);
+  while($row = mysqli_fetch_assoc($res)) {
+
+    // fill rows
+    foreach($row AS $key => $value) {
+      $return[$row['modifierID']][$key] = $value;
+    }
+
+  }
+
+  return $return;
 }

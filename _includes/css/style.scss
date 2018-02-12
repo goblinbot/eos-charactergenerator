@@ -56,6 +56,13 @@ p {
   font-family: $fontstack;
 }
 
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+
 a {
   color: $textmuted;
   transition: 0.3s;
@@ -244,9 +251,11 @@ hr {
   .footer {
     grid-area: footer;
     background: $medi;
+    display: flex;
 
     p {
       margin: 0.8rem;
+      flex: 1;
     }
   }
 
@@ -445,6 +454,7 @@ button, .button {
   margin-bottom: 0.5rem;
 
   border-radius: 2px;
+  min-height: 5rem;
 
   background: $medi;
   &.header {
@@ -462,38 +472,38 @@ button, .button {
 
 }
 
-table {
-
-  border: 0;
-  width: 100%;
-  max-width: 100%;
-
-  margin-bottom: 2rem;
-
-  border-collapse: collapse;
-  border-color: transparent;
-
-  td,th {
-    text-align: left;
-    padding: 1rem;
-    background: $inputbg;
-    border-top: 1px solid $medi;
-    vertical-align: top;
-
-    button,.button {
-      padding: 0.4rem 1.5rem;
-    }
-
-  }
-  th {
-    background: $lite;
-  }
-
-  tr.statusplayed, tr.statusplayed td {
-    background: rgba($inputbg,0.9);
-    color: $textmuted;
-  }
-}
+// table {
+//
+//   border: 0;
+//   width: 100%;
+//   max-width: 100%;
+//
+//   margin-bottom: 2rem;
+//
+//   border-collapse: collapse;
+//   border-color: transparent;
+//
+//   td,th {
+//     text-align: left;
+//     padding: 1rem;
+//     background: $inputbg;
+//     border-top: 1px solid $medi;
+//     vertical-align: top;
+//
+//     button,.button {
+//       padding: 0.4rem 1.5rem;
+//     }
+//
+//   }
+//   th {
+//     background: $lite;
+//   }
+//
+//   tr.statusplayed, tr.statusplayed td {
+//     background: rgba($inputbg,0.9);
+//     color: $textmuted;
+//   }
+// }
 
 .dialog {
   padding: 2rem 1.5rem;
@@ -502,7 +512,7 @@ table {
   border-radius: 5px;
 }
 
-.fa {
+.fa,.fab,.far,.fal,.fas {
   &.cyan {
     color: $cyan;
   }

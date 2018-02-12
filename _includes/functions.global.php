@@ -31,16 +31,16 @@ function generateMenu($param = 'Home') {
   $printresult = "";
 
   $class = (strtolower($param) == 'home') ? 'active' : '';
-    $printresult .= "<a href=\"".$APP['header']."/\" class=\"menuitem $class\"><i class=\"fa fa-home\"></i><span>&nbsp;Home</span></a>";
+    $printresult .= "<a href=\"".$APP['header']."/\" class=\"menuitem $class\"><i class=\"fas fa-home\"></i><span>&nbsp;Home</span></a>";
 
   $class = (strtolower($param) == 'characters') ? 'active' : '';
-    $printresult .= "<a href=\"".$APP['header']."/characters.php\" class=\"menuitem $class\"><i class=\"fa fa-user\"></i><span>&nbsp;Character(s)</span></a>";
+    $printresult .= "<a href=\"".$APP['header']."/characters.php\" class=\"menuitem $class\"><i class=\"fas fa-user\"></i><span>&nbsp;Character(s)</span></a>";
 
   $class = (strtolower($param) == 'myaccount') ? 'active' : '';
-    $printresult .= "<a href=\"".$APP['header']."/myaccount.php\" class=\"menuitem $class\"><i class=\"fa fa-cog\"></i><span>&nbsp;My account</span></a>";
+    $printresult .= "<a href=\"".$APP['header']."/myaccount.php\" class=\"menuitem $class\"><i class=\"fas fa-cog\"></i><span>&nbsp;My account</span></a>";
 
   $class = 'disabled';
-    $printresult .= "<a href=\"http://www.eosfrontier.space\" class=\"menuitem $class\"><i class=\"fa fa-arrow-left\"></i><span>&nbsp;Back to site</span></a>";
+    $printresult .= "<a href=\"http://www.eosfrontier.space\" class=\"menuitem $class\"><i class=\"fas fa-arrow-left\"></i><span>&nbsp;Back to site</span></a>";
 
   return $printresult;
 

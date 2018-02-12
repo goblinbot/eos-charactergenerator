@@ -66,7 +66,7 @@
 
     <div class="row">
       <a href="<?=$APP['header']?>/characters.php?viewChar=<?=$activeCharacter['characterID']?>" class="button">
-        <i class="fa fa-arrow-left"></i>&nbsp;Back
+        <i class="fas fa-arrow-left"></i>&nbsp;Back
       </a>
     </div>
 
@@ -85,19 +85,19 @@
 
             echo "<div class=\"box33\">"
               ."<a class=\"\" href=\"".$APP['header']."/stats/skills.php?viewChar=".$_GET['viewChar']."&viewsheet=".$_GET['viewSheet']."\">"
-                ."<button type=\"button\" class=\"button bar blue\" name=\"button\"><i class=\"fa fa-book\"></i>&nbsp;Skills</button>"
+                ."<button type=\"button\" class=\"button bar blue\" name=\"button\"><i class=\"fas fa-book\"></i>&nbsp;Skills</button>"
               ."</a>"
             ."</div>";
 
             echo "<div class=\"box33\">"
               ."<a class=\"\" href=\"".$APP['header']."/stats/implants.php?viewChar=".$_GET['viewChar']."&viewsheet=".$_GET['viewSheet']."\">"
-                ."<button type=\"button\" class=\"button bar blue\" name=\"button\"><i class=\"fa fa-microchip\"></i>&nbsp;Implants/Symbionts</button>"
+                ."<button type=\"button\" class=\"button bar blue\" name=\"button\"><i class=\"fas fa-microchip\"></i>&nbsp;Implants/Symbionts</button>"
               ."</a>"
             ."</div>";
 
             echo "<div class=\"box33\">"
               ."<a class=\"disabled\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewsheet=".$_GET['viewSheet']."\">"
-                ."<button type=\"button\" class=\"button bar disabled\" name=\"button\"><i class=\"fa fa-question\"></i>&nbsp;Review</button>"
+                ."<button type=\"button\" class=\"button bar disabled\" name=\"button\"><i class=\"fas fa-question\"></i>&nbsp;Review</button>"
               ."</a>"
             ."</div>";
 
@@ -181,47 +181,46 @@
 
             } else {
 
-              echo "<table>"
-              . "<tr>"
-                . "<th>Name</th>"
-                . "<th>Status</th>"
-                . "<th>Events played</th>"
-                . "<th>&nbsp;</th>"
-              . "</tr>";
+              // set the header
+              echo "<div class=\"character header\">"
+                . "<div class=\"block smflex\">Name</div>" // char name
+                . "<div class=\"block smflex\">Status</div>" // faction
+                . "<div class=\"block smflex\">Events played</div>" // amount of events played
+                . "<div class=\"block\">&nbsp;</div>" // edit
+              . "</div>";
 
               // print sheets
               foreach ($activeCharacter['sheets'] AS $key => $value) {
 
-                echo "<tr class=\"status".$value['status']."\">"
-                . "<td>".EMS_echo($activeCharacter["character_name"])."</td>"
-                . "<td>".$value['status']."</td>"
-                . "<td>".(int)$value['aantal_events']."</td>"
+                echo "<div class=\"character\">"
+                . "<div class=\"block smflex\">".EMS_echo($activeCharacter["character_name"])."</div>"
+                . "<div class=\"block smflex\">".$value['status']."</div>"
+                . "<div class=\"block smflex\">".(int)$value['aantal_events']."</div>";
 
-                . "<td>"
+                echo "<div class=\"block\">"
 
                   . "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&viewSheet=".$value['charSheetID']."\" class=\"button blue\">"
-                    ."<i class=\"fa fa-folder\"></i>&nbsp;Open"
+                    ."<i class=\"far fa-folder-open\"></i>&nbsp;Open"
                   ."</a>"
 
                   . "&nbsp;"
 
                   . "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&copySheet=".$value['charSheetID']."\" class=\"button green\" onclick=\"return confirm('Are you sure?')\">"
-                    . "<i class=\"fa fa-paperclip\"></i>&nbsp;New Version"
+                    . "<i class=\"far fa-copy\"></i>&nbsp;New Version"
                   . "</a>";
 
                 if($value['status'] == 'ontwerp') {
                   echo "&nbsp;" . "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&deleteSheet=".$value['charSheetID']."\" class=\"button\" onclick=\"return confirm('Are you sure?')\">"
-                    ."<i class=\"fa fa-trash\"></i>&nbsp;Delete"
+                    ."<i class=\"fas fa-trash\"></i>&nbsp;Delete"
                   ."</a>";
                 }
 
-                echo "</td>"
-                . "</tr>";
+                echo "</div>"
+                . "</div>";
 
               }
 
-              echo "</table>";
-              echo "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&createSheet=true\" class=\"button green\"><i class=\"fa fa-user-plus\"></i>&nbsp;New sheet</a>";
+              echo "<br/><a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&createSheet=true\" class=\"button green\"><i class=\"fas fa-user-plus\"></i>&nbsp;New sheet</a>";
 
             }
 

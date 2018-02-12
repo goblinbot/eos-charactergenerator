@@ -89,7 +89,7 @@
       } else if(isset($_GET['viewChar']) && $_GET['viewChar'] != "") {
 
         if(isset($_GET['u']) && $_GET['u'] == 1) {
-          $printresult .= "<p class=\"dialog\"><i class=\"fa fa-check green\"></i>&nbsp;Updated succesfully.</p>";
+          $printresult .= "<p class=\"dialog\"><i class=\"fas fa-check green\"></i>&nbsp;Updated succesfully.</p>";
         }
 
         // check if characters is valid
@@ -110,7 +110,7 @@
               if(isset($_GET['editInfo']) && $_GET['editInfo'] == true) {
 
                 $printresult .= "<div class=\"row\">"
-                    ."<a href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\"><button><i class=\"fa fa-arrow-left\"></i>&nbsp;Back</button></a>"
+                    ."<a href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\"><button><i class=\"fas fa-arrow-left\"></i>&nbsp;Back</button></a>"
                   ."</div>"
                 ."<hr/>";
 
@@ -130,30 +130,34 @@
 
                 $printresult .=
                   "<div class=\"formitem\">"
-                    ."<h3>Character Name</h3>"
+                    ."<h3><i class=\"fas fa-user\"></i>&nbsp;Character Name</h3>"
                     ."<input type=\"text\" placeholder=\"Character Name\" maxlength=\"99\" name=\"editchar[character_name]\" value=\"".EMS_echo($character['character_name'])."\"></input>"
-                  ."</div>";
+                  ."</div>"
+                  ."<br/>";
 
                 $printresult .=
                   "<div class=\"formitem\">"
-                    ."<h3>Faction</h3>"
+                    ."<h3><i class=\"fas fa-users\"></i>&nbsp;Faction</h3>"
                     ."<p class=\"text-muted\">".EMS_echo($character['faction'])."</p>"
                   ."</div>"
+                  ."<br/>"
 
                   ."<div class=\"formitem\">"
-                    ."<h3>Birth date</h3>"
+                    ."<h3><i class=\"far fa-calendar-alt\"></i>&nbsp;Birth date</h3>"
                     ."<input type=\"text\" placeholder=\"...\" maxlength=\"24\" name=\"editchar[ic_birthday]\" value=\"".EMS_echo($character['ic_birthday'])."\"></input>"
-                  ."</div>";
+                  ."</div>"
+                  ."<br/>";
 
                 $printresult .=
                   "<div class=\"formitem\">"
-                    ."<h3>Birth planet</h3>"
+                    ."<h3><i class=\"fas fa-globe\"></i>&nbsp;Birth planet</h3>"
                     ."<input type=\"text\" placeholder=\"...\" maxlength=\"99\" name=\"editchar[birthplanet]\" value=\"".EMS_echo($character['birthplanet'])."\"></input>"
-                  ."</div>"
+                  ."</div>"."<br/>"
                   ."<div class=\"formitem\">"
-                    ."<h3>Current/home planet</h3>"
+                    ."<h3><i class=\"fas fa-globe\"></i>&nbsp;Current/home planet</h3>"
                     ."<input type=\"text\" placeholder=\"...\" maxlength=\"99\" name=\"editchar[homeplanet]\" value=\"".EMS_echo($character['homeplanet'])."\"></input>"
-                  ."</div>";
+                  ."</div>"
+                  ."<br/>";
 
                 $printresult .=
                   "<div class=\"formitem\">"
@@ -170,7 +174,7 @@
               } else {
 
                 $printresult .= "<div class=\"row\">"
-                    ."<a href=\"".$APP['header']."/characters.php\"><button><i class=\"fa fa-arrow-left\"></i>&nbsp;Back</button></a>"
+                    ."<a href=\"".$APP['header']."/characters.php\"><button><i class=\"fas fa-arrow-left\"></i>&nbsp;Back</button></a>"
                   ."</div>"
                 ."<hr/>";
 
@@ -179,19 +183,19 @@
 
                 $printresult .= "<div class=\"box33\">"
                   ."<a href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."&editInfo=true\">"
-                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fa fa-id-card-o\"></i>&nbsp;Edit basic info</button>"
+                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"far fa-id-card\"></i>&nbsp;Edit basic info</button>"
                   ."</a>"
                 ."</div>";
 
                 $printresult .= "<div class=\"box33\">"
                   ."<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$character['characterID']."\">"
-                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fa fa-book\"></i>&nbsp;Character Sheets</button>"
+                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fas fa-book\"></i>&nbsp;Character Sheets</button>"
                   ."</a>"
                 ."</div>";
 
                 $printresult .= "<div class=\"box33\">"
                   ."<a class=\"disabled\" href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\">"
-                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fa fa-lightbulb\"></i>&nbsp;Your story</button>"
+                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"far fa-lightbulb\"></i>&nbsp;Your story</button>"
                   ."</a>"
                 ."</div>";
 
@@ -200,13 +204,13 @@
 
                 $printresult .= "<div class=\"box33\">"
                   ."<a class=\"disabled\" href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\">"
-                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fa fa-list\"></i>&nbsp;Background-check info</button>"
+                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fas fa-list\"></i>&nbsp;Background-check details</button>"
                   ."</a>"
                 ."</div>";
 
                 $printresult .= "<div class=\"box33\">"
                   ."<a class=\"disabled\" href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\">"
-                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fa fa-user-o\"></i>&nbsp;Placeholder</button>"
+                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"far fa-user\"></i>&nbsp;Placeholder</button>"
                   ."</a>"
                 ."</div>";
 
@@ -265,18 +269,18 @@
               // choose icon and style depending on the character's STATUS.
               switch(strTolower(EMS_echo($character['status']))) {
                 case 'in design': default:
-                  $xICON = "<i class=\"fa fa-user-o\"></i>";
+                  $xICON = "<i class=\"fas fa-user\"></i>";
                   break;
                 case 'deceased':
-                  $xICON = "<i class=\"fa fa-user-times mute\"></i>";
+                  $xICON = "<i class=\"fas fa-user-times mute\"></i>";
                   $xCLASS = " text-muted";
                   break;
                 case 'inactive':
-                  $xICON = "<i class=\"fa fa-user mute\"></i>";
+                  $xICON = "<i class=\"far fa-user mute\"></i>";
                   $xCLASS = " text-muted";
                   break;
                 case 'ready':
-                  $xICON = "<i class=\"fa fa-check green\"></i>";
+                  $xICON = "<i class=\"fas fa-check green\"></i>";
                   $xCLASS = " active";
                   break;
               }
@@ -290,7 +294,7 @@
                 . "<div class=\"block\">" . $character['status'] . "</div>" // status of character (active, design, deceased, etc)
                 . "<div class=\"block\">"
                     ."<a href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\">"
-                      ."<button class=\"blue bar\"><i class=\"fa fa-folder\"></i>&nbsp;View</button>"
+                      ."<button class=\"blue bar\"><i class=\"fas fa-folder-open\"></i>&nbsp;View</button>"
                     ."</a>"
                   ."</div>" // edit
               . "</div>";
@@ -306,7 +310,7 @@
           $printresult .=
             "<div class=\"row\">"
               ."<a href=\"".$APP['header']."/characters.php?newChar\">"
-                ."<button type=\"button\" class=\"green\" name=\"button\"><i class=\"fa fa-user-plus\"></i>&nbsp;New character</button>"
+                ."<button type=\"button\" class=\"green\" name=\"button\"><i class=\"fas fa-user-plus\"></i>&nbsp;New character</button>"
               ."</a>"
             ."</div>";
 

@@ -101,6 +101,10 @@ a {
   &.underline {
     text-decoration: underline;
   }
+
+  &.button:hover {
+    color: #FFF;
+  }
 }
 
 hr {
@@ -469,7 +473,7 @@ button, .button {
 
 
 // character rows - select screen
-.character {
+.character, .implant {
 
   width: auto;
   display: flex;
@@ -487,6 +491,10 @@ button, .button {
   background: $medi;
   &.header {
     background: $inputbg;
+
+    .button {
+      margin-bottom: 0;
+    }
   }
 
   .block {
@@ -497,7 +505,13 @@ button, .button {
       flex: 0.2;
     }
   }
+}
 
+.implant {
+  background: $inputbg;
+  .button {
+    margin-bottom: 0;
+  }
 }
 
 .dialog {

@@ -1,5 +1,4 @@
 <?php
-
 function getFullCharSheet($sheetID = null) {
 
   global $TIJDELIJKEID, $UPLINK;

@@ -20,33 +20,6 @@ function checkGridSupport() {
 
 $(document).ready(function(){
 
-	/*var maincell = $('.main');
-
-	if(maincell && $(window).width() > 768) {
-
-		function scrollMain() {
-
-			var offsetTop = maincell.scrollTop();
-			var offsetBottom = maincell.scrollTop() + maincell.height();
-
-			if(offsetTop > 2) {
-				maincell.addClass('offsetTop');
-			} else {
-				maincell.removeClass('offsetTop');
-			}
-
-		}*/
-
-		/* adds the scroll function to the MAIN div. */
-		/*maincell.scroll(function() {
-			scrollMain();
-		});*/
-
-		/* run the function at start incase of refresh. */
-		/*scrollMain();
-
-	}*/
-
 	/* init */
 	setTimeout(function(){
 		$('body').removeClass('notransition');
@@ -54,3 +27,40 @@ $(document).ready(function(){
 
 	checkGridSupport();
 });
+
+
+
+/* ********************************************** *//* ********************************************** */
+/* Internet's single most stolen cookie functions *//* ********************************************** */
+/* ********************************************** *//* ********************************************** */
+
+function ecc_setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  	d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  var expires = "expires="+d.toUTCString();
+  	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+/* ********************************************** *//* ********************************************** */
+/* ********************************************** *//* ********************************************** */
+
+function ecc_getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+
+  for(var i = 0; i < ca.length; i++) {
+
+		var c = ca[i];
+
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+/* ********************************************** *//* ********************************************** */
+/* ********************************************** *//* ********************************************** */

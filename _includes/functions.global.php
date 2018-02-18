@@ -1,21 +1,4 @@
 <?php
-
-// // include the JS based on global config
-// function EMSincludeJS() {
-//
-//   global $APP;
-//   $printresult = "";
-//
-//   if(isset($APP["includes"]["js"]) && count($APP["includes"]["js"]) > 0) {
-//     foreach($APP["includes"]["js"] AS $javascriptUrl){
-//       $printresult .= "\t<script type=\"text/javascript\" src=\"". $APP["header"] . $javascriptUrl ."\"></script>\n";
-//     }
-//   } else {
-//     // ERR:
-//   }
-//   return $printresult;
-// }
-
 // show errorpage function
 function showErrorPage($message = '451') {
   echo "<html style=\"background:#222; color: #EEE;\"><h1 style=\"color: #EEE;\">".$message."</h1></html>";
@@ -71,6 +54,10 @@ function updateCharacterInfo($params = array(), $charID = 0) {
 
           $key = silvesterFilter($key);
           $value = silvesterFilter($value);
+
+          $key = strip_tags($key);
+          $value = strip_tags($value);
+
 
           $sql = "UPDATE `ecc_characters`
             SET ".$key." = '".mysqli_real_escape_string($UPLINK,$value)."'

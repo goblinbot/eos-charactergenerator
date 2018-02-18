@@ -1,6 +1,6 @@
 <?php
   // globals
-  include_once($_SERVER["DOCUMENT_ROOT"] . "/eos-charactergenerator/_includes/config.php");
+  include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
   include_once($APP["root"] . "/_includes/functions.global.php");
   include_once($APP["root"] . "/_includes/functions.sheet.php");
 
@@ -183,9 +183,8 @@
 
               // set the header
               echo "<div class=\"character header\">"
-                . "<div class=\"block smflex\">Name</div>" // char name
-                . "<div class=\"block smflex\">Status</div>" // faction
-                . "<div class=\"block smflex\">Events played</div>" // amount of events played
+                . "<div class=\"block\">Status</div>" // faction
+                . "<div class=\"block\">Events played</div>" // amount of events played
                 . "<div class=\"block\">&nbsp;</div>" // edit
               . "</div>";
 
@@ -193,27 +192,24 @@
               foreach ($activeCharacter['sheets'] AS $key => $value) {
 
                 echo "<div class=\"character\">"
-                . "<div class=\"block smflex\">".EMS_echo($activeCharacter["character_name"])."</div>"
-                . "<div class=\"block smflex\">".$value['status']."</div>"
-                . "<div class=\"block smflex\">".(int)$value['aantal_events']."</div>";
+                . "<div class=\"block\">".$value['status']."</div>"
+                . "<div class=\"block\">".(int)$value['aantal_events']."</div>";
 
-                echo "<div class=\"block\" style=\"text-align: left;\">"
+                echo "<div class=\"block btnmenu\">"
 
                   . "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&viewSheet=".$value['charSheetID']."\" class=\"button blue\">"
                     ."<i class=\"far fa-folder-open\"></i>&nbsp;Open"
                   ."</a>"
 
-                  . "&nbsp;"
-
-                  . "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&copySheet=".$value['charSheetID']."\" class=\"button green\" onclick=\"return confirm('Are you sure?')\">"
+                  . "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&copySheet=".$value['charSheetID']."\" class=\"button green\" onclick=\"return confirm('Are you sure you want to copy this character sheet?')\">"
                     . "<i class=\"far fa-copy\"></i>&nbsp;New Version"
                   . "</a>";
 
-                if($value['status'] == 'ontwerp') {
-                  echo "&nbsp;" . "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&deleteSheet=".$value['charSheetID']."\" class=\"button\" onclick=\"return confirm('Are you sure?')\">"
-                    ."<i class=\"fas fa-trash\"></i>&nbsp;Delete"
-                  ."</a>";
-                }
+                // if($value['status'] == 'ontwerp') {
+                //   echo "&nbsp;" . "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&deleteSheet=".$value['charSheetID']."\" class=\"button\" onclick=\"return confirm('Are you sure?')\">"
+                //     ."<i class=\"fas fa-trash\"></i>&nbsp;Delete"
+                //   ."</a>";
+                // }
 
                 echo "</div>"
                 . "</div>";

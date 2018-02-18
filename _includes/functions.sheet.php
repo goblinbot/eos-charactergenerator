@@ -132,10 +132,15 @@ function getImplants($sheetID) {
 
   global $TIJDELIJKEID, $UPLINK;
 
-  $sql = "SELECT `modifierID`,`sheetID`,`accountID`,`type`,`skillgroup_level`,`skillgroup_siteindex`,`status`,`description` FROM `ecc_char_implants` WHERE `accountID` = '".(int)$TIJDELIJKEID."' AND `sheetID` = '".(int)$sheetID."' ";
+  $sql = "SELECT i.modifierID,i.sheetID,i.accountID,i.type,i.skillgroup_level,i.status,i.description,s.name
+    FROM ecc_char_implants i
+    LEFT JOIN ecc_skills_groups s ON i.skillgroup_siteindex = s.siteindex
+    WHERE `accountID` = '".(int)$TIJDELIJKEID."'
+    AND `sheetID` = '".(int)$sheetID."' ";
+
   $res = $UPLINK->query($sql);
 
-  // $return = mysqli_fetch_array($res);
+
   while($row = mysqli_fetch_assoc($res)) {
 
     // fill rows

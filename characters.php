@@ -1,6 +1,6 @@
 <?php
   // globals
-  include_once($_SERVER["DOCUMENT_ROOT"] . "/eos-charactergenerator/_includes/config.php");
+  include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
   include_once($APP["root"] . "/_includes/functions.global.php");
 
 
@@ -255,7 +255,7 @@
             . "<div class=\"block smflex hidden-xs\">&nbsp;</div>" // user icon
             . "<div class=\"block\">Full name</div>" // char name
             . "<div class=\"block\">Faction</div>" // faction
-            . "<div class=\"block smflex\">Played</div>" // amount of events played
+            // . "<div class=\"block smflex\">Played</div>" // amount of events played
             . "<div class=\"block\">Status</div>" // status of character (active, design, deceased, etc)
             . "<div class=\"block\">&nbsp;</div>" // edit
 
@@ -310,7 +310,7 @@
           $printresult .=
             "<div class=\"row\">"
               ."<a href=\"".$APP['header']."/characters.php?newChar\">"
-                ."<button type=\"button\" class=\"green\" name=\"button\"><i class=\"fas fa-user-plus\"></i>&nbsp;New character</button>"
+                ."<button type=\"button\" class=\"green no-bg\" name=\"button\"><i class=\"fas fa-user-plus\"></i>&nbsp;New character</button>"
               ."</a>"
             ."</div>";
 

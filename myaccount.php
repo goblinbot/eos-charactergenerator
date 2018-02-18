@@ -1,6 +1,6 @@
 <?php
   // globals
-  include_once($_SERVER["DOCUMENT_ROOT"] . "/eos-charactergenerator/_includes/config.php");
+  include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
   include_once($APP["root"] . "/_includes/functions.global.php");
 
 

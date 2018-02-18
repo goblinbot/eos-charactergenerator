@@ -1,6 +1,7 @@
 <?php
   if (!isset($APP)) die('No direct access allowed');
 
+  $CSSVERSION = "?" . time();
 
   $TIJDELIJKEID = 451;
   $COMINGEVENT = "Frontier9";
@@ -16,12 +17,12 @@
   <title>CHARGEN</title>
 
   <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/reset.css" />
-  <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/style.css" />
+  <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/style.css<?=EMS_echo($CSSVERSION)?>" />
 
 </head>
 <body class="notransition">
   <div class="grid">
 
-    <div id="topcell" class="logo cell">
-
+    <div class="logo cell">
+      <h2><i class="fas fa-globe"></i>&nbsp;ECC</h2>
     </div>

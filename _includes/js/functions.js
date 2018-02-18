@@ -11,7 +11,7 @@ function checkGridSupport() {
 
 	if(result == false) {
 		/*Current browser does not support CSS grids, but DOES understand the CSS.supports command. There may be hope yet. */
-		$('#topcell').html('<p style="padding:8px">Your browser does not support CSS grids.</p>');
+		$('#maincell').prepend('<p style="padding:8px">Your browser does not support CSS grids.</p>');
 
 	} else {
 		/* Grid support detected! This is a nice browser.*/
@@ -29,6 +29,51 @@ $(document).ready(function(){
 });
 
 
+/* toggledisable a button onclick. Use this by adding ((  onclick="disableButton(this);" )) to a button." */
+function disableButton(e) {
+
+	$(e).addClass('disabled');
+
+	setTimeout(function(){
+		$(e).removeClass('disabled');
+	},1000);
+}
+
+/* or, disable all the buttons in the same div... */
+function disableButtonGroup(e, levels) {
+
+	if(e) {
+
+		/* levels: how many parent divs are we going to search through? */
+		if(!levels || levels < 1) {
+			levels = 1;
+		}
+
+		/* this previously clicked button */
+		var target = $(e);
+
+		/* for every level, go one div upwards. */
+		for(i = 0; i < levels; i++) {
+			target = target.parent();
+		}
+
+		/* find all the buttons inside the current target. */
+		target = target.find('.button');
+
+		/* apply the hide/display */
+		$(target).addClass('disabled');
+
+		setTimeout(function(){
+			$(target).removeClass('disabled');
+		},1000);
+
+	} else {
+		/* if 'this' is not declared.. */
+		return false;
+	}
+	
+}
+
 
 /* ********************************************** *//* ********************************************** */
 /* Internet's single most stolen cookie functions *//* ********************************************** */
@@ -40,9 +85,6 @@ function ecc_setCookie(cname, cvalue, exdays) {
   var expires = "expires="+d.toUTCString();
   	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
-
-/* ********************************************** *//* ********************************************** */
-/* ********************************************** *//* ********************************************** */
 
 function ecc_getCookie(cname) {
   var name = cname + "=";
@@ -61,6 +103,3 @@ function ecc_getCookie(cname) {
   }
   return "";
 }
-
-/* ********************************************** *//* ********************************************** */
-/* ********************************************** *//* ********************************************** */

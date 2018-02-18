@@ -25,6 +25,9 @@ $inputbg : #424959;
 $inputselected : $lite;
 $hr : $inputbg;
 
+// extra.
+$olive: #94c02f;
+
 // fonts
 $fontstack  : 'Roboto-regular', sans-serif, arial;
 $fontbold   : 'Roboto-medium','Roboto-regular', sans-serif, arial;
@@ -56,11 +59,23 @@ p {
   font-family: $fontstack;
 }
 
+.ws-bot-1 {
+  margin-bottom: 15px;
+  margin-bottom: 1.5rem;
+}
+.ws-bot-2 {
+  margin-bottom: 30px;
+  margin-bottom: 3rem;
+}
+
 .text-left {
   text-align: left;
 }
 .text-right {
   text-align: right;
+}
+.text-center {
+  text-align: center;
 }
 
 a {
@@ -148,12 +163,12 @@ hr {
       "wsleft footer footer wsright";
   }
   @media(max-width:992px) {
+    min-height: 90vh;
     height: auto;
     margin-top: 0;
     grid-template-columns: 110px 1fr;
-    grid-template-rows: 64px 64px 1fr 32px;
+    grid-template-rows: 64px 1fr auto;
     grid-template-areas:
-      "logo logo"
       "menu menu"
       "main main"
       "footer footer";
@@ -189,6 +204,14 @@ hr {
   .logo {
     grid-area: logo;
     background: $medi;
+    @media(max-width:992px) {
+      display: none;
+    }
+
+    h2 {
+      margin: 0;
+      padding: 1rem;
+    }
   }
 
   .menu {
@@ -289,6 +312,10 @@ hr {
       margin: 0.8rem;
       flex: 1;
     }
+
+    @media(max-width:992px) {
+      flex-direction: column;
+    }
   }
 
 
@@ -305,7 +332,7 @@ button, .button {
   padding: 0.75rem 1.75rem;
   transition: 0.4s;
   margin-bottom: 0.5rem;
-  text-shadow: 1px 1px rgba($btnshadow, 0.33);
+  text-shadow: 1px 1px 4px rgba($btnshadow, 0.6);
 
   @media(max-width: 768px) {
     padding: 0.5rem;
@@ -374,6 +401,9 @@ button, .button {
     background: $btndisabled;
     border-color: $lite;
     color: $textmuted;
+    &:hover,&:focus, &:active {
+      background: $btndisabled;
+    }
   }
 
   &.no-bg {
@@ -489,6 +519,7 @@ button, .button {
   min-height: 5rem;
 
   background: $medi;
+
   &.header {
     background: $inputbg;
 
@@ -504,13 +535,47 @@ button, .button {
     &.smflex {
       flex: 0.2;
     }
+
+    &.btnmenu {
+      button,.button {
+        margin-right: 0.5rem;
+      }
+      @media(max-width:992px) {
+        display: flex;
+        flex-direction: column;
+        button,.button {
+          flex: 1;
+        }
+      }
+
+    }
   }
+
+
 }
 
 .implant {
   background: $inputbg;
+  border-bottom: 1px solid $wit;
   .button {
     margin-bottom: 0;
+  }
+
+  &.cybernetic {
+    border-bottom: 1px solid $blue;
+  }
+  &.symbiont {
+    border-bottom: 1px solid $green;
+  }
+
+  @media(max-width: 768px) {
+    flex-direction: column;
+    text-align: left;
+
+    .block {
+      border-bottom: 1px solid $medi;
+      width: 100%;
+    }
   }
 }
 
@@ -538,6 +603,11 @@ button, .button {
 
 .hidden-xs {
   @media(max-width: 768px) {
+    display: none;
+  }
+}
+.visible-xs {
+  @media(min-width: 768px) {
     display: none;
   }
 }

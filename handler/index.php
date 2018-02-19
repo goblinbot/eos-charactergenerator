@@ -87,15 +87,15 @@ if(isset($_POST['createImplantForm']) && $_POST['createImplantForm'] == true) {
         . "</div>";
 
       } else {
-        echo "[ERR 444]"; // validated account/sheet
+        echo "[ERR 443]"; // validated account/sheet
         exit();
       }
     } else {
-      echo "[ERR 443]"; // check for sheet ID
+      echo "[ERR 444]"; // check for sheet ID
       exit();
     }
   } else {
-    echo "[ERR 440]"; // implant type validation
+    echo "[ERR 445]"; // implant type validation
     exit();
   }
 
@@ -120,11 +120,17 @@ if(isset($_POST['removeImplant']) && $_POST['removeImplant'] != "") {
 
     $row = mysqli_fetch_assoc($res);
     $printresult = "<div class=\"dialog\">"
-      ."<h3 class=\"text-bold\"><i class=\"fas fa-question\"></i>&nbsp;Removing this augmentation could have some side effects. Do you want to proceed?</h3>"
-      . "<button class=\"button cyan no-bg\" onclick=\"IM_removeImplantConfirmed('".$row['modifierID']."'); return false;\">"
-        ."<i class=\"fas fa-check\"></i>&nbsp;Yes, I wish to regain a bit of my humanity."
+      ."<h3 class=\"text-bold text-center\"><i class=\"fas fa-question\"></i>&nbsp;Removing this augmentation could have some side effects. Do you want to proceed?</h3>"
+      . "<button class=\"button bar green no-bg\" onclick=\"IM_removeImplantConfirmed('".$row['modifierID']."'); return false;\">"
+        ."<i class=\"fas fa-check\"></i>&nbsp;<strong>Yes,</strong> I wish to regain a bit of my humanity."
+      ."</button>"
+      ."<br/>"
+      . "<button class=\"button bar blue no-bg\" onclick=\"location.reload(); return false;\">"
+        ."<i class=\"fas fa-times\"></i>&nbsp;I don't like the sound of that. <strong>Cancel</strong> the operation."
       ."</button>"
     ."</div>";
+  } else {
+    $printresult = "[ERR 501]";
   }
 
   echo $printresult;
@@ -147,7 +153,9 @@ if(isset($_POST['deleteImplantConfirm']) && $_POST['deleteImplantConfirm'] != ""
       AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."'
       LIMIT 1";
     $update = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
-    echo "<p class=\"dialog\"><i class=\"fas fa-check green\"></i>&nbsp;Unplugged the augment. Refreshing...</p>";
+    echo "<p class=\"dialog\"><i class=\"fas fa-user-times green\"></i>&nbsp;Unplugging... just a moment please.</p>";
+  } else {
+    echo "[ERR 502]";
   }
 
   exit();

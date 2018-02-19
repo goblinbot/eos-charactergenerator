@@ -74,6 +74,15 @@
           ) ENGINE=InnoDB AUTO_INCREMENT=9900 DEFAULT CHARSET=latin1;";
           $res = $UPLINK->query($sql)or trigger_error(mysqli_error($UPLINK));
 
+          // add missing fields: (i.e. nicknames)
+          $sql = "SELECT * FROM ecc_char_sheet LIMIT 1;";
+          $res = $UPLINK->query($sql)or trigger_error(mysqli_error($_WCMS_DBi));
+          $row = mysqli_fetch_assoc($res);
+
+          if (!isset($row["inhoud_intro"])) {
+            $alter = $UPLINK->query("ALTER TABLE `ecc_char_sheet` ADD `nickname` VARCHAR( 32 ) NULL AFTER `charSheetID`;");
+          }
+
           // SKILLS BELONGING TO CHARACTER SHEETS //////////////////////
           $sql = "CREATE TABLE IF NOT EXISTS `ecc_char_skills` (
             `id` int(11) NOT NULL AUTO_INCREMENT,

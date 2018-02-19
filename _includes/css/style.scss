@@ -78,6 +78,12 @@ p {
   text-align: center;
 }
 
+.responsive {
+  max-width: 100%;
+  display: block;
+  height: auto;
+}
+
 a {
   color: $textmuted;
   transition: 0.3s;
@@ -211,6 +217,9 @@ hr {
     h2 {
       margin: 0;
       padding: 1rem;
+    }
+    img {
+      margin-top: 5px;
     }
   }
 
@@ -376,7 +385,7 @@ button, .button {
       background: $bluActive;
     }
     &.no-bg {
-      color: $blue;
+      color: $bluHover;
     }
   }
 
@@ -540,7 +549,7 @@ button, .button {
       button,.button {
         margin-right: 0.5rem;
       }
-      @media(max-width:992px) {
+      @media(max-width:1200px) {
         display: flex;
         flex-direction: column;
         button,.button {
@@ -551,7 +560,19 @@ button, .button {
     }
   }
 
+}
 
+@media(max-width: 768px) {
+  .xs-horizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    .button {
+      flex: 1;
+    }
+  }
 }
 
 .implant {
@@ -595,6 +616,7 @@ button, .button {
   }
   &.blue {
     color: $blue;
+    color: $bluHover;
   }
   &.mute {
     color: $textmuted;

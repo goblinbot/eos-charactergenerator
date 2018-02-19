@@ -19,11 +19,11 @@ function generateMenu($param = 'Home') {
   $class = (strtolower($param) == 'characters') ? 'active' : '';
     $printresult .= "<a href=\"".$APP['header']."/characters.php\" class=\"menuitem $class\"><i class=\"fas fa-user\"></i><span>&nbsp;Character(s)</span></a>";
 
-  $class = (strtolower($param) == 'myaccount') ? 'active' : '';
+  $class = (strtolower($param) == 'myaccount') ? 'active' : 'disabled';
     $printresult .= "<a href=\"".$APP['header']."/myaccount.php\" class=\"menuitem $class\"><i class=\"fas fa-cog\"></i><span>&nbsp;My account</span></a>";
 
-  $class = 'disabled';
-    $printresult .= "<a href=\"http://www.eosfrontier.space\" class=\"menuitem $class\"><i class=\"fas fa-arrow-left\"></i><span>&nbsp;Back to site</span></a>";
+  // $class = 'disabled';
+    $printresult .= "<a href=\"https://www.eosfrontier.space\" class=\"menuitem\"><i class=\"fas fa-arrow-left\"></i><span>&nbsp;Back to site</span></a>";
 
   return $printresult;
 

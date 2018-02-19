@@ -10,12 +10,12 @@
     session_start();
   }
 
-  $implantsArr = getImplants(EMS_echo($_GET['viewsheet']));
+  $implantsArr = getImplants(EMS_echo($_GET['viewSheet']));
 
   // check if sheet exists. This also validates for account.
-  if(isset($sheetArr['characters'][$_GET['viewChar']]['sheets'][$_GET['viewsheet']]) && $sheetArr['characters'][$_GET['viewChar']]['sheets'][$_GET['viewsheet']] != "") {
+  if(isset($sheetArr['characters'][$_GET['viewChar']]['sheets'][$_GET['viewSheet']]) && $sheetArr['characters'][$_GET['viewChar']]['sheets'][$_GET['viewSheet']] != "") {
 
-  $currentSheet = $sheetArr['characters'][$_GET['viewChar']]['sheets'][$_GET['viewsheet']];
+  $currentSheet = $sheetArr['characters'][$_GET['viewChar']]['sheets'][$_GET['viewSheet']];
 
   if($sheetArr['characters'][$_GET['viewChar']]['status'] == 'deceased') {
     $DISABLE = "disabled";
@@ -40,7 +40,7 @@
       <h1>Augmentations</h1>
 
       <div class="row">
-        <a href="<?=$APP['header']?>/stats/sheets.php?viewChar=<?=$_GET['viewChar']?>&amp;viewsheet=<?=$_GET['viewsheet']?>" class="button">
+        <a href="<?=$APP['header']?>/stats/sheets.php?viewChar=<?=$_GET['viewChar']?>&amp;viewSheet=<?=$_GET['viewSheet']?>" class="button">
           <i class="fas fa-arrow-left"></i>&nbsp;Back
         </a>
       </div>
@@ -90,7 +90,7 @@
                     . "<div class=\"block hidden-xs\">&nbsp;</div>"
                     // . "<div class=\"block smflex hidden-xs\">&nbsp;</div>"
                     . "<div class=\"block smflex\">"
-                      ."<button type=\"button\" onclick=\"disableButtonGroup(this,3);IM_removeImplant('".$_GET['viewsheet']."','".$implant['modifierID']."');return false;\" class=\"button blue no-bg $DISABLE\" name=\"button\"><i class=\"fas fa-trash-alt\"></i>&nbsp;Unplug</button>"
+                      ."<button type=\"button\" onclick=\"disableButtonGroup(this,3);IM_removeImplant('".$_GET['viewSheet']."','".$implant['modifierID']."');return false;\" class=\"button blue no-bg $DISABLE\" name=\"button\"><i class=\"fas fa-trash-alt\"></i>&nbsp;Unplug</button>"
                     ."</div>"
                 . "</div>";
 
@@ -111,7 +111,7 @@
                     //   ."Status:&nbsp;<br class=\"hidden-xs\"/>".$implant['status']
                     // ."</div>"
                     . "<div class=\"block smflex\">"
-                      ."<button type=\"button\" onclick=\"disableButtonGroup(this,3);IM_removeImplant('".$_GET['viewsheet']."','".$implant['modifierID']."');return false;\" class=\"button blue no-bg $DISABLE\" name=\"button\"><i class=\"fas fa-trash-alt\"></i>&nbsp;Unplug</button>"
+                      ."<button type=\"button\" onclick=\"disableButtonGroup(this,3);IM_removeImplant('".$_GET['viewSheet']."','".$implant['modifierID']."');return false;\" class=\"button blue no-bg $DISABLE\" name=\"button\"><i class=\"fas fa-trash-alt\"></i>&nbsp;Unplug</button>"
                     ."</div>"
                 . "</div>";
               }
@@ -139,9 +139,9 @@
       <hr style="opacity:0.25;"/>
       </div>
 
-      <div class="">
+      <div class="xs-horizontal">
 
-        <button type="button" class="button green no-bg <?=$DISABLE?>" onclick="IM_chooseType('<?=@(int)$_GET["viewChar"]?>','<?=@(int)$_GET['viewsheet']?>'); disableButtonGroup(this,1);" name="button"><i class="fas fa-plus"></i><br/>New</button>
+        <button type="button" class="button green no-bg <?=$DISABLE?>" onclick="IM_chooseType('<?=@(int)$_GET["viewChar"]?>','<?=@(int)$_GET['viewSheet']?>'); disableButtonGroup(this,1);" name="button"><i class="fas fa-plus"></i><br/>New</button>
         &nbsp;
         <button type="button" class="button" onclick="location.reload();" name="button"><i class="fas fa-redo"></i><br/>Refresh</button>
 

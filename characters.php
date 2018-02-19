@@ -255,7 +255,6 @@
             . "<div class=\"block smflex hidden-xs\">&nbsp;</div>" // user icon
             . "<div class=\"block\">Full name</div>" // char name
             . "<div class=\"block\">Faction</div>" // faction
-            // . "<div class=\"block smflex\">Played</div>" // amount of events played
             . "<div class=\"block\">Status</div>" // status of character (active, design, deceased, etc)
             . "<div class=\"block\">&nbsp;</div>" // edit
 
@@ -290,7 +289,6 @@
                 . "<div class=\"block smflex hidden-xs\">".$xICON."</div>" // user icon
                 . "<div class=\"block\">" . ucfirst($character['character_name']) . "</div>" // char name
                 . "<div class=\"block\">" . ucfirst($character['faction']) . "</div>" // faction
-                //. "<div class=\"block smflex\">" . (int)$character['aantal_events'] . "&nbsp;times</div>" // amount of events played
                 . "<div class=\"block\">" . $character['status'] . "</div>" // status of character (active, design, deceased, etc)
                 . "<div class=\"block\">"
                     ."<a href=\"".$APP['header']."/characters.php?viewChar=".$character['characterID']."\">"
@@ -308,7 +306,7 @@
           $printresult .= "</div>";
 
           $printresult .=
-            "<div class=\"row\">"
+            "<div class=\"row xs-horizontal\">"
               ."<a href=\"".$APP['header']."/characters.php?newChar\">"
                 ."<button type=\"button\" class=\"green no-bg\" name=\"button\"><i class=\"fas fa-user-plus\"></i>&nbsp;New character</button>"
               ."</a>"

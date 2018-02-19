@@ -37,7 +37,7 @@ function IM_creationForm(type,char,sheet) {
     IM_animateFormDiv(data); /* show the response */
   })
   .fail(function() {
-    IM_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Posting failed.</h4>"); /* just in case posting your form failed */
+    IM_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Posting failed. [err 701]</h4>"); /* just in case posting your form failed */
   });
 
   /* prevent a refresh by returning false in the end. */
@@ -47,7 +47,7 @@ function IM_creationForm(type,char,sheet) {
 
 /* help/info tab */
 function IM_showHelp() {
-  var printresult = "<h2><i class=\"fas fa-info-circle\"></i>&nbsp;WIP</h2>";
+  var printresult = "<h2><i class=\"fas fa-info-circle\"></i>&nbsp;Nice find. This message only shows, because you forced it to. You monster. [ERR 702]</h2>";
   IM_animateFormDiv(printresult);
   printresult = "";
 }
@@ -83,12 +83,14 @@ function IM_submitNewImplant() {
     },2500);
   })
   .fail(function() {
-    IM_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Adding new augmentation failed.</h4>"); /* just in case posting your form failed */
+    IM_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Adding new augmentation failed. [ERR 703]</h4>"); /* just in case posting your form failed */
   });
 
 }
 
 function IM_removeImplant(sheetID,modifierID) {
+
+  activeImplantDiv.fadeOut();
 
   var postdata = {
     "aug" : modifierID,
@@ -104,7 +106,7 @@ function IM_removeImplant(sheetID,modifierID) {
     IM_animateFormDiv(data); /* show the response */
   })
   .fail(function() {
-    IM_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Posting failed.</h4>"); /* just in case posting your form failed */
+    IM_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Posting failed. [ERR 706]</h4>"); /* just in case posting your form failed */
   });
 
   /* prevent a refresh by returning false in the end. */
@@ -123,10 +125,10 @@ function IM_removeImplantConfirmed(modifierID) {
 
     setTimeout(function(){
       location.reload();
-    },2500);
+    },3000);
   })
   .fail(function() {
-    IM_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Posting failed.</h4>"); /* just in case posting your form failed */
+    IM_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Posting failed. [ERR 707]</h4>"); /* just in case posting your form failed */
   });
 
   /* prevent a refresh by returning false in the end. */

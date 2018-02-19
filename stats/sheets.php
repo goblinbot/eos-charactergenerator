@@ -84,24 +84,52 @@
             echo "<div class=\"row\">";
 
             echo "<div class=\"box33\">"
-              ."<a class=\"\" href=\"".$APP['header']."/stats/skills.php?viewChar=".$_GET['viewChar']."&viewsheet=".$_GET['viewSheet']."\">"
+              ."<a class=\"\" href=\"".$APP['header']."/stats/skills.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
                 ."<button type=\"button\" class=\"button bar blue\" name=\"button\"><i class=\"fas fa-book\"></i>&nbsp;Skills</button>"
               ."</a>"
             ."</div>";
 
             echo "<div class=\"box33\">"
-              ."<a class=\"\" href=\"".$APP['header']."/stats/implants.php?viewChar=".$_GET['viewChar']."&viewsheet=".$_GET['viewSheet']."\">"
+              ."<a class=\"\" href=\"".$APP['header']."/stats/implants.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
                 ."<button type=\"button\" class=\"button bar blue\" name=\"button\"><i class=\"fas fa-microchip\"></i>&nbsp;Implants/Symbionts</button>"
               ."</a>"
             ."</div>";
 
             echo "<div class=\"box33\">"
-              ."<a class=\"disabled\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewsheet=".$_GET['viewSheet']."\">"
-                ."<button type=\"button\" class=\"button bar disabled\" name=\"button\"><i class=\"fas fa-question\"></i>&nbsp;Review</button>"
+              // void
+            ."</div>";
+
+            echo "</div>";
+
+            echo "<div class=\"row\">";
+
+            echo "<div class=\"box33\">"
+              ."<a onclick=\"SH_nicknameForm('".$_GET['viewChar']."','".$_GET['viewSheet']."')\"\">"
+                ."<button type=\"button\" class=\"button blue no-bg bar\" name=\"button\"><i class=\"fas fa-sticky-note\"></i>&nbsp;Nickname this sheet</button>"
+              ."</a>"
+            ."</div>";
+
+            echo "<div class=\"box33\">"
+              ."<a onclick=\"SH_editPlayedForm('".$_GET['viewChar']."','".$_GET['viewSheet']."')\"\">"
+                ."<button type=\"button\" class=\"button blue no-bg bar\" name=\"button\"><i class=\"fas fa-sort-numeric-up\"></i>&nbsp;Events Played</button>"
+              ."</a>"
+            ."</div>";
+
+            echo "<div class=\"box33\">"
+              ."<a class=\"disabled\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
+                ."<button type=\"button\" class=\"button bar green disabled\" name=\"button\"><i class=\"fas fa-question\"></i>&nbsp;Review</button>"
               ."</a>"
             ."</div>";
 
             echo "</div>";
+
+            // make place for the handler to play with, when for example changing the character sheet "events played".
+            echo "<div class=\"row\">"
+              ."<hr style=\"opacity: 0.1; flex: 1; width: 100%;\" />"
+            ."</div>"
+            ."<div class=\"row flex-column\">"
+                ."<div id=\"sheetTopLevelForm\"></div>"
+              ."</div>";
 
             if(!isset($activeCharacter['sheets'][$_GET['viewSheet']]['status']) || $activeCharacter['sheets'][$_GET['viewSheet']]['status'] != "noskill") {
 
@@ -187,8 +215,9 @@
 
               // set the header
               echo "<div class=\"character header\">"
+              . "<div class=\"block\">Nickname</div>"
+              . "<div class=\"block\">Events played</div>" // amount of events played
                 . "<div class=\"block\">Status</div>" // faction
-                . "<div class=\"block\">Events played</div>" // amount of events played
                 . "<div class=\"block\">&nbsp;</div>" // edit
               . "</div>";
 
@@ -196,8 +225,9 @@
               foreach ($activeCharacter['sheets'] AS $key => $value) {
 
                 echo "<div class=\"character\">"
-                . "<div class=\"block\">".$value['status']."</div>"
-                . "<div class=\"block\">".(int)$value['aantal_events']."</div>";
+                . "<div class=\"block\">".EMS_echo($value['nickname'])."</div>"
+                . "<div class=\"block\">".(int)$value['aantal_events']."</div>"
+                . "<div class=\"block\">".$value['status']."</div>";
 
                 echo "<div class=\"block btnmenu\">"
 
@@ -206,7 +236,7 @@
                   ."</a>"
 
                   . "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&copySheet=".$value['charSheetID']."\" class=\"button green\" onclick=\"return confirm('Are you sure you want to copy this character sheet?')\">"
-                    . "<i class=\"far fa-copy\"></i>&nbsp;New Version"
+                    . "<i class=\"far fa-copy\"></i>&nbsp;New&nbsp;Version"
                   . "</a>";
 
                 // if($value['status'] == 'ontwerp') {

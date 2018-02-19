@@ -7,27 +7,18 @@ function checkGridSupport() {
 		}
 		catch(err) {
 			/* browser cannot handle the CSS.supports command => assume this browser is ancient eldritch wizardry at this point. */
+			result = false;
 		}
 
 	if(result == false) {
-		/*Current browser does not support CSS grids, but DOES understand the CSS.supports command. There may be hope yet. */
-		$('#maincell').prepend('<p style="padding:8px">Your browser does not support CSS grids.</p>');
+		/*Current browser does not support CSS grids. Let's make the internet a better place: */
+		$('.grid').css('padding','15px').css('width','auto').css('height','100%').css('overflow','hidden').html('<h2><i class=\"fas fa-pause\"></i>&nbsp;Your current browser does not support grids.</h2><p>Several parts of this application depend on the use of modern techniques.<br/>Please switch to a newer browser to use the character creator, and make the internet a better place.</p><br/>');
+		$('.grid').append('<h3><i class=\"fas fa-mobile-alt\"></i>&nbsp;If you are seeing this message on your smartphone/tablet, try updating your browser in the relevant app store - or install Chrome or Firefox.</h3>');
 
 	} else {
-		/* Grid support detected! This is a nice browser.*/
+		/* Grid support detected! This is a nice browser. It's allowed to stay.*/
 	}
 }
-
-$(document).ready(function(){
-
-	/* init */
-	setTimeout(function(){
-		$('body').removeClass('notransition');
-	},200);
-
-	checkGridSupport();
-});
-
 
 /* toggledisable a button onclick. Use this by adding ((  onclick="disableButton(this);" )) to a button." */
 function disableButton(e) {
@@ -71,9 +62,8 @@ function disableButtonGroup(e, levels) {
 		/* if 'this' is not declared.. */
 		return false;
 	}
-	
-}
 
+}
 
 /* ********************************************** *//* ********************************************** */
 /* Internet's single most stolen cookie functions *//* ********************************************** */
@@ -103,3 +93,25 @@ function ecc_getCookie(cname) {
   }
   return "";
 }
+
+/* INIT ON LOAD */
+
+$(document).ready(function(){
+
+	/* print a HI FELLOW ROBOTS message for the curious monkeys. */
+	console.log('%cHELLO CURIOUS COLONIST!', 'color:darkblue;font-size:20px;font-family:arial;font-style:italic;');
+	console.log('Welcome to the Eos character creator. If you like breaking stuff, or just looking under the hood in general, feel free to contact Thijs/Maati at Eos IT.');
+	console.log('%c____________________________', 'color:darkblue;');
+	console.log('For now, enjoy the app. And be gentle.');
+
+
+
+	/* remove Notransition:
+	this css class prevents the entire grid from going full eldritch horror,
+	if... the visitor's... browser.. is.. way.. too.. slow... */
+	setTimeout(function(){
+		$('body').removeClass('notransition');
+	},200);
+
+	checkGridSupport();
+});

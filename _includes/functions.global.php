@@ -33,6 +33,8 @@ function generateMenu($param = 'Home') {
 function updateCharacterInfo($params = array(), $charID = 0) {
   global $TIJDELIJKEID, $UPLINK;
 
+
+
   // is charID set?
   if(isset($charID) && (int)$charID !== 0) {
 
@@ -55,9 +57,13 @@ function updateCharacterInfo($params = array(), $charID = 0) {
           $key = silvesterFilter($key);
           $value = silvesterFilter($value);
 
-          $key = strip_tags($key);
-          $value = strip_tags($value);
-
+          // SOMETHING is removing the damn underscores..
+          if($key == 'icbirthday') {
+            $key = 'ic_birthday';
+          }
+          if($key == 'charactername') {
+            $key = 'character_name';
+          }
 
           $sql = "UPDATE `ecc_characters`
             SET ".$key." = '".mysqli_real_escape_string($UPLINK,$value)."'
@@ -162,6 +168,27 @@ function silvesterFilter($input = null) {
   return $output;
 }
 
+// abort an operation if a character sheet is NOT edittable.
+function checkSheetStatus($sheetID) {
+  global $UPLINK;
+
+  $sql = "SELECT status FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,(int)$sheetID)."' LIMIT 1";
+  $res = $UPLINK->query($sql);
+
+  if(mysqli_num_rows($res) == 1) {
+    $row = mysqli_fetch_assoc($res);
+    if($row['status'] == 'ontwerp'){
+      return true;
+    } else {
+      echo "<p>Character sheet cannot be editted, as it is not in design mode.</p>";
+      exit();
+    }
+  } else {
+    echo "<p>Character sheet cannot be editted, as it is not in design mode.</p>";
+    exit();
+  }
+
+}
 
 // Wash away all unnecessary spaces, by brutishly looping for all them.
 function sanitize_spaces($input = null) {
@@ -174,6 +201,18 @@ function sanitize_spaces($input = null) {
   }
 
   return $input;
+}
+
+function check4dead($charID) {
+  global $UPLINK;
+
+  $sql = "SELECT status FROM `ecc_characters` WHERE characterID = '".mysqli_real_escape_string($UPLINK,(int)$_GET['viewChar'])."' AND status = 'deceased'";
+  $res = $UPLINK->query($sql);
+
+  if(mysqli_num_rows($res) > 0) {
+    echo "<p class=\"dialog\">We're very sorry for your loss, but it's time to let go. This character is dead.<br/><br/><i class=\"far fa-lightbulb\"></i>&nbsp;Try to find some closure by designing a new character.</p>";
+    exit();
+  }
 }
 
 // spam / escape filter, named after a friend of mine who taught me the importance of filtering user input.

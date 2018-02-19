@@ -21,8 +21,8 @@
     || $_POST['newchar'] == "pendzal"
     || $_POST['newchar'] == "sona") {
 
-      $sql = "INSERT INTO `ecc_characters` (`accountID`, `faction`, `status`
-        ) VALUES (
+      $sql = "INSERT INTO `ecc_characters` (`accountID`, `faction`, `status`)
+        VALUES (
           '".(int)$TIJDELIJKEID."',
           '".mysqli_real_escape_string($UPLINK,$_POST['newchar'])."',
           'in design'
@@ -288,8 +288,8 @@
               $printresult .=
               "<div class=\"character".$xCLASS."\">"
                 . "<div class=\"block smflex hidden-xs\">".$xICON."</div>" // user icon
-                . "<div class=\"block\">" . $character['character_name'] . "</div>" // char name
-                . "<div class=\"block\">" . $character['faction'] . "</div>" // faction
+                . "<div class=\"block\">" . ucfirst($character['character_name']) . "</div>" // char name
+                . "<div class=\"block\">" . ucfirst($character['faction']) . "</div>" // faction
                 //. "<div class=\"block smflex\">" . (int)$character['aantal_events'] . "&nbsp;times</div>" // amount of events played
                 . "<div class=\"block\">" . $character['status'] . "</div>" // status of character (active, design, deceased, etc)
                 . "<div class=\"block\">"

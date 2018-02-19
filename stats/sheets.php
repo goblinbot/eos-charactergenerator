@@ -117,6 +117,9 @@
 
               if(isset($_POST['newSheet']) && $_POST['newSheet'] != "") {
 
+                // check if the character is.. well, alive.
+                check4dead($_GET['viewChar']);
+
                 $_POST['newSheet'] = (int)$_POST['newSheet'];
 
                 if($_POST['newSheet'] < 0) {
@@ -130,14 +133,14 @@
                     `characterID`,
                     `accountID`,
                     `aantal_events`,
-                    `version_number`
+                    `versionNumber`
                   ) VALUES (
                     '".mysqli_real_escape_string($UPLINK,(int)$_GET['viewChar'])."',
                     '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."',
                     '".mysqli_real_escape_string($UPLINK,(int)$_POST['newSheet'])."',
                     '1'
                   );";
-                $res = $UPLINK->query($sql);
+                $res = $UPLINK->query($sql) or trigger_error(mysqli_error($res));
 
                 header("location: ".$APP['header']."/stats/sheets.php?viewChar=".$activeCharacter['characterID']." ");
                 exit();
@@ -158,6 +161,7 @@
 
             } else if(isset($_GET['copySheet']) && (int)$_GET['copySheet'] != 0) {
 
+              check4dead($_GET['copySheet']);
               //copy sheet
 
             } else if(isset($_GET['deleteSheet']) && (int)$_GET['deleteSheet'] != 0) {
@@ -169,7 +173,7 @@
                 AND charSheetID = '".mysqli_real_escape_string($UPLINK,$_GET['deleteSheet'])."'
                 AND characterID = '".mysqli_real_escape_string($UPLINK,$_GET['viewChar'])."'
               LIMIT 1";
-              $res = $UPLINK->query($sql);
+              $res = $UPLINK->query($sql) or trigger_error(mysqli_error($res));
 
               if(mysqli_num_rows($res) > 0) {
                 $sql = "DELETE FROM `ecc_char_sheet` WHERE `charSheetID` = '".mysqli_real_escape_string($UPLINK,$_GET['deleteSheet'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,$TIJDELIJKEID)."'";
@@ -216,7 +220,7 @@
 
               }
 
-              echo "<br/><a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&createSheet=true\" class=\"button green\"><i class=\"fas fa-user-plus\"></i>&nbsp;New sheet</a>";
+              echo "<br/><a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&createSheet=true\" class=\"button no-bg green\"><i class=\"fas fa-user-plus\"></i>&nbsp;New sheet</a>";
 
             }
 

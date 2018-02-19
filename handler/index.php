@@ -1,4 +1,242 @@
 <?php
+include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
+include_once($APP["root"] . "/_includes/functions.global.php");
+
+/* no login means NO PLAY. GET OUT. */
+if(!isset($TIJDELIJKEID)) {
+  echo "[ERR 440]";
+  exit();
+}
+if(!isset($UPLINK)) {
+  echo "[ERR 442]";
+  exit();
+}
+
+// CREATE IMPLANT FORM
+if(isset($_POST['createImplantForm']) && $_POST['createImplantForm'] == true) {
+
+  // validate, then print if valid.
+  $AUG = $_POST['createImplantForm'];
+
+  if($AUG['type'] == 'symbiont' || $AUG['type'] == 'cybernetic' || $AUG['type'] == 'flavour') {
+
+    if(isset($AUG['sheet']) && $AUG['sheet'] != "") {
+
+      $AUG['sheet'] = (int)$AUG['sheet'];
+
+      $sql = "SELECT charSheetID FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,$AUG['sheet'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."' LIMIT 1";
+      $res = $UPLINK->query($sql);
+
+      if($res && mysqli_num_rows($res) == 1) {
+
+        $printresult = "<form name=\"newImplant\">"
+        . "<input type=\"hidden\" name=\"newImplant[sheet]\" value=\"".$AUG['sheet']."\" />"
+        . "<input type=\"hidden\" name=\"newImplant[type]\" value=\"".$AUG['type']."\" />"
+        . "<div class=\"formitem\"><label><h2>Augmentation type: ".$AUG['type']."</h2></label></div>";
+
+        if($AUG['type'] == 'cybernetic') {
+
+          $xSQL = "SELECT name, siteindex FROM `ecc_skills_groups` WHERE psychic = 'false' AND parents = 'none' ORDER BY name ASC";
+          $xRES = $UPLINK->query($xSQL);
+          if($xRES && mysqli_num_rows($xRES) > 0) {
+
+            $printresult .= "<div class=\"formitem\">"
+            ."<label><h3>Skill to emulate:</h3></label>"
+            . "<select name=\"newImplant[skillgroup_siteindex]\">";
+
+            while($row = mysqli_fetch_assoc($xRES)) {
+              $printresult .= "<option value=\"".$row['siteindex']."\">".$row['name']."</option>";
+            }
+
+            $printresult .= "</select></div>";
+
+            $printresult .= "<div class=\"formitem\"><label><h3>Skill Level:</h3></label>"
+            . "<input type=\"number\" max=\"5\" min=\"1\" name=\"newImplant[skillgroup_level]\" value=\"1\" />"
+            . "</div>";
+          }
+
+        } else if($AUG['type'] == 'symbiont') {
+
+          $xSQL = "SELECT name, siteindex FROM `ecc_skills_groups` WHERE primaryskill_id = '12003' OR primaryskill_id = '12009' ";
+          $xRES = $UPLINK->query($xSQL);
+          if($xRES && mysqli_num_rows($xRES) > 0) {
+
+            $printresult .= "<div class=\"formitem\">"
+            ."<label><h3>Skill to emulate:</h3></label>"
+            . "<select name=\"newImplant[skillgroup_siteindex]\">";
+
+            while($row = mysqli_fetch_assoc($xRES)) {
+              $printresult .= "<option value=\"".$row['siteindex']."\">".$row['name']."</option>";
+            }
+
+            $printresult .= "</select></div>";
+
+            $printresult .= "<div class=\"formitem\"><label><h3>Skill Level:</h3></label>"
+            . "<input type=\"number\" max=\"5\" min=\"1\" name=\"newImplant[skillgroup_level]\" value=\"1\" />"
+            . "</div>";
+          }
+
+        }
+
+        $printresult .= "<div class=\"formitem\"><label><h3>Description: <em>(max 230)</em></h3></label>"
+        . "<textarea name=\"newImplant[description]\" placeholder=\"A name, story, or both about this specific augmentation.\" maxlength=\"230\"></textarea>"
+        . "</div>";
+
+        $printresult .= "<div class=\"formitem\">"
+        . "<a class=\"button green no-bg\" onclick=\"IM_submitNewImplant(); return false;\"><i class=\"fas fa-save\"></i>&nbsp;Add new augmentation.</a>" . "</form><br/>"
+        . "</div>";
+
+      } else {
+        echo "[ERR 444]"; // validated account/sheet
+        exit();
+      }
+    } else {
+      echo "[ERR 443]"; // check for sheet ID
+      exit();
+    }
+  } else {
+    echo "[ERR 440]"; // implant type validation
+    exit();
+  }
+
+  echo $printresult;
+  unset($printresult);
+  unset($AUG);
+  exit();
+}
+
+// EDIT OR DELETE AN IMPLANT
+if(isset($_POST['removeImplant']) && $_POST['removeImplant'] != "") {
+
+  $AUG = $_POST['removeImplant'];
+  $printresult = false;
+
+  checkSheetStatus($AUG['sheet']);
+
+  $sql = "SELECT * FROM `ecc_char_implants` WHERE sheetID = '".mysqli_real_escape_string($UPLINK,$AUG['sheet'])."' AND modifierID = '".mysqli_real_escape_string($UPLINK,$AUG['aug'])."'  AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."' LIMIT 1";
+  $res = $UPLINK->query($sql) or trigger_error(mysqli_error($res));
+
+  if($res && mysqli_num_rows($res) == 1) {
+
+    $row = mysqli_fetch_assoc($res);
+    $printresult = "<div class=\"dialog\">"
+      ."<h3 class=\"text-bold\"><i class=\"fas fa-question\"></i>&nbsp;Removing this augmentation could have some side effects. Do you want to proceed?</h3>"
+      . "<button class=\"button cyan no-bg\" onclick=\"IM_removeImplantConfirmed('".$row['modifierID']."'); return false;\">"
+        ."<i class=\"fas fa-check\"></i>&nbsp;Yes, I wish to regain a bit of my humanity."
+      ."</button>"
+    ."</div>";
+  }
+
+  echo $printresult;
+  unset($printresult);
+  exit();
+}
+
+if(isset($_POST['deleteImplantConfirm']) && $_POST['deleteImplantConfirm'] != "") {
+
+  $sql = "SELECT * FROM `ecc_char_implants` WHERE modifierID = '".mysqli_real_escape_string($UPLINK,(int)$_POST['deleteImplantConfirm'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."' LIMIT 1";
+  $res = $UPLINK->query($sql) or trigger_error(mysqli_error($res));
+
+  if($res && mysqli_num_rows($res) == 1) {
+
+    $row = mysqli_fetch_assoc($res);
+
+    $sql = "UPDATE `ecc_char_implants`
+      SET status = 'removed'
+      WHERE modifierID = '".mysqli_real_escape_string($UPLINK,$row['modifierID'])."'
+      AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."'
+      LIMIT 1";
+    $update = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
+    echo "<p class=\"dialog\"><i class=\"fas fa-check green\"></i>&nbsp;Unplugged the augment. Refreshing...</p>";
+  }
+
+  exit();
+}
 
 
-var_dump($_POST);
+// UPLOAD NEW AUGMENT
+if(isset($_POST['newImplant']) && $_POST['newImplant'] == true) {
+
+  $NEWIMP = $_POST['newImplant'];
+
+  $sql = "SELECT charSheetID FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,$NEWIMP['sheet'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."' LIMIT 1";
+  $res = $UPLINK->query($sql);
+
+  if($res && mysqli_num_rows($res) == 1) {
+
+    // VALIDATIONS
+    $NEWIMP['description'] = EMS_echo($NEWIMP['description']);
+
+    if(!isset($NEWIMP['skillgroup_level']) || (int)$NEWIMP['skillgroup_level'] < 0 || (int)$NEWIMP['skillgroup_level'] > 5) {
+      $NEWIMP['skillgroup_level'] = 1;
+    }
+
+    foreach($NEWIMP AS $key => $value) {
+      $value = EMS_echo($value);
+        huizingfilter($key);
+        huizingfilter($value);
+      $key = silvesterFilter($key);
+      $value = silvesterFilter($value);
+    }
+    // END VALIDATIONS
+
+
+    if(isset($NEWIMP['type']) && $NEWIMP['type'] == "flavour") {
+
+      $sql = "INSERT INTO `ecc_char_implants`
+      (`sheetID`, `accountID`, `type`, `skillgroup_level`, `skillgroup_siteindex`, `status`, `description`)
+      VALUES ('".(int)$NEWIMP['sheet']."', '".(int)$TIJDELIJKEID."', '".mysqli_real_escape_string($UPLINK,$NEWIMP['type'])."', '0', 'none', 'active', '".mysqli_real_escape_string($UPLINK,$NEWIMP['description'])."')";
+      $xRES = $UPLINK->query($sql) or trigger_error(mysqli_error($xRES));
+
+      echo "<p class=\"dialog\"><i class=\"fas fa-check green\"></i>&nbsp;Added new augment. Refreshing...</p>";
+
+    } else if(isset($NEWIMP['type']) && $NEWIMP['type'] == "cybernetic") {
+
+      $sql = "INSERT INTO `ecc_char_implants` (
+        `sheetID`, `accountID`, `type`, `skillgroup_level`, `skillgroup_siteindex`, `status`, `description`
+      ) VALUES (
+        '".(int)$NEWIMP['sheet']."',
+        '".(int)$TIJDELIJKEID."',
+        '".mysqli_real_escape_string($UPLINK,$NEWIMP['type'])."',
+        '".(int)$NEWIMP['skillgroup_level']."',
+        '".mysqli_real_escape_string($UPLINK,$NEWIMP['skillgroup_siteindex'])."',
+        'active',
+        '".mysqli_real_escape_string($UPLINK,$NEWIMP['description'])."'
+      )";
+      $xRES = $UPLINK->query($sql) or trigger_error(mysqli_error($xRES));
+
+      echo "<p class=\"dialog\"><i class=\"fas fa-check green\"></i>&nbsp;Added new augment. Refreshing...</p>";
+
+    } else if(isset($NEWIMP['type']) && $NEWIMP['type'] == "symbiont") {
+
+      $sql = "INSERT INTO `ecc_char_implants` (
+        `sheetID`, `accountID`, `type`, `skillgroup_level`, `skillgroup_siteindex`, `status`, `description`
+      ) VALUES (
+        '".(int)$NEWIMP['sheet']."',
+        '".(int)$TIJDELIJKEID."',
+        '".mysqli_real_escape_string($UPLINK,$NEWIMP['type'])."',
+        '".(int)$NEWIMP['skillgroup_level']."',
+        '".mysqli_real_escape_string($UPLINK,$NEWIMP['skillgroup_siteindex'])."',
+        'active',
+        '".mysqli_real_escape_string($UPLINK,$NEWIMP['description'])."'
+      )";
+      $xRES = $UPLINK->query($sql) or trigger_error(mysqli_error($xRES));
+
+      echo "<p class=\"dialog\"><i class=\"fas fa-check green\"></i>&nbsp;Added new augment. Refreshing...</p>";
+
+    } else {
+
+      echo "<p class=\"dialog\"><i class=\"fas fa-question\"></i>&nbsp;An error has occured. Please try again.. (331)</p>";
+      exit();
+    }
+
+  } else {
+
+    echo "<p class=\"dialog\"><i class=\"fas fa-question\"></i>&nbsp;An error has occured. Please try again.. (330)</p>";
+    exit();
+  }
+
+  unset($res);
+  unset($xRES);
+  exit();
+}

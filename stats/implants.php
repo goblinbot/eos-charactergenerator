@@ -17,8 +17,18 @@
 
   $currentSheet = $sheetArr['characters'][$_GET['viewChar']]['sheets'][$_GET['viewsheet']];
 
+  if($sheetArr['characters'][$_GET['viewChar']]['status'] == 'deceased') {
+    $DISABLE = "disabled";
+  } else if ($currentSheet['status'] != "ontwerp") {
+    $DISABLE = "disabled";
+  } else {
+    $DISABLE = "";
+  }
+
 ?>
-  <div class="wsleft cell"></div>
+  <div class="wsleft cell">
+
+  </div>
 
   <div class="menu cell">
     <?=generateMenu('characters');?>
@@ -59,26 +69,28 @@
       <?php
 
         // check for augments, then, loop through them.
-        if(isset($implantsArr) && count($implantsArr) > 0) {
+        if(isset($implantsArr) && count($implantsArr) > 0 && $implantsArr !== false) {
 
           $printresult = "<h3>Current augmentations:</h3>";
 
           foreach($implantsArr AS $implant) {
 
-            if($implant['accountID'] == $TIJDELIJKEID) {
+            if($implant['accountID'] == $TIJDELIJKEID && $implant['status'] != 'removed') {
 
               // non-skill related implants
               if($implant['type'] == 'flavour') {
 
                 $printresult .= "<div class=\"implant flavour\">"
                     ."<div class=\"block\">"
-                      ."<p>Description: ".EMS_echo($implant['description'])."</p>"
+                      ."<p>Description:&nbsp;<br class=\"hidden-xs\"/>".EMS_echo($implant['description'])."</p>"
                     ."</div>"
-                    . "<div class=\"block smflex\">"
-                      ."Type: ".$implant['type']
+                    . "<div class=\"block\">"
+                      ."Type:&nbsp;<br class=\"hidden-xs\"/>".$implant['type']
                     ."</div>"
+                    . "<div class=\"block hidden-xs\">&nbsp;</div>"
+                    // . "<div class=\"block smflex hidden-xs\">&nbsp;</div>"
                     . "<div class=\"block smflex\">"
-                      ."<button type=\"button\" onclick=\"disableButtonGroup(this,3);\" class=\"button blue\" name=\"button\"><i class=\"fas fa-cog\"></i>&nbsp;Edit</button>"
+                      ."<button type=\"button\" onclick=\"disableButtonGroup(this,3);IM_removeImplant('".$_GET['viewsheet']."','".$implant['modifierID']."');return false;\" class=\"button blue no-bg $DISABLE\" name=\"button\"><i class=\"fas fa-trash-alt\"></i>&nbsp;Unplug</button>"
                     ."</div>"
                 . "</div>";
 
@@ -89,17 +101,17 @@
                     ."<div class=\"block\">"
                       ."<p>Description:&nbsp;<br/>".EMS_echo($implant['description'])."</p>"
                     ."</div>"
-                    . "<div class=\"block smflex\">"
+                    . "<div class=\"block\">"
                       ."<span class=\"hidden-xs\">Type:&nbsp;<br/></span>".$implant['type']
                     ."</div>"
-                    . "<div class=\"block smflex\">"
+                    . "<div class=\"block\">"
                       ."<span class=\"hidden-xs\">Skill:&nbsp;<br/></span>".$implant['name'] .", lvl ".(int)$implant['skillgroup_level']
                     ."</div>"
+                    // . "<div class=\"block smflex\">"
+                    //   ."Status:&nbsp;<br class=\"hidden-xs\"/>".$implant['status']
+                    // ."</div>"
                     . "<div class=\"block smflex\">"
-                      ."Status:&nbsp;<br class=\"hidden-xs\"/>".$implant['status']
-                    ."</div>"
-                    . "<div class=\"block smflex\">"
-                      ."<button type=\"button\" onclick=\"disableButtonGroup(this,3);\" class=\"button blue\" name=\"button\"><i class=\"fas fa-cog\"></i>&nbsp;Edit</button>"
+                      ."<button type=\"button\" onclick=\"disableButtonGroup(this,3);IM_removeImplant('".$_GET['viewsheet']."','".$implant['modifierID']."');return false;\" class=\"button blue no-bg $DISABLE\" name=\"button\"><i class=\"fas fa-trash-alt\"></i>&nbsp;Unplug</button>"
                     ."</div>"
                 . "</div>";
               }
@@ -124,25 +136,19 @@
         echo $printresult;
 
       ?>
+      <hr style="opacity:0.25;"/>
       </div>
 
       <div class="">
-        <hr style="opacity:0.25;"/>
 
-        <button type="button" class="button green no-bg" onclick="IM_chooseType('<?=@(int)$_GET["viewChar"]?>','<?=@(int)$_GET['viewsheet']?>'); disableButtonGroup(this,1);" name="button"><i class="fas fa-plus"></i><br/>New</button>
-        <!-- &nbsp; -->
-        <!-- <button type="button" class="button" onclick="IM_showHelp(); disableButtonGroup(this,1);" name="button"><i class="fas fa-question"></i><br/>Help</button> -->
+        <button type="button" class="button green no-bg <?=$DISABLE?>" onclick="IM_chooseType('<?=@(int)$_GET["viewChar"]?>','<?=@(int)$_GET['viewsheet']?>'); disableButtonGroup(this,1);" name="button"><i class="fas fa-plus"></i><br/>New</button>
+        &nbsp;
+        <button type="button" class="button" onclick="location.reload();" name="button"><i class="fas fa-redo"></i><br/>Refresh</button>
 
         <hr style="opacity:0.25;"/>
       </div>
 
-
-      <div id="implantForm">
-        <!-- <br/>
-        <p class="text-center">
-          <i class="fas fa-cog fa-spin" style="font-size:5rem;"></i>
-        </p> -->
-      </div>
+      <div id="implantForm"></div>
 
     </div>
   </div>

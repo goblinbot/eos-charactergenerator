@@ -82,9 +82,6 @@ function calcUsedExp($charSkillArr = array(), $faction = null) {
 
     foreach($charSkillArr AS $key => $details) {
 
-      // $result[$key]['lvl'] = $details["level"];
-      // $result[$key]['index'] = $details["parent"];
-
       if((int)$details["level"] > 0) {
 
         if($details["level"] == 1) {
@@ -99,23 +96,19 @@ function calcUsedExp($charSkillArr = array(), $faction = null) {
             if($row['type'] != 'enable') {
 
               $result = ($result + $row['cost_modifier']);
-              // echo $result['cost']."&nbsp;:&nbsp;".$details['label']."<br/>";
             } else {
 
               $result = ($result + 1);
-              // echo $result['cost']."&nbsp;:&nbsp;".$details['label']."<br/>";
             }
 
           } else {
 
             $result = ($result + 1);
-            // echo $result['cost']."&nbsp;:&nbsp;".$details['label']."<br/>";
           }
 
         } else {
 
           $result = ($result + $details['level']);
-          // echo $result['cost']."&nbsp;:&nbsp;".$details['label']."<br/>";
 
         }
 
@@ -131,6 +124,8 @@ function calcUsedExp($charSkillArr = array(), $faction = null) {
 function getImplants($sheetID) {
 
   global $TIJDELIJKEID, $UPLINK;
+
+  $return = false;
 
   $sql = "SELECT i.modifierID,i.sheetID,i.accountID,i.type,i.skillgroup_level,i.status,i.description,s.name
     FROM ecc_char_implants i

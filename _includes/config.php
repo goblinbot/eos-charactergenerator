@@ -14,3 +14,7 @@ $APP["header"] = "/eoschargen";
 
 // define the root folder by adding the header (location) to the server root, defined by PHP.
 $APP["root"] = $_SERVER["DOCUMENT_ROOT"] . $APP["header"];
+
+
+
+$TIJDELIJKEID = 451;

@@ -206,7 +206,7 @@ function sanitize_spaces($input = null) {
 function check4dead($charID) {
   global $UPLINK;
 
-  $sql = "SELECT status FROM `ecc_characters` WHERE characterID = '".mysqli_real_escape_string($UPLINK,(int)$_GET['viewChar'])."' AND status = 'deceased'";
+  $sql = "SELECT status FROM `ecc_characters` WHERE characterID = '".mysqli_real_escape_string($UPLINK,(int)$charID)."' AND status = 'deceased'";
   $res = $UPLINK->query($sql);
 
   if(mysqli_num_rows($res) > 0) {

@@ -24,10 +24,13 @@ if(isset($_POST['createImplantForm']) && $_POST['createImplantForm'] == true) {
 
       $AUG['sheet'] = (int)$AUG['sheet'];
 
-      $sql = "SELECT charSheetID FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,$AUG['sheet'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."' LIMIT 1";
+      $sql = "SELECT charSheetID,characterID FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,$AUG['sheet'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."' LIMIT 1";
       $res = $UPLINK->query($sql);
 
       if($res && mysqli_num_rows($res) == 1) {
+
+        $row = mysqli_fetch_assoc($res);
+        check4dead($row['characterID']);
 
         $printresult = "<form name=\"newImplant\">"
         . "<input type=\"hidden\" name=\"newImplant[sheet]\" value=\"".$AUG['sheet']."\" />"
@@ -120,12 +123,12 @@ if(isset($_POST['removeImplant']) && $_POST['removeImplant'] != "") {
 
     $row = mysqli_fetch_assoc($res);
     $printresult = "<div class=\"dialog\">"
-      ."<h3 class=\"text-bold text-center\"><i class=\"fas fa-question\"></i>&nbsp;Removing this augmentation could have some side effects. Do you want to proceed?</h3>"
-      . "<button class=\"button bar green no-bg\" onclick=\"IM_removeImplantConfirmed('".$row['modifierID']."'); return false;\">"
+      ."<h3 class=\"text-bold\"><i class=\"fas fa-question\"></i>&nbsp;Removing this augmentation could have some side effects. Do you want to proceed?</h3>"
+      . "<button class=\"button green no-bg\" onclick=\"IM_removeImplantConfirmed('".$row['modifierID']."'); return false;\">"
         ."<i class=\"fas fa-check\"></i>&nbsp;<strong>Yes,</strong> I wish to regain a bit of my humanity."
       ."</button>"
       ."<br/>"
-      . "<button class=\"button bar blue no-bg\" onclick=\"location.reload(); return false;\">"
+      . "<button class=\"button blue no-bg\" onclick=\"location.reload(); return false;\">"
         ."<i class=\"fas fa-times\"></i>&nbsp;I don't like the sound of that. <strong>Cancel</strong> the operation."
       ."</button>"
     ."</div>";
@@ -140,23 +143,45 @@ if(isset($_POST['removeImplant']) && $_POST['removeImplant'] != "") {
 
 if(isset($_POST['deleteImplantConfirm']) && $_POST['deleteImplantConfirm'] != "") {
 
-  $sql = "SELECT * FROM `ecc_char_implants` WHERE modifierID = '".mysqli_real_escape_string($UPLINK,(int)$_POST['deleteImplantConfirm'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."' LIMIT 1";
+  $sql = "SELECT sheetID,modifierID
+    FROM ecc_char_implants
+    WHERE `modifierID` = '".mysqli_real_escape_string($UPLINK,(int)$_POST['deleteImplantConfirm'])."'
+    AND `accountID` = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."'
+    LIMIT 1";
   $res = $UPLINK->query($sql) or trigger_error(mysqli_error($res));
 
   if($res && mysqli_num_rows($res) == 1) {
 
     $row = mysqli_fetch_assoc($res);
 
-    $sql = "UPDATE `ecc_char_implants`
-      SET status = 'removed'
-      WHERE modifierID = '".mysqli_real_escape_string($UPLINK,$row['modifierID'])."'
-      AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."'
-      LIMIT 1";
-    $update = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
-    echo "<p class=\"dialog\"><i class=\"fas fa-user-times green\"></i>&nbsp;Unplugging... just a moment please.</p>";
+    $xSQL = "SELECT characterID FROM `ecc_char_sheet` WHERE charSheetID = '".$row['sheetID']."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."'";
+    $xRES = $UPLINK->query($xSQL) or trigger_error(mysqli_error($xRES));
+
+    if($xRES && mysqli_num_rows($xRES) == 1) {
+
+      $xROW = mysqli_fetch_assoc($xRES);
+      check4dead($xROW['characterID']);
+
+      $sql = "UPDATE `ecc_char_implants`
+        SET status = 'removed'
+        WHERE modifierID = '".mysqli_real_escape_string($UPLINK,$row['modifierID'])."'
+        AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."'
+        LIMIT 1";
+      $update = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
+      echo "<p class=\"dialog\"><i class=\"fas fa-user-times green\"></i>&nbsp;Unplugging... just a moment please.</p>";
+
+    } else {
+      echo "[ERR 502]";
+      exit();
+    }
+
   } else {
-    echo "[ERR 502]";
+    echo "[ERR 513]";
+    exit();
   }
+
+
+
 
   exit();
 }
@@ -167,10 +192,13 @@ if(isset($_POST['newImplant']) && $_POST['newImplant'] == true) {
 
   $NEWIMP = $_POST['newImplant'];
 
-  $sql = "SELECT charSheetID FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,$NEWIMP['sheet'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."' LIMIT 1";
+  $sql = "SELECT charSheetID, characterID FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,$NEWIMP['sheet'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."' LIMIT 1";
   $res = $UPLINK->query($sql);
 
   if($res && mysqli_num_rows($res) == 1) {
+
+    $row = mysqli_fetch_assoc($res);
+    check4dead($row['characterID']);
 
     // VALIDATIONS
     $NEWIMP['description'] = EMS_echo($NEWIMP['description']);

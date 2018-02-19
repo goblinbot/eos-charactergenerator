@@ -31,7 +31,7 @@
 
           // CHARACTERS ///////////////////////////////////////
           $sql = "CREATE TABLE IF NOT EXISTS `ecc_characters` (
-            `characterID` int(11) NOT NULL,
+            `characterID` int(11) NOT NULL AUTO_INCREMENT,
             `accountID` int(11) NOT NULL,
             `character_name` varchar(100) DEFAULT NULL,
             `ICC_number` int(15) NOT NULL DEFAULT '0',
@@ -581,9 +581,6 @@
 </div>
 
 <div class="wsright cell"></div>
-
-
-
 
 <?php
   include_once($APP["root"] . "/footer.php");

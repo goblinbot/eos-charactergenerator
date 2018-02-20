@@ -41,7 +41,8 @@
             `status` varchar(20) NOT NULL DEFAULT 'in design',
             `ic_birthday` varchar(25) DEFAULT NULL,
             `birthplanet` varchar(25) DEFAULT NULL,
-            `homeplanet` varchar(25) DEFAULT NULL
+            `homeplanet` varchar(25) DEFAULT NULL,
+            PRIMARY KEY (`characterID`)
           ) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
           $res = $UPLINK->query($sql)or trigger_error(mysqli_error($UPLINK));
 

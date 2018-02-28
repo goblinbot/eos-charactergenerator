@@ -622,3 +622,13 @@ button.bar, .button.bar {
     display: none;
   }
 }
+
+::selection {
+  background: rgba(49, 225, 132, 0.75);
+  color: #FFF;
+}
+
+::-moz-selection {
+  background: rgba(49, 225, 132, 0.75);
+  color: #FFF;
+}

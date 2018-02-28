@@ -104,8 +104,6 @@ $(document).ready(function(){
 	console.log('%c____________________________', 'color:darkblue;');
 	console.log('For now, enjoy the app. And be gentle.');
 
-
-
 	/* remove Notransition:
 	this css class prevents the entire grid from going full eldritch horror,
 	if... the visitor's... browser.. is.. way.. too.. slow... */

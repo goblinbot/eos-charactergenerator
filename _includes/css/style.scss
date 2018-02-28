@@ -1,4 +1,4 @@
-@import 'fonts.scss';
+@import 'fonts';
 
 // primary color scheme
 $bg    : #262e3e;
@@ -34,7 +34,6 @@ $fontbold   : 'Roboto-medium','Roboto-regular', sans-serif, arial;
 $fonttitle  : 'Roboto-Light','Roboto-Thin', sans-serif, arial;
   $textcolor : $wit;
   $textmuted : #838795;
-
 
 html {
   background: $bg;
@@ -632,4 +631,13 @@ button, .button {
   @media(min-width: 768px) {
     display: none;
   }
+}
+
+::selection {
+  background: rgba($green, 0.75);
+  color: #FFF;
+}
+::-moz-selection {
+  background: rgba($green, 0.75);
+  color: #FFF;
 }

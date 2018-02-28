@@ -96,7 +96,9 @@
             ."</div>";
 
             echo "<div class=\"box33\">"
-              // void
+              ."<a class=\"disabled\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
+                ."<button type=\"button\" class=\"button bar blue disabled\" name=\"button\"><i class=\"fas fa-file-code\"></i>&nbsp;Export data</button>"
+              ."</a>"
             ."</div>";
 
             echo "</div>";
@@ -104,13 +106,13 @@
             echo "<div class=\"row\">";
 
             echo "<div class=\"box33\">"
-              ."<a onclick=\"SH_nicknameForm('".$_GET['viewChar']."','".$_GET['viewSheet']."')\"\">"
+              ."<a onclick=\"SH_nicknameForm('".$_GET['viewChar']."','".$_GET['viewSheet']."')\">"
                 ."<button type=\"button\" class=\"button blue no-bg bar\" name=\"button\"><i class=\"fas fa-sticky-note\"></i>&nbsp;Nickname this sheet</button>"
               ."</a>"
             ."</div>";
 
             echo "<div class=\"box33\">"
-              ."<a onclick=\"SH_editPlayedForm('".$_GET['viewChar']."','".$_GET['viewSheet']."')\"\">"
+              ."<a onclick=\"SH_editPlayedForm('".$_GET['viewChar']."','".$_GET['viewSheet']."')\">"
                 ."<button type=\"button\" class=\"button blue no-bg bar\" name=\"button\"><i class=\"fas fa-sort-numeric-up\"></i>&nbsp;Events Played</button>"
               ."</a>"
             ."</div>";
@@ -164,7 +166,7 @@
                     `versionNumber`
                   ) VALUES (
                     '".mysqli_real_escape_string($UPLINK,(int)$_GET['viewChar'])."',
-                    '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."',
+                    '".mysqli_real_escape_string($UPLINK,(int)$jid)."',
                     '".mysqli_real_escape_string($UPLINK,(int)$_POST['newSheet'])."',
                     '1'
                   );";
@@ -197,14 +199,14 @@
               //delete sheet: validate eerst.
               $sql = "SELECT charSheetID
                 FROM `ecc_char_sheet`
-                WHERE accountID = '".mysqli_real_escape_string($UPLINK,$TIJDELIJKEID)."'
+                WHERE accountID = '".mysqli_real_escape_string($UPLINK,$jid)."'
                 AND charSheetID = '".mysqli_real_escape_string($UPLINK,$_GET['deleteSheet'])."'
                 AND characterID = '".mysqli_real_escape_string($UPLINK,$_GET['viewChar'])."'
               LIMIT 1";
               $res = $UPLINK->query($sql) or trigger_error(mysqli_error($res));
 
               if(mysqli_num_rows($res) > 0) {
-                $sql = "DELETE FROM `ecc_char_sheet` WHERE `charSheetID` = '".mysqli_real_escape_string($UPLINK,$_GET['deleteSheet'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,$TIJDELIJKEID)."'";
+                $sql = "DELETE FROM `ecc_char_sheet` WHERE `charSheetID` = '".mysqli_real_escape_string($UPLINK,$_GET['deleteSheet'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,$jid)."'";
                 $res = $UPLINK->query($sql);
 
                 header("location: ".$APP['header']."/stats/sheets.php?viewChar=".$activeCharacter['characterID']." ");
@@ -267,7 +269,7 @@
               `aantal_events`
             ) VALUES (
               '".mysqli_real_escape_string($UPLINK,(int)$_GET['viewChar'])."',
-              '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."',
+              '".mysqli_real_escape_string($UPLINK,(int)$jid)."',
               '0'
             );";
 

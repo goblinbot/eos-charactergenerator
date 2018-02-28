@@ -31,7 +31,7 @@ function generateMenu($param = 'Home') {
 
 // large update function to make updating a character's info easier.
 function updateCharacterInfo($params = array(), $charID = 0) {
-  global $TIJDELIJKEID, $UPLINK;
+  global $jid, $UPLINK;
 
 
 
@@ -39,7 +39,7 @@ function updateCharacterInfo($params = array(), $charID = 0) {
   if(isset($charID) && (int)$charID !== 0) {
 
     // check if charID belongs to the active account.
-    $sql = "SELECT characterID, accountID FROM `ecc_characters` WHERE characterID = '".mysqli_real_escape_string($UPLINK,(int)$charID)."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."' LIMIT 1";
+    $sql = "SELECT characterID, accountID FROM `ecc_characters` WHERE characterID = '".mysqli_real_escape_string($UPLINK,(int)$charID)."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$jid)."' LIMIT 1";
     $res = $UPLINK->query($sql);
 
     if($res && mysqli_num_rows($res) == 1) {
@@ -68,7 +68,7 @@ function updateCharacterInfo($params = array(), $charID = 0) {
           $sql = "UPDATE `ecc_characters`
             SET ".$key." = '".mysqli_real_escape_string($UPLINK,$value)."'
             WHERE characterID = '".mysqli_real_escape_string($UPLINK,(int)$charID)."'
-            AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."'
+            AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$jid)."'
             LIMIT 1";
           $update = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
         }
@@ -92,15 +92,15 @@ function updateCharacterInfo($params = array(), $charID = 0) {
 
 // get character sheets
 function getCharacterSheets() {
-  global $TIJDELIJKEID, $UPLINK;
+  global $jid, $UPLINK;
 
   $return = array();
   $return['characters'] = array();
 
 
-  if(isset($UPLINK) && isset($TIJDELIJKEID) && $TIJDELIJKEID != "") {
+  if(isset($UPLINK) && isset($jid) && $jid != "") {
 
-    $sql = "SELECT * FROM ecc_characters WHERE accountID = '".(int)$TIJDELIJKEID."'";
+    $sql = "SELECT * FROM ecc_characters WHERE accountID = '".(int)$jid."'";
     $res = $UPLINK->query($sql);
 
     if($res) {

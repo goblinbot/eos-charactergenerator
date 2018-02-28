@@ -1,14 +1,14 @@
 <?php
 function getFullCharSheet($sheetID = null) {
 
-  global $TIJDELIJKEID, $UPLINK;
+  global $jid, $UPLINK;
 
   $returnArr = array();
 
   if(isset($sheetID) && (int)$sheetID != 0) {
 
     // check if sheetID belongs to the active account.
-    $sql = "SELECT characterID, charSheetID, nickname, accountID, aantal_events FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,(int)$sheetID)."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$TIJDELIJKEID)."' LIMIT 1";
+    $sql = "SELECT characterID, charSheetID, nickname, accountID, aantal_events FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,(int)$sheetID)."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$jid)."' LIMIT 1";
     $res = $UPLINK->query($sql);
 
     if($res && mysqli_num_rows($res) == 1) {
@@ -124,14 +124,14 @@ function calcUsedExp($charSkillArr = array(), $faction = null) {
 
 function getImplants($sheetID) {
 
-  global $TIJDELIJKEID, $UPLINK;
+  global $jid, $UPLINK;
 
   $return = false;
 
   $sql = "SELECT i.modifierID,i.sheetID,i.accountID,i.type,i.skillgroup_level,i.status,i.description,s.name
     FROM ecc_char_implants i
     LEFT JOIN ecc_skills_groups s ON i.skillgroup_siteindex = s.siteindex
-    WHERE `accountID` = '".(int)$TIJDELIJKEID."'
+    WHERE `accountID` = '".(int)$jid."'
     AND `sheetID` = '".(int)$sheetID."' ";
 
   $res = $UPLINK->query($sql);

@@ -23,7 +23,7 @@
 
       $sql = "INSERT INTO `ecc_characters` (`accountID`, `faction`, `status`)
         VALUES (
-          '".(int)$TIJDELIJKEID."',
+          '".(int)$jid."',
           '".mysqli_real_escape_string($UPLINK,$_POST['newchar'])."',
           'in design'
         );";
@@ -96,7 +96,7 @@
         if(is_array($sheetArr['characters'])) {
           if(count($sheetArr['characters']) > 0) {
 
-            if(isset($sheetArr["characters"][$_GET['viewChar']]['accountID']) && EMS_echo($sheetArr["characters"][$_GET['viewChar']]['accountID']) == $TIJDELIJKEID) {
+            if(isset($sheetArr["characters"][$_GET['viewChar']]['accountID']) && EMS_echo($sheetArr["characters"][$_GET['viewChar']]['accountID']) == $jid) {
 
               // put the character into an easier to access variable for laziness.
               $character = $sheetArr["characters"][$_GET['viewChar']];

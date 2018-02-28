@@ -75,7 +75,7 @@
 
           foreach($implantsArr AS $implant) {
 
-            if($implant['accountID'] == $TIJDELIJKEID && $implant['status'] != 'removed') {
+            if($implant['accountID'] == $jid && $implant['status'] != 'removed') {
 
               // non-skill related implants
               if($implant['type'] == 'flavour') {
@@ -161,12 +161,6 @@
   exit();
 }
 
-?>
-
-
-
-<?php
   include_once($APP["root"] . "/footer.php");
-
 ?>
 <script type="text/javascript" src="<?=$APP['header']?>/_includes/js/functions.implants.js"></script>

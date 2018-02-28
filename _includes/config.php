@@ -17,4 +17,4 @@ $APP["root"] = $_SERVER["DOCUMENT_ROOT"] . $APP["header"];
 
 
 
-$TIJDELIJKEID = 451;
+$jid = 451;

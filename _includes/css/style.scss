@@ -1,4 +1,4 @@
-@import 'fonts';
+@import 'fonts.scss';
 
 // primary color scheme
 $bg    : #262e3e;
@@ -507,6 +507,15 @@ button, .button {
     background-repeat: no-repeat;
   }
 
+}
+
+.skillbox {
+  display: flex;
+  flex-direction: row;
+
+  .half {
+    flex: 1;
+  }
 }
 
 

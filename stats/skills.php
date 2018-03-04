@@ -3,6 +3,7 @@
   include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
   include_once($APP["root"] . "/_includes/functions.global.php");
   include_once($APP["root"] . "/_includes/functions.sheet.php");
+  include_once($APP["root"] . "/_includes/functions.skills.php");
 
   include_once($APP["root"] . "/header.php");
 
@@ -15,7 +16,6 @@
     exit();
   }
 
-
 ?>
 <div class="wsleft cell"></div>
 
@@ -25,21 +25,81 @@
 
 <div class="main cell">
   <div class="content">
+  <?php
+    $printresult = "";
+    // check if characters is valid
+      if(is_array($sheetArr['characters'])) {
+        if(count($sheetArr['characters']) > 0) {
 
-    <h1>[CHARACTER NAME] - Skills</h1>
+          if(isset($sheetArr["characters"][$_GET['viewChar']]['accountID']) && EMS_echo($sheetArr["characters"][$_GET['viewChar']]['accountID']) == $jid) {
 
-    <hr>
+            $character = $sheetArr["characters"][$_GET['viewChar']];
+            $characterSheet = getFullCharSheet($_GET['viewSheet']);
 
-    <?php
-      $characterSheet = getFullCharSheet($_GET['viewChar']);
+            $isPsychic = $character['psychic'];
+            $hasParent = "none";
+            $isCurrent = $sheetArr["characters"][$_GET['viewChar']]['status'];
+            $skillGroupArr = getSkillGroup($isPsychic,$hasParent,$isCurrent);
 
-      var_dump($characterSheet);
+            // Character Banner
+            if(EMS_echo($character['character_name']) != "") {
+              $printresult .= "<h1><strong>skills:</strong>&nbsp;".$character['character_name']." - ".$character['faction']."</h1>";
+            } else {
+              $printresult .= "<h1><strong>skills:</strong>&nbsp;[character name] - ".$character['faction']."</h1>";
+            }
+            // Back button
+            $printresult .= "<div class=\"row\">"
+                ."<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
+                  ."<button><i class=\"fas fa-arrow-left\"></i>&nbsp;Back</button>"
+                ."</a>"
+              ."</div>"
+            ."<hr/>";
+
+            // check for sheet, then check for status
+            if(isset($characterSheet) && $characterSheet != "") {
+
+              $printresult .= "<div class=\"row skillbox\">"
+              . "<div class=\"half\">";
+
+              // is the CHARACTER in design mode, AND is the character SHEET?
+              if($character['status'] == 'in design' && $characterSheet['status'] == 'ontwerp') {
 
 
 
+              } else {
 
-    ?>
+                // STATUS  NIET IN ONTWERP MODUS
 
+              }
+
+              foreach($skillGroupArr AS $skillGroup) {
+                $printresult .= "<pre>" .$skillGroup['primaryskill_id'] . " / ". $skillGroup['name'] ."</pre>";
+              }
+
+              $printresult .= "</div>"."<div class=\"half\"></div>"."</div>";
+
+            } else {
+
+              // error sheet is er niet?
+
+            }
+
+          } else {
+            // error 451 because JID is lacking
+          }
+        }
+      }
+
+    echo $printresult;
+
+    // echo "<br/><pre>";
+    // var_dump($sheetArr["characters"][$_GET['viewChar']]);
+    // var_dump($character);
+    // echo "</pre>";
+    // echo "<br/><pre>";
+    // var_dump($getSkills);
+    // echo "</pre>";
+  ?>
   </div>
 </div>
 

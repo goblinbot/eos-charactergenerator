@@ -8,13 +8,14 @@ function getFullCharSheet($sheetID = null) {
   if(isset($sheetID) && (int)$sheetID != 0) {
 
     // check if sheetID belongs to the active account.
-    $sql = "SELECT characterID, charSheetID, nickname, accountID, aantal_events FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,(int)$sheetID)."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$jid)."' LIMIT 1";
+    $sql = "SELECT characterID, charSheetID, nickname, accountID, status, aantal_events FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,(int)$sheetID)."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$jid)."' LIMIT 1";
     $res = $UPLINK->query($sql);
 
     if($res && mysqli_num_rows($res) == 1) {
 
       $xtemp = mysqli_fetch_assoc($res);
 
+      $returnArr['status'] = $xtemp['status'];
       $returnArr['aantal_events'] = $xtemp['aantal_events'];
       $returnArr['nickname'] = EMS_echo($xtemp['nickname']);
 
@@ -26,7 +27,6 @@ function getFullCharSheet($sheetID = null) {
 
         while($row = mysqli_fetch_assoc($res)){
 
-          $returnArr['skills'][(int)$row['skill_id']]['id'] = (int)$row['skill_id'];
 
           $xSQL = "SELECT label, skill_index, parent, level
             FROM ecc_skills_allskills
@@ -35,10 +35,11 @@ function getFullCharSheet($sheetID = null) {
           $xRES = $UPLINK->query($xSQL);
           $xROW = mysqli_fetch_array($xRES);
 
-          $returnArr['skills'][(int)$row['skill_id']]['label'] = $xROW['label'];
-          $returnArr['skills'][(int)$row['skill_id']]['skill_index'] = $xROW['skill_index'];
-          $returnArr['skills'][(int)$row['skill_id']]['parent'] = $xROW['parent'];
-          $returnArr['skills'][(int)$row['skill_id']]['level'] = $xROW['level'];
+          $returnArr['skills'][$xROW['skill_index']]['id'] = (int)$row['skill_id'];
+          $returnArr['skills'][$xROW['skill_index']]['label'] = $xROW['label'];
+          $returnArr['skills'][$xROW['skill_index']]['skill_index'] = $xROW['skill_index'];
+          $returnArr['skills'][$xROW['skill_index']]['parent'] = $xROW['parent'];
+          $returnArr['skills'][$xROW['skill_index']]['level'] = (int)$xROW['level'];
         }
 
       } else {

@@ -21,11 +21,14 @@
     || $_POST['newchar'] == "pendzal"
     || $_POST['newchar'] == "sona") {
 
-      $sql = "INSERT INTO `ecc_characters` (`accountID`, `faction`, `status`)
+      $psyCharacter = ($_POST['newchar'] == 'ekanesh' ? 'true' : 'false');
+
+      $sql = "INSERT INTO `ecc_characters` (`accountID`, `faction`, `status`, `psychic`)
         VALUES (
           '".(int)$jid."',
           '".mysqli_real_escape_string($UPLINK,$_POST['newchar'])."',
-          'in design'
+          'in design',
+          '".mysqli_real_escape_string($UPLINK,$psyCharacter)."'
         );";
       $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
 

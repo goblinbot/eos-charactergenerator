@@ -36,11 +36,7 @@
           $activeCharacter['sheets'][$_GET['viewSheet']]['status'] = 'noskill';
         }
 
-
-
       } else {
-
-
 
       }
 
@@ -52,6 +48,41 @@
     exit();
   }
 
+
+  if(isset($_POST['updateNickname']) && $_POST['updateNickname']) {
+    $newNickname = EMS_echo($_POST['updateNickname']['value']);
+    $newNickname = silvesterFilter($newNickname);
+    $newNickname = trim($newNickname);
+
+    $sql = "UPDATE `ecc_char_sheet`
+      SET `nickname` = '".mysqli_real_escape_string($UPLINK,$newNickname)."'
+      WHERE `charSheetID` = '".mysqli_real_escape_string($UPLINK,$_GET['viewSheet'])."'
+      AND `accountID` = '".mysqli_real_escape_string($UPLINK,$jid)."'";
+    $res = $UPLINK->query($sql);
+
+    header("location: ".$APP['header']."/stats/sheets.php?viewChar=".$activeCharacter['characterID']."&viewSheet=".$_GET['viewSheet']." ");
+    exit();
+
+    echo $sql;
+  }
+
+  if(isset($_POST['updateEventsPlayed']) && $_POST['updateEventsPlayed']) {
+    $newNickname = EMS_echo($_POST['updateEventsPlayed']['value']);
+    $newNickname = silvesterFilter($newNickname);
+    $newNickname = trim($newNickname);
+
+    $sql = "UPDATE `ecc_char_sheet`
+      SET `aantal_events` = '".mysqli_real_escape_string($UPLINK,(int)$newNickname)."'
+      WHERE `charSheetID` = '".mysqli_real_escape_string($UPLINK,$_GET['viewSheet'])."'
+      AND `accountID` = '".mysqli_real_escape_string($UPLINK,$jid)."'";
+    $res = $UPLINK->query($sql);
+
+    header("location: ".$APP['header']."/stats/sheets.php?viewChar=".$activeCharacter['characterID']."&viewSheet=".$_GET['viewSheet']." ");
+    exit();
+
+    echo $sql;
+  }
+
 ?>
 <div class="wsleft cell"></div>
 
@@ -59,13 +90,31 @@
   <?=generateMenu('characters');?>
 </div>
 
-<div class="main cell">
+<div class="main cell" style="flex-direction: column;">
   <div class="content">
 
     <h1><?=EMS_echo($activeCharacter["character_name"])?>&nbsp;-&nbsp;<?=EMS_echo($activeCharacter["faction"])?></h1>
 
+    <?php
+      if(isset($activeCharacter['sheets'])) {
+        if(count($activeCharacter['sheets']) > 0) {
+          if(isset($_GET['viewSheet']) && (int)$_GET['viewSheet'] != 0) {
+            echo "<p class=\"text-bold\">Nickname: ". EMS_echo($activeCharacter['sheets'][$_GET['viewSheet']]['nickname']) ."</p>"
+            . "<p class=\"text-bold\">Events played: ". EMS_echo($activeCharacter['sheets'][$_GET['viewSheet']]['aantal_events']) ."</p>"
+            . "<br/>";
+          }
+        }
+      }
+    ?>
+
     <div class="row">
-      <a href="<?=$APP['header']?>/characters.php?viewChar=<?=$activeCharacter['characterID']?>" class="button">
+      <?php
+      if(isset($_GET['viewSheet']) && $_GET['viewSheet'] != "") {
+        ?><a href="<?=$APP['header']?>/index.php?viewChar=<?=$activeCharacter['characterID']?>" class="button"><?php
+      } else {
+        ?><a href="<?=$APP['header']?>/index.php" class="button"><?php
+      }
+      ?>
         <i class="fas fa-arrow-left"></i>&nbsp;Back
       </a>
     </div>
@@ -97,7 +146,7 @@
 
             echo "<div class=\"box33\">"
               ."<a class=\"disabled\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
-                ."<button type=\"button\" class=\"button bar blue disabled\" name=\"button\"><i class=\"fas fa-file-code\"></i>&nbsp;Export data</button>"
+                ."<button type=\"button\" class=\"button bar blue disabled\" name=\"button\"><i class=\"fas fa-file-code\"></i>&nbsp;Export to JSON</button>"
               ."</a>"
             ."</div>";
 
@@ -287,6 +336,9 @@
     ?>
 
   </div>
+
+  <div id="customForm" class="content"></div>
+
 </div>
 
 <div class="wsright cell"></div>

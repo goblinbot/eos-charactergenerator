@@ -13,11 +13,11 @@ function generateMenu($param = 'Home') {
 
   $printresult = "";
 
-  $class = (strtolower($param) == 'home') ? 'active' : '';
-    $printresult .= "<a href=\"".$APP['header']."/\" class=\"menuitem $class\"><i class=\"fas fa-home\"></i><span>&nbsp;Home</span></a>";
+  // $class = (strtolower($param) == 'home') ? 'active' : '';
+  //   $printresult .= "<a href=\"".$APP['header']."/\" class=\"menuitem $class\"><i class=\"fas fa-home\"></i><span>&nbsp;Home</span></a>";
 
   $class = (strtolower($param) == 'characters') ? 'active' : '';
-    $printresult .= "<a href=\"".$APP['header']."/characters.php\" class=\"menuitem $class\"><i class=\"fas fa-user\"></i><span>&nbsp;Character(s)</span></a>";
+    $printresult .= "<a href=\"".$APP['header']."/index.php\" class=\"menuitem $class\"><i class=\"fas fa-user\"></i><span>&nbsp;Character(s)</span></a>";
 
   $class = (strtolower($param) == 'myaccount') ? 'active' : 'disabled';
     $printresult .= "<a href=\"".$APP['header']."/myaccount.php\" class=\"menuitem $class\"><i class=\"fas fa-cog\"></i><span>&nbsp;My account</span></a>";
@@ -32,8 +32,6 @@ function generateMenu($param = 'Home') {
 // large update function to make updating a character's info easier.
 function updateCharacterInfo($params = array(), $charID = 0) {
   global $jid, $UPLINK;
-
-
 
   // is charID set?
   if(isset($charID) && (int)$charID !== 0) {
@@ -190,6 +188,18 @@ function checkSheetStatus($sheetID) {
 
 }
 
+function check4dead($charID) {
+  global $UPLINK;
+
+  $sql = "SELECT status FROM `ecc_characters` WHERE characterID = '".mysqli_real_escape_string($UPLINK,(int)$charID)."' AND status = 'deceased'";
+  $res = $UPLINK->query($sql);
+
+  if(mysqli_num_rows($res) > 0) {
+    echo "<p class=\"dialog\">We're very sorry for your loss, but it's time to let go. This character is dead.<br/><br/><i class=\"far fa-lightbulb\"></i>&nbsp;Try to find some closure by designing a new character.</p>";
+    exit();
+  }
+}
+
 // Wash away all unnecessary spaces, by brutishly looping for all them.
 function sanitize_spaces($input = null) {
 
@@ -201,18 +211,6 @@ function sanitize_spaces($input = null) {
   }
 
   return $input;
-}
-
-function check4dead($charID) {
-  global $UPLINK;
-
-  $sql = "SELECT status FROM `ecc_characters` WHERE characterID = '".mysqli_real_escape_string($UPLINK,(int)$charID)."' AND status = 'deceased'";
-  $res = $UPLINK->query($sql);
-
-  if(mysqli_num_rows($res) > 0) {
-    echo "<p class=\"dialog\">We're very sorry for your loss, but it's time to let go. This character is dead.<br/><br/><i class=\"far fa-lightbulb\"></i>&nbsp;Try to find some closure by designing a new character.</p>";
-    exit();
-  }
 }
 
 // spam / escape filter, named after a friend of mine who taught me the importance of filtering user input.

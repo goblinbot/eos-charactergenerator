@@ -65,6 +65,68 @@ function disableButtonGroup(e, levels) {
 
 }
 
+/* append the nickname form */
+function SH_nicknameForm(charID,sheetID) {
+	var postdata = {
+		"char" : charID,
+		"sheet": sheetID
+	};
+
+	$.ajax({
+		type: 'POST',
+		url: '/eoschargen/handler/index.php',
+		data: { nickNameForm : postdata }
+	})
+	.done(function(data){
+		SH_animateFormDiv(data); /* show the response */
+	})
+	.fail(function() {
+		SH_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Posting failed. [err 702]</h4>"); /* just in case posting your form failed */
+	});
+
+	/* prevent a refresh by returning false in the end. */
+	return false;
+}
+
+/* append the nickanme form */
+function SH_editPlayedForm(charID,sheetID) {
+	var postdata = {
+		"char" : charID,
+		"sheet": sheetID
+	};
+
+	$.ajax({
+		type: 'POST',
+		url: '/eoschargen/handler/index.php',
+		data: { EventsPlayedForm : postdata }
+	})
+	.done(function(data){
+		SH_animateFormDiv(data); /* show the response */
+	})
+	.fail(function() {
+		SH_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Posting failed. [err 703]</h4>"); /* just in case posting your form failed */
+	});
+
+	/* prevent a refresh by returning false in the end. */
+	return false;
+}
+
+
+/* function to animate the form div, just so I don't have to repeat myself three times. */
+var customFormDiv = $('#customForm');
+function SH_animateFormDiv(printresult) {
+
+  /* loading 'spinner' */
+  customFormDiv.empty().html('<br/><p class=\"text-center\"><i style=\"font-size:5rem;\" class=\"fas fa-cog fa-spin\"></i></p>').fadeOut();
+
+  setTimeout(function(){
+
+    customFormDiv.empty().html(printresult).fadeIn();
+    return true;
+
+  },750);
+}
+
 /* ********************************************** *//* ********************************************** */
 /* Internet's single most stolen cookie functions *//* ********************************************** */
 /* ********************************************** *//* ********************************************** */

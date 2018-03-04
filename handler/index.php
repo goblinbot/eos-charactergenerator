@@ -105,6 +105,69 @@ if(isset($_POST['createImplantForm']) && $_POST['createImplantForm'] == true) {
   exit();
 }
 
+// edit the character sheet nickname
+if(isset($_POST['nickNameForm']) && $_POST['nickNameForm'] != "") {
+
+  $printresult = "";
+  $xDATA = $_POST['nickNameForm'];
+
+  // grab the existing nickname if it exists
+  $sql = "SELECT nickname FROM ecc_char_sheet WHERE accountID = '".mysqli_real_escape_string($UPLINK,$jid)."' AND charSheetID = '".mysqli_real_escape_string($UPLINK,$xDATA['sheet'])."' LIMIT 1";
+  $res = $UPLINK->query($sql);
+
+  if($res && mysqli_num_rows($res) == 1) {
+    $row = (mysqli_fetch_assoc($res))['nickname'];
+  } else {
+    $row = "";
+  }
+
+  $printresult .= "<form name=\"\" action=\"".$APP['header']."/stats/sheets.php?viewChar=".$xDATA['char']."&viewSheet=".$xDATA['sheet']."\" method=\"post\">"
+  . "<div class=\"formitem\">"
+    . "<label>Nickname your character sheet</label><br/>"
+    . "<input type=\"text\" name=\"updateNickname[value]\" value=\"".$row."\"/>"
+  . "</div><div class=\"formitem\">"
+    . "<input type=\"submit\" class=\"button green no-bg\" value=\"Update\"/>"
+  . "</div>"
+  . "</form>";
+
+  echo $printresult;
+  unset($printresult);
+  exit();
+}
+
+// edit the amounts of events played
+if(isset($_POST['EventsPlayedForm']) && $_POST['EventsPlayedForm'] != "") {
+
+  $printresult = "";
+  $xDATA = $_POST['EventsPlayedForm'];
+
+  check4dead($xDATA['char']);
+  checkSheetStatus($xDATA['sheet']);
+
+  // grab the existing nickname if it exists
+  $sql = "SELECT aantal_events FROM ecc_char_sheet WHERE accountID = '".mysqli_real_escape_string($UPLINK,$jid)."' AND charSheetID = '".mysqli_real_escape_string($UPLINK,$xDATA['sheet'])."' LIMIT 1";
+  $res = $UPLINK->query($sql);
+
+  if($res && mysqli_num_rows($res) == 1) {
+    $row = (mysqli_fetch_assoc($res))['aantal_events'];
+  } else {
+    $row = "";
+  }
+
+  $printresult .= "<form name=\"\" action=\"".$APP['header']."/stats/sheets.php?viewChar=".$xDATA['char']."&viewSheet=".$xDATA['sheet']."\" method=\"post\">"
+  . "<div class=\"formitem\">"
+    . "<label>Events played:</label><br/>"
+    . "<input type=\"number\" name=\"updateEventsPlayed[value]\" value=\"".$row."\"/>"
+  . "</div><div class=\"formitem\">"
+    . "<input type=\"submit\" class=\"button green no-bg\" value=\"Update\"/>"
+  . "</div>"
+  . "</form>";
+
+  echo $printresult;
+  unset($printresult);
+  exit();
+}
+
 // EDIT OR DELETE AN IMPLANT
 if(isset($_POST['removeImplant']) && $_POST['removeImplant'] != "") {
 

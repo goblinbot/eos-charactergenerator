@@ -13,8 +13,10 @@ function getFullCharSheet($sheetID = null) {
 
     if($res && mysqli_num_rows($res) == 1) {
 
-      $returnArr['aantal_events'] = mysqli_fetch_assoc($res)['aantal_events'];
-      $returnArr['nickname'] = EMS_echo(mysqli_fetch_assoc($res)['nickname']);
+      $xtemp = mysqli_fetch_assoc($res);
+
+      $returnArr['aantal_events'] = $xtemp['aantal_events'];
+      $returnArr['nickname'] = EMS_echo($xtemp['nickname']);
 
       // select all skills belonging to current character.
       $sql = "SELECT skill_id FROM `ecc_char_skills` WHERE `char_sheet_id` = '$sheetID' ";

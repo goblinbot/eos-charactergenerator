@@ -90,7 +90,7 @@ function calcUsedExp($charSkillArr = array(), $faction = null) {
 
         if($details["level"] == 1) {
 
-          $sql = "SELECT cost_modifier, type FROM ecc_factionmodifiers WHERE `faction_siteindex` = '".$faction."' AND `skill_id` = ".$details['parent']."";
+          $sql = "SELECT cost_modifier, type FROM ecc_factionmodifiers WHERE `faction_siteindex` = '".mysqli_real_escape_string($UPLINK,$faction)."' AND `skill_id` = ".mysqli_real_escape_string($UPLINK,$details['parent'])."";
           $res = $UPLINK->query($sql);
 
           if(mysqli_num_rows($res) > 0) {

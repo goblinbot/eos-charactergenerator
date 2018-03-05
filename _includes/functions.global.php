@@ -162,7 +162,8 @@ function getCharacterSheets() {
 // Removes Emojis from user input. Yup. This is a thing. (specificly: unicode. 😀🤬✌🏻✌🏻💎 )
 // Named after Silvester, who hilariously discovered you could make full Emoji based characters.
 function silvesterFilter($input = null) {
-  $output = preg_replace("/[^[:alnum:][:space:]]/u", '', $input);
+  // $output = preg_replace("/[^[:alnum:][:space:]]/u", '', $input);
+  $output = $input; //temporarily disabled
   return $output;
 }
 
@@ -216,7 +217,7 @@ function sanitize_spaces($input = null) {
 // spam / escape filter, named after a friend of mine who taught me the importance of filtering user input.
 function huizingfilter($input = null) {
 
-  $triggers    = array('http','tps:/','tp:/',"src=","src =",'<','>','><','.js',';','$','[',']','(',')','@S','@s','GOTO ','DBCC ');
+  $triggers    = array('http','tps:/','tp:/',"src=","src =",'<','>','><','.js',';','$','[',']','@S','@s','GOTO ','DBCC ');
   $error       = false;
 
   foreach ($triggers as $trigger) { // loops through the huizing-huizingtriggertriggertrigger

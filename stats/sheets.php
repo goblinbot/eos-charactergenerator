@@ -67,12 +67,16 @@
   }
 
   if(isset($_POST['updateEventsPlayed']) && $_POST['updateEventsPlayed']) {
-    $newNickname = EMS_echo($_POST['updateEventsPlayed']['value']);
-    $newNickname = silvesterFilter($newNickname);
-    $newNickname = trim($newNickname);
+    $xINPUT = EMS_echo($_POST['updateEventsPlayed']['value']);
+    $xINPUT = (int)$xINPUT;
+
+    if($xINPUT > 20 || $xINPUT < 0) {
+      $xINPUT = 0;
+    }
+
 
     $sql = "UPDATE `ecc_char_sheet`
-      SET `aantal_events` = '".mysqli_real_escape_string($UPLINK,(int)$newNickname)."'
+      SET `aantal_events` = '".mysqli_real_escape_string($UPLINK,(int)$xINPUT)."'
       WHERE `charSheetID` = '".mysqli_real_escape_string($UPLINK,$_GET['viewSheet'])."'
       AND `accountID` = '".mysqli_real_escape_string($UPLINK,$jid)."'";
     $res = $UPLINK->query($sql);

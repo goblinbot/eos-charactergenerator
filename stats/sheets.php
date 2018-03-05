@@ -90,7 +90,7 @@
   <?=generateMenu('characters');?>
 </div>
 
-<div class="main cell" style="flex-direction: column;">
+<div class="main cell">
   <div class="content">
 
     <h1><?=EMS_echo($activeCharacter["character_name"])?>&nbsp;-&nbsp;<?=EMS_echo($activeCharacter["faction"])?></h1>
@@ -335,9 +335,9 @@
 
     ?>
 
+    <div id="customForm" class="row"></div>
   </div>
 
-  <div id="customForm" class="content"></div>
 
 </div>
 

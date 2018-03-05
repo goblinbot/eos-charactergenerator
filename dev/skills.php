@@ -14,13 +14,12 @@
 echo "<div class=\"wsleft cell\">";
 
 if(isset($_POST['updateSkills']) && $_POST['updateSkills'] != "") {
-  // echo "<pre>";
-  // var_dump($_POST['updateSkills']);
-  // echo "</pre>";
+
   foreach($_POST['updateSkills'] AS $key => $value) {
     $sql2 = "UPDATE `ecc_skills_allskills` SET `description` = '".$value['description']."', `label` = '".$value['label']."' WHERE `skill_id` = ".$key.";";
     $res2 = $UPLINK->query($sql2) OR trigger_error(mysqli_error($UPLINK));
   }
+  
 }
 
 echo "</div>";

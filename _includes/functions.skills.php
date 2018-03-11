@@ -32,6 +32,11 @@ function getSkills($select = "newest", $parents = "all") {
   $returnArr = array();
 
   $sql = "SELECT skill_id, label, skill_index, parent, level, version, description FROM `ecc_skills_allskills`";
+
+  if(isset($parents) && $parents != "all" && $parents != "") {
+    $sql .= " WHERE parent = '".$parents."'";
+  }
+
   $res = $UPLINK->query($sql);
   if($res && mysqli_num_rows($res) > 0) {
 
@@ -47,3 +52,9 @@ function getSkills($select = "newest", $parents = "all") {
   }
 }
 // END SILVESTER FUNCTIONS - THANKS!
+
+function getSkillAugs($sheetID = null,$skillIndex = null,$skillLevel = null) {
+
+  global $UPLINK,$jid;
+
+}

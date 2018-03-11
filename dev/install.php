@@ -118,7 +118,6 @@
               (4, 'dugo', 'strong', 12001, -1),
               (5, 'dugo', 'strong', 12003, -1),
               (6, 'dugo', 'weak', 12007, 5),
-              (7, 'ekanesh', 'enable', 12009, 0),
               (8, 'ekanesh', 'weak', 12000, 5),
               (9, 'pendzal', 'strong', 12004, -1),
               (10, 'pendzal', 'strong', 12005, -1),

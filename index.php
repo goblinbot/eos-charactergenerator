@@ -84,7 +84,7 @@
 
         $printresult .=
           "<div class=\"formitem\">"
-            ."<select name=\"newchar\">"
+            ."<select name=\"newchar\" id=\"chooseFactionSelect\">"
               . "<option value=\"aquila\">Aquila</option>"
               . "<option value=\"dugo\">Dugo</option>"
               . "<option value=\"ekanesh\">Ekanesh</option>"
@@ -102,7 +102,7 @@
 
         $printresult .=
           "<div class=\"formitem\">"
-            ."<p>(( korte omschrijving van de factie in 2 tot 5 zinnen. ))</p>"
+            ."<p></p>"
           ."</div>";
 
            // "De Aquilaanse Republiek is een parlementaire democratie waar alle inwoners stemrecht moeten verdienen door dienstbaarheid, veelal in het leger. Hierdoor staan de Legioenen centraal in de maatschappij en zorgt voor een samenleving met plichtbesef, offergezindheid en grote politieke betrokkenheid. De keerzijde is het nodige misplaatste patriottisme en het neerkijken op zij die niet willen dienen, de Mulum. Als Aquilaan vind je spelmogelijkheden op alle lagen behalve misschien economie, vrijwel altijd met een militair tintje en een nadruk op teamwerk boven individueel gewin."

@@ -42,29 +42,53 @@ function updateCharacterInfo($params = array(), $charID = 0) {
 
     if($res && mysqli_num_rows($res) == 1) {
 
+      check4dead($charID);
+
       if(is_array($params) && count($params) > 0) {
 
-        foreach($params as $key => $value){
-
-          $key = sanitize_spaces($key);
-          $value = sanitize_spaces($value);
-
-          huizingfilter($key);
-          huizingfilter($value);
-
-          $key = silvesterFilter($key);
-          $value = silvesterFilter($value);
-
-          // SOMETHING is removing the damn underscores..
-          if($key == 'icbirthday') {
-            $key = 'ic_birthday';
-          }
-          if($key == 'charactername') {
-            $key = 'character_name';
-          }
+        if(isset($params['character_name'])) {
+          $input = EMS_echo($params['character_name']);
+          $input = sanitize_spaces($input);
+          huizingfilter($input);
 
           $sql = "UPDATE `ecc_characters`
-            SET ".$key." = '".mysqli_real_escape_string($UPLINK,$value)."'
+            SET `character_name` = '".mysqli_real_escape_string($UPLINK,$input)."'
+            WHERE characterID = '".mysqli_real_escape_string($UPLINK,(int)$charID)."'
+            AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$jid)."'
+            LIMIT 1";
+          $update = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
+        }
+        if(isset($params['ic_birthday'])) {
+          $input = EMS_echo($params['ic_birthday']);
+          $input = sanitize_spaces($input);
+          huizingfilter($input);
+
+          $sql = "UPDATE `ecc_characters`
+            SET `ic_birthday` = '".mysqli_real_escape_string($UPLINK,$input)."'
+            WHERE characterID = '".mysqli_real_escape_string($UPLINK,(int)$charID)."'
+            AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$jid)."'
+            LIMIT 1";
+          $update = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
+        }
+        if(isset($params['birthplanet'])) {
+          $input = EMS_echo($params['birthplanet']);
+          $input = sanitize_spaces($input);
+          huizingfilter($input);
+
+          $sql = "UPDATE `ecc_characters`
+            SET `birthplanet` = '".mysqli_real_escape_string($UPLINK,$input)."'
+            WHERE characterID = '".mysqli_real_escape_string($UPLINK,(int)$charID)."'
+            AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$jid)."'
+            LIMIT 1";
+          $update = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
+        }
+        if(isset($params['homeplanet'])) {
+          $input = EMS_echo($params['homeplanet']);
+          $input = sanitize_spaces($input);
+          huizingfilter($input);
+
+          $sql = "UPDATE `ecc_characters`
+            SET `homeplanet` = '".mysqli_real_escape_string($UPLINK,$input)."'
             WHERE characterID = '".mysqli_real_escape_string($UPLINK,(int)$charID)."'
             AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$jid)."'
             LIMIT 1";
@@ -110,7 +134,8 @@ function getCharacterSheets() {
 
           foreach($row AS $KEY => $VALUE) {
 
-            $return['characters'][$row['characterID']][$KEY] = silvesterFilter(EMS_echo($VALUE));
+            // $return['characters'][$row['characterID']][$KEY] = silvesterFilter(EMS_echo($VALUE));
+            $return['characters'][$row['characterID']][$KEY] = EMS_echo($VALUE);
 
           }//foreach
 

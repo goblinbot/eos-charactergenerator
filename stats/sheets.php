@@ -51,7 +51,7 @@
 
   if(isset($_POST['updateNickname']) && $_POST['updateNickname']) {
     $newNickname = EMS_echo($_POST['updateNickname']['value']);
-    $newNickname = silvesterFilter($newNickname);
+    // $newNickname = silvesterFilter($newNickname);
     $newNickname = trim($newNickname);
 
     $sql = "UPDATE `ecc_char_sheet`
@@ -178,6 +178,19 @@
 
             echo "</div>";
 
+            if(isset($activeCharacter['sheets'][$_GET['viewSheet']]['status']) && $activeCharacter['sheets'][$_GET['viewSheet']]['status'] == "ontwerp") {
+
+              echo "<div class=\"row\">"
+                ."<div class=\"box33\">"
+                  ."<a class=\"disabled\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&deleteSheet=".$_GET['viewSheet']."\">"
+                    ."<button type=\"button\" class=\"button disabled bar\" name=\"button\"><i class=\"fas fa-trash-alt\"></i>&nbsp;Delete sheet</button>"
+                  ."</a>"
+                ."</div>"
+                ."<div class=\"box33\">NEEDS A CONFIRMATION DIALOGUE</div>"
+                ."<div class=\"box33\"></div>"
+              ."</div>";
+            }
+
             // make place for the handler to play with, when for example changing the character sheet "events played".
             echo "<div class=\"row\">"
               ."<hr style=\"opacity: 0.1; flex: 1; width: 100%;\" />"
@@ -234,7 +247,7 @@
 
                 ."<div class=\"formitem\">"
                   ."<h3>Amount of events played as this character:</h3>"
-                  ."<input name=\"newSheet\" placeholder=\"0\" type=\"number\" min=\"0\" max=\"21\" required=\"required\"></input>"
+                  ."<input name=\"newSheet\" placeholder=\"0\" type=\"number\" value=\"0\" min=\"0\" max=\"21\" required=\"required\"></input>"
                 ."</div>"
 
                 ."<div class=\"formitem\">"
@@ -244,13 +257,13 @@
 
             } else if(isset($_GET['copySheet']) && (int)$_GET['copySheet'] != 0) {
 
-              check4dead($_GET['copySheet']);
+              check4dead($_GET['viewChar']);
               //copy sheet
 
             } else if(isset($_GET['deleteSheet']) && (int)$_GET['deleteSheet'] != 0) {
 
               //delete sheet: validate eerst.
-              $sql = "SELECT charSheetID
+              $sql = "SELECT charSheetID, status
                 FROM `ecc_char_sheet`
                 WHERE accountID = '".mysqli_real_escape_string($UPLINK,$jid)."'
                 AND charSheetID = '".mysqli_real_escape_string($UPLINK,$_GET['deleteSheet'])."'
@@ -258,9 +271,15 @@
               LIMIT 1";
               $res = $UPLINK->query($sql) or trigger_error(mysqli_error($res));
 
+              check4dead($_GET['viewChar']);
+
               if(mysqli_num_rows($res) > 0) {
-                $sql = "DELETE FROM `ecc_char_sheet` WHERE `charSheetID` = '".mysqli_real_escape_string($UPLINK,$_GET['deleteSheet'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,$jid)."'";
-                $res = $UPLINK->query($sql);
+
+                $row = mysqli_fetch_assoc($res);
+                if($row['status'] == 'ontwerp') {
+                  $sql = "DELETE FROM `ecc_char_sheet` WHERE `charSheetID` = '".mysqli_real_escape_string($UPLINK,$_GET['deleteSheet'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,$jid)."'";
+                  $res = $UPLINK->query($sql);
+                }
 
                 header("location: ".$APP['header']."/stats/sheets.php?viewChar=".$activeCharacter['characterID']." ");
                 exit();

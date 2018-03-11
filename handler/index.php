@@ -116,7 +116,8 @@ if(isset($_POST['nickNameForm']) && $_POST['nickNameForm'] != "") {
   $res = $UPLINK->query($sql);
 
   if($res && mysqli_num_rows($res) == 1) {
-    $row = (mysqli_fetch_assoc($res))['nickname'];
+    $row = mysqli_fetch_assoc($res);
+    $row = $row['nickname'];
   } else {
     $row = "";
   }
@@ -149,7 +150,8 @@ if(isset($_POST['EventsPlayedForm']) && $_POST['EventsPlayedForm'] != "") {
   $res = $UPLINK->query($sql);
 
   if($res && mysqli_num_rows($res) == 1) {
-    $row = (mysqli_fetch_assoc($res))['aantal_events'];
+    $row = mysqli_fetch_assoc($res);
+    $row = $row['aantal_events'];
   } else {
     $row = "";
   }
@@ -246,8 +248,8 @@ if(isset($_POST['newImplant']) && $_POST['newImplant'] == true) {
       $value = EMS_echo($value);
         huizingfilter($key);
         huizingfilter($value);
-      $key = silvesterFilter($key);
-      $value = silvesterFilter($value);
+      // $key = silvesterFilter($key);
+      // $value = silvesterFilter($value);
     }
     // END VALIDATIONS
 
@@ -256,7 +258,8 @@ if(isset($_POST['newImplant']) && $_POST['newImplant'] == true) {
 
       $sql = "INSERT INTO `ecc_char_implants`
       (`sheetID`, `accountID`, `type`, `skillgroup_level`, `skillgroup_siteindex`, `status`, `description`)
-      VALUES ('".(int)$NEWIMP['sheet']."', '".(int)$jid."', '".mysqli_real_escape_string($UPLINK,$NEWIMP['type'])."', '0', 'none', 'active', '".mysqli_real_escape_string($UPLINK,$NEWIMP['description'])."')";
+      VALUES
+      ('".(int)$NEWIMP['sheet']."', '".(int)$jid."', '".mysqli_real_escape_string($UPLINK,$NEWIMP['type'])."', '0', 'none', 'active', '".mysqli_real_escape_string($UPLINK,$NEWIMP['description'])."')";
       $xRES = $UPLINK->query($sql) or trigger_error(mysqli_error($xRES));
 
       echo "<p class=\"dialog\"><i class=\"fas fa-check green\"></i>&nbsp;Added new augment. Refreshing...</p>";
@@ -264,7 +267,13 @@ if(isset($_POST['newImplant']) && $_POST['newImplant'] == true) {
     } else if(isset($NEWIMP['type']) && $NEWIMP['type'] == "cybernetic") {
 
       $sql = "INSERT INTO `ecc_char_implants` (
-        `sheetID`, `accountID`, `type`, `skillgroup_level`, `skillgroup_siteindex`, `status`, `description`
+        `sheetID`,
+        `accountID`,
+        `type`,
+        `skillgroup_level`,
+        `skillgroup_siteindex`,
+        `status`,
+        `description`
       ) VALUES (
         '".(int)$NEWIMP['sheet']."',
         '".(int)$jid."',
@@ -281,7 +290,13 @@ if(isset($_POST['newImplant']) && $_POST['newImplant'] == true) {
     } else if(isset($NEWIMP['type']) && $NEWIMP['type'] == "symbiont") {
 
       $sql = "INSERT INTO `ecc_char_implants` (
-        `sheetID`, `accountID`, `type`, `skillgroup_level`, `skillgroup_siteindex`, `status`, `description`
+        `sheetID`,
+        `accountID`,
+        `type`,
+        `skillgroup_level`,
+        `skillgroup_siteindex`,
+        `status`,
+        `description`
       ) VALUES (
         '".(int)$NEWIMP['sheet']."',
         '".(int)$jid."',

@@ -64,7 +64,9 @@
               // is the CHARACTER in design mode, AND is the character SHEET?
               if($character['status'] == 'in design' && $characterSheet['status'] == 'ontwerp') {
 
-
+                // echo "<pre>";
+                // var_dump($characterSheet);
+                // echo "</pre>";
 
               } else {
 
@@ -74,6 +76,33 @@
 
               foreach($skillGroupArr AS $skillGroup) {
                 $printresult .= "<pre>" .$skillGroup['primaryskill_id'] . " / ". $skillGroup['name'] ."</pre>";
+
+                $getSkills = getSkills("newest",$skillGroup['primaryskill_id']);
+
+                foreach($getSkills AS $skills) {
+                  $printresult .= "<pre> - ";
+                  $printresult .= $skills['label'] . ' | ' . $skills['skill_index'] . ' | ' .' lvl '. $skills['level'];
+
+                  if(isset($characterSheet['skills'][$skills['skill_index']]) && $characterSheet['skills'][$skills['skill_index']] != "") {
+                    $printresult .= " XXXXXXXXXXXXXXXXXXXXXX";
+
+                    if($skills['level'] == 5) {
+
+                      $xPSY = $skillGroup['psychic'];
+                      $xPARENT = $skillGroup['siteindex'];
+                      $xSTATUS = $sheetArr["characters"][$_GET['viewChar']]['status'];
+                      $specialtySKILLS = getSkillGroup($xPSY,$xPARENT,$xSTATUS);
+
+                      foreach($specialtySKILLS AS $specialty) {
+                        $printresult .= "<pre> == ".$specialty['name']." UNLOCKED</pre>";
+                      }
+
+                    }
+                  }
+
+                  $printresult .= "</pre>";
+                }
+
               }
 
               $printresult .= "</div>"."<div class=\"half\"></div>"."</div>";

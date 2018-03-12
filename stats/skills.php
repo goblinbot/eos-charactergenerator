@@ -87,6 +87,8 @@
 
                 foreach($skillGroupArr AS $skillGroup) {
 
+                  $printresult2 = "";
+
                   // $printresult .= "<pre>" .$skillGroup['primaryskill_id'] . " / ". $skillGroup['name'] ."</pre>";
                   $printresult .= "<div id=\"sg_".$skillGroup['primaryskill_id']."\" class=\"skillgroup formitem\">";
                   $printresult .= "<label>". $skillGroup['name'] ."</label>"."<br/>";
@@ -97,6 +99,10 @@
                     // $printresult .= "<pre> - ";
                     // $printresult .= $skills['label'] . ' | ' . $skills['skill_index'] . ' | ' .' lvl '. $skills['level'];
                     $printresult .= "[";
+
+                    $checked = "";
+                    $inputfield = "";
+
 
                     if(isset($characterSheet['skills'][$skills['skill_index']]) && $characterSheet['skills'][$skills['skill_index']] != "") {
                       // $printresult .= " XXXXXXXXXXXXXXXXXXXXXX";
@@ -111,6 +117,12 @@
 
                         foreach($specialtySKILLS AS $specialty) {
                           // $printresult .= "<pre> == ".$specialty['name']." UNLOCKED</pre>";
+                          $printresult2 .= "<div id=\"sg_".$specialty['primaryskill_id']."\" class=\"skillgroup formitem\">";
+                          $printresult2 .= "<label>=>&nbsp;". $specialty['name'] ."</label>"."<br/>";
+
+                          $printresult2 .= "[?][?][?][?][?]";
+
+                          $printresult2 .= "</div>";
                         }
 
                       }
@@ -121,10 +133,13 @@
 
                     $printresult .= "]&nbsp;";
 
+
                     // $printresult .= "</pre>";
                   }
 
                   $printresult .= "</div>";
+                  $printresult .= $printresult2;
+                  unset($printresult2);
                 }
 
 
@@ -136,7 +151,7 @@
 
 
               $printresult .= "</div>"
-                ."<div class=\"half\">?</div>"
+                ."<div class=\"half\">Misschien hier een blok reserveren voor skillinfo etc, en hier dan ONDER de specialisaties stoppen???</div>"
               ."</div>"
               ."</form>";
 

@@ -27,6 +27,8 @@
   <div class="content">
   <?php
     $printresult = "";
+    $printRes2 = "";
+
     // check if characters is valid
       if(is_array($sheetArr['characters'])) {
         if(count($sheetArr['characters']) > 0) {
@@ -87,8 +89,6 @@
 
                 foreach($skillGroupArr AS $skillGroup) {
 
-                  $printresult2 = "";
-
                   // $printresult .= "<pre>" .$skillGroup['primaryskill_id'] . " / ". $skillGroup['name'] ."</pre>";
                   $printresult .= "<div id=\"sg_".$skillGroup['primaryskill_id']."\" class=\"skillgroup formitem\">";
                   $printresult .= "<label>". $skillGroup['name'] ."</label>"."<br/>";
@@ -117,12 +117,12 @@
 
                         foreach($specialtySKILLS AS $specialty) {
                           // $printresult .= "<pre> == ".$specialty['name']." UNLOCKED</pre>";
-                          $printresult2 .= "<div id=\"sg_".$specialty['primaryskill_id']."\" class=\"skillgroup formitem\">";
-                          $printresult2 .= "<label>=>&nbsp;". $specialty['name'] ."</label>"."<br/>";
+                          $printRes2 .= "<div id=\"sg_".$specialty['primaryskill_id']."\" class=\"skillgroup formitem\">";
+                          $printRes2 .= "<label>=&nbsp;". $specialty['name'] ."</label>"."<br/>";
 
-                          $printresult2 .= "[?][?][?][?][?]";
+                          $printRes2 .= "[?][?][?][?][?]";
 
-                          $printresult2 .= "</div>";
+                          $printRes2 .= "</div>";
                         }
 
                       }
@@ -138,8 +138,8 @@
                   }
 
                   $printresult .= "</div>";
-                  $printresult .= $printresult2;
-                  unset($printresult2);
+                  // $printresult .= $printRes2;
+                  // unset($printRes2);
                 }
 
 
@@ -151,7 +151,11 @@
 
 
               $printresult .= "</div>"
-                ."<div class=\"half\">Misschien hier een blok reserveren voor skillinfo etc, en hier dan ONDER de specialisaties stoppen???</div>"
+                ."<div class=\"half\">"
+                  ."<div class=\"dialog\">Misschien hier een blok reserveren voor skillinfo etc, en hier dan ONDER de specialisaties stoppen???</div>"
+                  ."<hr/>"
+                  . $printRes2
+                ."</div>"
               ."</div>"
               ."</form>";
 

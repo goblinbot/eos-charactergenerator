@@ -127,6 +127,22 @@ function SH_animateFormDiv(printresult) {
   },750);
 }
 
+function switchFactionBlurb(factionName) {
+
+	var target = $('.factionblurb');
+
+	if(target.html() != "" && factionName && factionName != "") {
+		target.hide();
+
+		$("#fct_"+factionName).fadeIn();
+
+		return true;
+	}
+
+}
+
+
+
 /* ********************************************** *//* ********************************************** */
 /* Internet's single most stolen cookie functions *//* ********************************************** */
 /* ********************************************** *//* ********************************************** */

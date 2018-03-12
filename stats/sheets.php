@@ -29,7 +29,7 @@
 
           if(!isset($activeCharacter['sheets'][$_GET['viewSheet']]['status']) || $activeCharacter['sheets'][$_GET['viewSheet']]['status'] != 'noskill') {
             $activeCharacter['sheets'][$_GET['viewSheet']]['exp_total'] = calcTotalExp($activeCharacter['sheets'][$_GET['viewSheet']]['aantal_events']);
-            $activeCharacter['sheets'][$_GET['viewSheet']]['exp_used'] = calcUsedExp($activeCharacter['sheets'][$_GET['viewSheet']]['skills'], $activeCharacter['faction']);
+            $activeCharacter['sheets'][$_GET['viewSheet']]['exp_used'] = calcUsedExp(EMS_echo($activeCharacter['sheets'][$_GET['viewSheet']]['skills']), $activeCharacter['faction']);
           }
 
         } else {
@@ -178,18 +178,18 @@
 
             echo "</div>";
 
-            if(isset($activeCharacter['sheets'][$_GET['viewSheet']]['status']) && $activeCharacter['sheets'][$_GET['viewSheet']]['status'] == "ontwerp") {
-
-              echo "<div class=\"row\">"
-                ."<div class=\"box33\">"
-                  ."<a class=\"disabled\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&deleteSheet=".$_GET['viewSheet']."\">"
-                    ."<button type=\"button\" class=\"button disabled bar\" name=\"button\"><i class=\"fas fa-trash-alt\"></i>&nbsp;Delete sheet</button>"
-                  ."</a>"
-                ."</div>"
-                ."<div class=\"box33\">NEEDS A CONFIRMATION DIALOGUE</div>"
-                ."<div class=\"box33\"></div>"
-              ."</div>";
-            }
+            // if(isset($activeCharacter['sheets'][$_GET['viewSheet']]['status']) && $activeCharacter['sheets'][$_GET['viewSheet']]['status'] == "ontwerp") {
+            //
+            //   echo "<div class=\"row\">"
+            //     ."<div class=\"box33\">"
+            //       ."<a class=\"disabled\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&deleteSheet=".$_GET['viewSheet']."\">"
+            //         ."<button type=\"button\" class=\"button disabled bar\" name=\"button\"><i class=\"fas fa-trash-alt\"></i>&nbsp;Delete sheet</button>"
+            //       ."</a>"
+            //     ."</div>"
+            //     ."<div class=\"box33\">NEEDS A CONFIRMATION DIALOGUE</div>"
+            //     ."<div class=\"box33\"></div>"
+            //   ."</div>";
+            // }
 
             // make place for the handler to play with, when for example changing the character sheet "events played".
             echo "<div class=\"row\">"
@@ -260,30 +260,30 @@
               check4dead($_GET['viewChar']);
               //copy sheet
 
-            } else if(isset($_GET['deleteSheet']) && (int)$_GET['deleteSheet'] != 0) {
+            // } else if(isset($_GET['deleteSheet']) && (int)$_GET['deleteSheet'] != 0) {
 
               //delete sheet: validate eerst.
-              $sql = "SELECT charSheetID, status
-                FROM `ecc_char_sheet`
-                WHERE accountID = '".mysqli_real_escape_string($UPLINK,$jid)."'
-                AND charSheetID = '".mysqli_real_escape_string($UPLINK,$_GET['deleteSheet'])."'
-                AND characterID = '".mysqli_real_escape_string($UPLINK,$_GET['viewChar'])."'
-              LIMIT 1";
-              $res = $UPLINK->query($sql) or trigger_error(mysqli_error($res));
-
-              check4dead($_GET['viewChar']);
-
-              if(mysqli_num_rows($res) > 0) {
-
-                $row = mysqli_fetch_assoc($res);
-                if($row['status'] == 'ontwerp') {
-                  $sql = "DELETE FROM `ecc_char_sheet` WHERE `charSheetID` = '".mysqli_real_escape_string($UPLINK,$_GET['deleteSheet'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,$jid)."'";
-                  $res = $UPLINK->query($sql);
-                }
-
-                header("location: ".$APP['header']."/stats/sheets.php?viewChar=".$activeCharacter['characterID']." ");
-                exit();
-              }
+              // $sql = "SELECT charSheetID, status
+              //   FROM `ecc_char_sheet`
+              //   WHERE accountID = '".mysqli_real_escape_string($UPLINK,$jid)."'
+              //   AND charSheetID = '".mysqli_real_escape_string($UPLINK,$_GET['deleteSheet'])."'
+              //   AND characterID = '".mysqli_real_escape_string($UPLINK,$_GET['viewChar'])."'
+              // LIMIT 1";
+              // $res = $UPLINK->query($sql) or trigger_error(mysqli_error($res));
+              //
+              // check4dead($_GET['viewChar']);
+              //
+              // if(mysqli_num_rows($res) > 0) {
+              //
+              //   $row = mysqli_fetch_assoc($res);
+              //   if($row['status'] == 'ontwerp') {
+              //     $sql = "DELETE FROM `ecc_char_sheet` WHERE `charSheetID` = '".mysqli_real_escape_string($UPLINK,$_GET['deleteSheet'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,$jid)."'";
+              //     $res = $UPLINK->query($sql);
+              //   }
+              //
+              //   header("location: ".$APP['header']."/stats/sheets.php?viewChar=".$activeCharacter['characterID']." ");
+              //   exit();
+              // }
 
             } else {
 

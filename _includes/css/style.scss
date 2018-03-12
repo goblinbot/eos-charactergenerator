@@ -528,6 +528,30 @@ button, .button {
   .half {
     flex: 1;
   }
+
+  .skillgroup {
+
+    width: 100%;
+
+    label {
+      text-transform: uppercase;
+      font-family: $fontbold;
+    }
+
+  }
+}
+
+.expbar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  .counter {
+    margin: 0 1.5rem 0.5rem 0;
+    padding: 0.8rem;
+    border-radius: 5px;
+    font-size: 2.2rem;
+    background: $medi;
+  }
 }
 
 // faction blurb

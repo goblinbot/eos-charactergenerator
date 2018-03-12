@@ -36,6 +36,15 @@
             $character = $sheetArr["characters"][$_GET['viewChar']];
             $characterSheet = getFullCharSheet($_GET['viewSheet']);
 
+            // calc skills
+            $exp = array();
+            $exp['exp_total'] = calcTotalExp($characterSheet['aantal_events']);
+            // if(isset($characterSheet['skills']) && $characterSheet['skills'] != "") {
+              $exp['exp_used'] = calcUsedExp(EMS_echo($characterSheet['skills']), $character['faction']);
+            // } else {
+            //   $exp['exp_used'] = 0;
+            // }
+
             $isPsychic = $character['psychic'];
             $hasParent = "none";
             $isCurrent = $sheetArr["characters"][$_GET['viewChar']]['status'];
@@ -47,19 +56,27 @@
             } else {
               $printresult .= "<h1><strong>skills:</strong>&nbsp;[character name] - ".$character['faction']."</h1>";
             }
+            $printresult .= "<div class=\"row\">"
+                            . "<div class=\"expbar\">"
+                              . "<div class=\"counter\">Exp&nbsp;total:&nbsp;".$exp['exp_total']."</div>"
+                              . "<div class=\"counter\" id=\"EXPUSED\">Exp&nbsp;used:&nbsp;".$exp['exp_used']."</div>"
+                            . "</div>"
+                          . "</div>";
+
             // Back button
             $printresult .= "<div class=\"row\">"
-                ."<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
-                  ."<button><i class=\"fas fa-arrow-left\"></i>&nbsp;Back</button>"
-                ."</a>"
-              ."</div>"
-            ."<hr/>";
+                            ."<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
+                              ."<button><i class=\"fas fa-arrow-left\"></i>&nbsp;Back</button>"
+                            ."</a>"
+                          ."</div>"
+                        ."<hr/>";
 
             // check for sheet, then check for status
             if(isset($characterSheet) && $characterSheet != "") {
 
-              $printresult .= "<div class=\"row skillbox\">"
-              . "<div class=\"half\">";
+              $printresult .= "<form id=\"skillsheet\" method=\"post\" action=\"skills.php\">"
+                . "<div class=\"row skillbox\">"
+                  . "<div class=\"half\">";
 
               // is the CHARACTER in design mode, AND is the character SHEET?
               if($character['status'] == 'in design' && $characterSheet['status'] == 'ontwerp') {
@@ -68,44 +85,60 @@
                 // var_dump($characterSheet);
                 // echo "</pre>";
 
+                foreach($skillGroupArr AS $skillGroup) {
+
+                  // $printresult .= "<pre>" .$skillGroup['primaryskill_id'] . " / ". $skillGroup['name'] ."</pre>";
+                  $printresult .= "<div id=\"sg_".$skillGroup['primaryskill_id']."\" class=\"skillgroup formitem\">";
+                  $printresult .= "<label>". $skillGroup['name'] ."</label>"."<br/>";
+
+                  $getSkills = getSkills("newest",$skillGroup['primaryskill_id']);
+
+                  foreach($getSkills AS $skills) {
+                    // $printresult .= "<pre> - ";
+                    // $printresult .= $skills['label'] . ' | ' . $skills['skill_index'] . ' | ' .' lvl '. $skills['level'];
+                    $printresult .= "[";
+
+                    if(isset($characterSheet['skills'][$skills['skill_index']]) && $characterSheet['skills'][$skills['skill_index']] != "") {
+                      // $printresult .= " XXXXXXXXXXXXXXXXXXXXXX";
+                      $printresult .= "X";
+
+                      if($skills['level'] == 5) {
+
+                        $xPSY = $skillGroup['psychic'];
+                        $xPARENT = $skillGroup['siteindex'];
+                        $xSTATUS = $sheetArr["characters"][$_GET['viewChar']]['status'];
+                        $specialtySKILLS = getSkillGroup($xPSY,$xPARENT,$xSTATUS);
+
+                        foreach($specialtySKILLS AS $specialty) {
+                          // $printresult .= "<pre> == ".$specialty['name']." UNLOCKED</pre>";
+                        }
+
+                      }
+
+                    } else {
+                      $printresult .= "_";
+                    }
+
+                    $printresult .= "]&nbsp;";
+
+                    // $printresult .= "</pre>";
+                  }
+
+                  $printresult .= "</div>";
+                }
+
+
               } else {
 
                 // STATUS  NIET IN ONTWERP MODUS
 
               }
 
-              foreach($skillGroupArr AS $skillGroup) {
-                $printresult .= "<pre>" .$skillGroup['primaryskill_id'] . " / ". $skillGroup['name'] ."</pre>";
 
-                $getSkills = getSkills("newest",$skillGroup['primaryskill_id']);
-
-                foreach($getSkills AS $skills) {
-                  $printresult .= "<pre> - ";
-                  $printresult .= $skills['label'] . ' | ' . $skills['skill_index'] . ' | ' .' lvl '. $skills['level'];
-
-                  if(isset($characterSheet['skills'][$skills['skill_index']]) && $characterSheet['skills'][$skills['skill_index']] != "") {
-                    $printresult .= " XXXXXXXXXXXXXXXXXXXXXX";
-
-                    if($skills['level'] == 5) {
-
-                      $xPSY = $skillGroup['psychic'];
-                      $xPARENT = $skillGroup['siteindex'];
-                      $xSTATUS = $sheetArr["characters"][$_GET['viewChar']]['status'];
-                      $specialtySKILLS = getSkillGroup($xPSY,$xPARENT,$xSTATUS);
-
-                      foreach($specialtySKILLS AS $specialty) {
-                        $printresult .= "<pre> == ".$specialty['name']." UNLOCKED</pre>";
-                      }
-
-                    }
-                  }
-
-                  $printresult .= "</pre>";
-                }
-
-              }
-
-              $printresult .= "</div>"."<div class=\"half\"></div>"."</div>";
+              $printresult .= "</div>"
+                ."<div class=\"half\">?</div>"
+              ."</div>"
+              ."</form>";
 
             } else {
 

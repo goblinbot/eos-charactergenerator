@@ -27,7 +27,6 @@ function getFullCharSheet($sheetID = null) {
 
         while($row = mysqli_fetch_assoc($res)){
 
-
           $xSQL = "SELECT label, skill_index, parent, level
             FROM ecc_skills_allskills
             WHERE skill_id = '".(int)$row['skill_id']."'";
@@ -55,9 +54,7 @@ function getFullCharSheet($sheetID = null) {
     // no character requested.
   }
 
-
   return $returnArr;
-
 }
 
 function calcTotalExp($eventCount = 0){

@@ -15,7 +15,13 @@ function getSkillGroup($psychic = NULL, $parents = NULL, $status = NULL) {
     $SKILLSTATUS = "AND status='active' OR status='alpha' OR status='beta'";
   }
 
-  $sql = "SELECT primaryskill_id, name, siteindex, psychic, parents, status FROM `ecc_skills_groups` WHERE psychic='".$psychic."' AND parents='".$parents."' $SKILLSTATUS ORDER BY name ASC";
+  if(isset($psychic) && $psychic != 'true') {
+    $PSYSTATUS = "psychic = 'false' AND";
+  } else {
+    $PSYSTATUS = "";
+  }
+
+  $sql = "SELECT primaryskill_id, name, siteindex, psychic, parents, status FROM `ecc_skills_groups` WHERE ".$PSYSTATUS." parents='".$parents."' $SKILLSTATUS ORDER BY name ASC";
   $res = $UPLINK->query($sql);
   if($res && mysqli_num_rows($res) > 0) {
 

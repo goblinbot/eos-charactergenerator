@@ -120,7 +120,7 @@
                           $printRes2 .= "<div id=\"sg_".$specialty['primaryskill_id']."\" class=\"skillgroup formitem\">";
                           $printRes2 .= "<label>=&nbsp;". $specialty['name'] ."</label>"."<br/>";
 
-                          $printRes2 .= "[?][?][?][?][?]";
+                          $printRes2 .= "[?]&nbsp;[?]&nbsp;[?]&nbsp;[?]&nbsp;[?]";
 
                           $printRes2 .= "</div>";
                         }

@@ -54,7 +54,7 @@
 
         <h2><i class="fas fa-info-circle"></i>&nbsp;Symbionts, prosthetics, cybernetics, and other implants.</h2>
 
-        <p>Here you can manage any form of augmentation your character could have.<br/>For the full ruling on augmentations and the sorts, see <a class="cyan underline" href="http://eosfrontier.space/handboeken/boek-2-crafting-economy" target="_blank">rulebook 2 (opens in a new tab)</a>.</p>
+        <p>Here you can manage any form of augmentation your character could have.<br/>For the full ruling on augmentations and the sorts, see <a class="cyan underline" href="http://www.eosfrontier.space/handboeken/boek-2-crafting-economy" target="_blank">rulebook 2 (opens in a new tab)</a>.</p>
         <br/>
 
         <button class="button" onclick="ecc_setCookie('implantDialog','hide','3');$(this).parent().fadeOut();">

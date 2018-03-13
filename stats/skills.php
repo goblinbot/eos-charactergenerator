@@ -17,7 +17,15 @@
   }
 
 ?>
-<div class="wsleft cell"></div>
+<div class="wsleft cell">
+  <h1>#1: CSS SUB GRID GEBRUIKEN IN MAIN</h1>
+    <hr/>
+  <h1>#2: IDENTIEKE DIV/INPUTS MAKEN OM INTERACTIVE/VASTE TE SPLITTEN</h1>
+    <hr/>
+  <h1>#3: + EN -</h1>
+    <hr/>
+  <h1>#4: GETIMPLANTS()</h1>
+</div>
 
 <div class="menu cell">
   <?=generateMenu('characters');?>
@@ -89,14 +97,13 @@
 
                 foreach($skillGroupArr AS $skillGroup) {
 
-                  // $printresult .= "<pre>" .$skillGroup['primaryskill_id'] . " / ". $skillGroup['name'] ."</pre>";
                   $printresult .= "<div id=\"sg_".$skillGroup['primaryskill_id']."\" class=\"skillgroup formitem\">";
                   $printresult .= "<label>". $skillGroup['name'] ."</label>"."<br/>";
 
                   $getSkills = getSkills("newest",$skillGroup['primaryskill_id']);
 
                   foreach($getSkills AS $skills) {
-                    // $printresult .= "<pre> - ";
+
                     // $printresult .= $skills['label'] . ' | ' . $skills['skill_index'] . ' | ' .' lvl '. $skills['level'];
                     $printresult .= "[";
 
@@ -105,7 +112,7 @@
 
 
                     if(isset($characterSheet['skills'][$skills['skill_index']]) && $characterSheet['skills'][$skills['skill_index']] != "") {
-                      // $printresult .= " XXXXXXXXXXXXXXXXXXXXXX";
+
                       $printresult .= "X";
 
                       if($skills['level'] == 5) {
@@ -133,8 +140,6 @@
 
                     $printresult .= "]&nbsp;";
 
-
-                    // $printresult .= "</pre>";
                   }
 
                   $printresult .= "</div>";
@@ -152,8 +157,8 @@
 
               $printresult .= "</div>"
                 ."<div class=\"half\">"
-                  ."<div class=\"dialog\">Misschien hier een blok reserveren voor skillinfo etc, en hier dan ONDER de specialisaties stoppen???</div>"
-                  ."<hr/>"
+                  ."<div class=\"dialog\"><h2>Skill</h2><h3>[ Name LVL 0 ]</h3><hr/><p>Hier een blok reserveren voor skillinfo etc, en hier dan ONDER de specialisaties stoppen?</p></div>"
+                  ."<hr style=\"opacity: 0.25;\"/>"
                   . $printRes2
                 ."</div>"
               ."</div>"

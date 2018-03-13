@@ -7,7 +7,7 @@ function IM_chooseType(char,sheet) {
 
   activeImplantDiv.fadeOut();
 
-  var printresult = "<h2>Choose a type of augmentation</h2><hr/><br/>"
+  let printresult = "<h2>Choose a type of augmentation</h2><hr/><br/>"
   + "<div class=\"row flexcolumn\">"
     + "<button class=\"button no-bg\" style=\"font-size: 1.6rem; margin-bottom: 1.8rem;\" onclick=\"IM_creationForm('cybernetic','"+char+"','"+sheet+"');return false;\"><i class=\"fas fa-microchip cyan\"></i>&nbsp;Skill-based&nbsp;Cybernetic</button>"
     + "<button class=\"button no-bg\" style=\"font-size: 1.6rem; margin-bottom: 1.8rem;\" onclick=\"IM_creationForm('symbiont','"+char+"','"+sheet+"');return false;\"><i class=\"fas fa-bug green\"></i>&nbsp;Skill-based&nbsp;Symbiont</button>"
@@ -15,14 +15,13 @@ function IM_chooseType(char,sheet) {
   + "</div>"
 
   IM_animateFormDiv(printresult);
-  printresult = "";
 
 }
 
 /* create an implant: form. */
 function IM_creationForm(type,char,sheet) {
 
-  var postdata = {
+  let postdata = {
     "type" : type,
     "char" : char,
     "sheet": sheet
@@ -47,9 +46,8 @@ function IM_creationForm(type,char,sheet) {
 
 /* help/info tab */
 function IM_showHelp() {
-  var printresult = "<h2><i class=\"fas fa-info-circle\"></i>&nbsp;Nice find. This message only shows, because you forced it to. You monster. [ERR 702]</h2>";
+  let printresult = "<h2><i class=\"fas fa-info-circle\"></i>&nbsp;Nice find. This message only shows, because you forced it to. You monster. [ERR 702]</h2>";
   IM_animateFormDiv(printresult);
-  printresult = "";
 }
 
 /* function to animate the form div, just so I don't have to repeat myself three times. */
@@ -69,7 +67,7 @@ function IM_animateFormDiv(printresult) {
 /* submit the implantform */
 function IM_submitNewImplant() {
 
-  var postdata = $(implantFormDiv).find('form').serialize();
+  let postdata = $(implantFormDiv).find('form').serialize();
 
   $.ajax({
     type: 'post',
@@ -92,7 +90,7 @@ function IM_removeImplant(sheetID,modifierID) {
 
   activeImplantDiv.fadeOut();
 
-  var postdata = {
+  let postdata = {
     "aug" : modifierID,
     "sheet": sheetID
   };

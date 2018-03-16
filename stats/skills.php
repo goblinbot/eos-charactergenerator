@@ -18,13 +18,16 @@
 
 ?>
 <div class="wsleft cell">
-  <h1>#1: CSS SUB GRID GEBRUIKEN IN MAIN</h1>
+  <?php /*
+  <!-- <h1>#1: CSS SUB GRID GEBRUIKEN IN MAIN</h1>
     <hr/>
   <h1>#2: IDENTIEKE DIV/INPUTS MAKEN OM INTERACTIVE/VASTE TE SPLITTEN</h1>
     <hr/>
   <h1>#3: + EN -</h1>
     <hr/>
-  <h1>#4: GETIMPLANTS()</h1>
+  <h1>#4: GETIMPLANTS()</h1> -->
+
+  */?>
 </div>
 
 <div class="menu cell">
@@ -49,11 +52,16 @@
             // calc skills
             $exp = array();
             $exp['exp_total'] = calcTotalExp($characterSheet['aantal_events']);
-            // if(isset($characterSheet['skills']) && $characterSheet['skills'] != "") {
-              $exp['exp_used'] = calcUsedExp(EMS_echo($characterSheet['skills']), $character['faction']);
-            // } else {
-            //   $exp['exp_used'] = 0;
-            // }
+            $exp['exp_used'] = calcUsedExp(EMS_echo($characterSheet['skills']), $character['faction']);
+
+            // faction skills [strong/weak]
+            $factionMod = getFactionModifiers($character['faction']);
+            $augmentations = getSkillAugs($_GET['viewSheet']);
+
+            // echo "<pre>";
+            // var_dump($factionMod);
+            // echo "</pre>";
+            // exit();
 
             $isPsychic = $character['psychic'];
             $hasParent = "none";
@@ -66,20 +74,25 @@
             } else {
               $printresult .= "<h1><strong>skills:</strong>&nbsp;[character name] - ".$character['faction']."</h1>";
             }
-            $printresult .= "<div class=\"row\">"
-                            . "<div class=\"expbar\">"
-                              . "<div class=\"counter\">Exp&nbsp;total:&nbsp;".$exp['exp_total']."</div>"
-                              . "<div class=\"counter\" id=\"EXPUSED\">Exp&nbsp;used:&nbsp;".$exp['exp_used']."</div>"
-                            . "</div>"
-                          . "</div>";
 
-            // Back button
-            $printresult .= "<div class=\"row\">"
-                            ."<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
-                              ."<button><i class=\"fas fa-arrow-left\"></i>&nbsp;Back</button>"
-                            ."</a>"
-                          ."</div>"
-                        ."<hr/>";
+            // exp bar && Back button
+            $printresult .=
+              "<div class=\"row\">"
+                . "<div class=\"expbar\">"
+                    // ."<i class=\"fa fa-cog\"></i>&nbsp;EXP :&nbsp;"
+                    ."EXP :&nbsp;"
+                    ."<span id=\"expUsed\">".$exp['exp_used']."</span>"
+                      ."&nbsp;/&nbsp;"
+                    . "<span id=\"expTotal\">".$exp['exp_total']."</span>"
+
+                  ."<a style=\"float:right;\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
+                    ."<button><i class=\"fas fa-arrow-left\"></i>&nbsp;Back</button>"
+                  ."</a>"
+
+                . "</div>"
+              . "</div>"
+              . "<hr style=\"opacity: 0.5;\"/>";
+
 
             // check for sheet, then check for status
             if(isset($characterSheet) && $characterSheet != "") {
@@ -91,21 +104,49 @@
               // is the CHARACTER in design mode, AND is the character SHEET?
               if($character['status'] == 'in design' && $characterSheet['status'] == 'ontwerp') {
 
-                // echo "<pre>";
-                // var_dump($characterSheet);
-                // echo "</pre>";
-
                 foreach($skillGroupArr AS $skillGroup) {
 
                   $printresult .= "<div id=\"sg_".$skillGroup['primaryskill_id']."\" class=\"skillgroup formitem\">";
-                  $printresult .= "<label>". $skillGroup['name'] ."</label>"."<br/>";
+
+                  $xCLASS = "";
+                  if(isset($factionMod[(int)$skillGroup['primaryskill_id']]) && $factionMod[(int)$skillGroup['primaryskill_id']] != "") {
+                    if($factionMod[(int)$skillGroup['primaryskill_id']]['type'] == 'strong') {
+                      $xCLASS = 'class="strong" ';
+                    } else if ($factionMod[(int)$skillGroup['primaryskill_id']]['type'] == 'weak') {
+                      $xCLASS = 'class="weak" ';
+                    }
+                  }
+
+                  $printresult .= "<label ".$xCLASS.">". $skillGroup['name'] ."</label>"."<br/>";
 
                   $getSkills = getSkills("newest",$skillGroup['primaryskill_id']);
+
+                  // set the skills in a session to access this in the handler later.
+                  $_SESSION['skill'][$skillGroup['primaryskill_id']] = $getSkills;
+
+                  $printresult .= "<div class=\"flex1\">";
 
                   foreach($getSkills AS $skills) {
 
                     // $printresult .= $skills['label'] . ' | ' . $skills['skill_index'] . ' | ' .' lvl '. $skills['level'];
-                    $printresult .= "[";
+
+                    // open the input
+                    $printresult .= "<input type=\"checkbox\""
+                    ." onmouseover=\"skillTooltip(this);\""
+                    ." onclick=\"toggleSkillBoxes(this);\""
+                    ." name=\"skillform[skill]['".$skills['skill_id']."']\""
+                    ." class=\"skillcheck\""
+                    ." data-siteindex=\"".$skills['skill_index']."\""
+                    ." data-level=\"".(int)$skills['level']."\""
+                    ." data-skillgroup=\"".(int)$skillGroup['primaryskill_id']."\" ";
+
+                    if($skills['level'] == 1) {
+                      if(isset($factionMod[(int)$skillGroup['primaryskill_id']]) && $factionMod[(int)$skillGroup['primaryskill_id']] != "") {
+
+                        $printresult .= " data-expmodifier=\"".$factionMod[(int)$skillGroup['primaryskill_id']]['cost_modifier']."\" ";
+
+                      }
+                    }
 
                     $checked = "";
                     $inputfield = "";
@@ -113,7 +154,7 @@
 
                     if(isset($characterSheet['skills'][$skills['skill_index']]) && $characterSheet['skills'][$skills['skill_index']] != "") {
 
-                      $printresult .= "X";
+                      $printresult .= " checked=\"checked\" ";
 
                       if($skills['level'] == 5) {
 
@@ -123,25 +164,58 @@
                         $specialtySKILLS = getSkillGroup($xPSY,$xPARENT,$xSTATUS);
 
                         foreach($specialtySKILLS AS $specialty) {
+
+                          $getSpecialty = getSkills("newest",$specialty['primaryskill_id']);
+
+                          // set the skills in a session for later access in the handler.
+                          $_SESSION['skill'][$skillGroup['primaryskill_id']] = $getSpecialty;
+
                           // $printresult .= "<pre> == ".$specialty['name']." UNLOCKED</pre>";
                           $printRes2 .= "<div id=\"sg_".$specialty['primaryskill_id']."\" class=\"skillgroup formitem\">";
-                          $printRes2 .= "<label>=&nbsp;". $specialty['name'] ."</label>"."<br/>";
+                          $printRes2 .= "<label>". $specialty['name'] ."</label>"."<br/>";
+                          $printRes2 .= "<div class=\"flex1\">";
 
-                          $printRes2 .= "[?]&nbsp;[?]&nbsp;[?]&nbsp;[?]&nbsp;[?]";
+                          foreach($getSpecialty AS $Xspecialty) {
 
+                            $printRes2 .= "<input type=\"checkbox\""
+                              ." onmouseover=\"skillTooltip(this);\""
+                              ." onclick=\"toggleSkillBoxes(this);\""
+                              ." name=\"skillform[skill]['".$Xspecialty['skill_id']."']\""
+                              ." class=\"skillcheck specialty\""
+                              ." data-siteindex=\"".$Xspecialty['skill_index']."\" "
+                              ." data-level=\"".(int)$Xspecialty['level']."\""
+                              ." data-skillgroup=\"".(int)$specialty['primaryskill_id']."\" ";
+
+
+                            if(isset($characterSheet['skills'][$Xspecialty['skill_index']]) && $characterSheet['skills'][$Xspecialty['skill_index']] != "") {
+
+                              $printRes2 .= " checked=\"checked\" ";
+
+                            }
+
+                            // close the input
+                            $printRes2 .= "/>&nbsp;";
+
+                          }
+
+                          $printRes2 .= "</div>"; //flex 1
                           $printRes2 .= "</div>";
+
+                          unset($getSpecialty);
                         }
 
                       }
 
                     } else {
-                      $printresult .= "_";
+                      // $printresult .= "_";
                     }
 
-                    $printresult .= "]&nbsp;";
+                    // close the input
+                    $printresult .= "/>&nbsp;";
 
                   }
 
+                  $printresult .= "</div>"; //flex1
                   $printresult .= "</div>";
                   // $printresult .= $printRes2;
                   // unset($printRes2);
@@ -156,12 +230,38 @@
 
 
               $printresult .= "</div>"
-                ."<div class=\"half\">"
-                  ."<div class=\"dialog\"><h2>Skill</h2><h3>[ Name LVL 0 ]</h3><hr/><p>Hier een blok reserveren voor skillinfo etc, en hier dan ONDER de specialisaties stoppen?</p></div>"
-                  ."<hr style=\"opacity: 0.25;\"/>"
-                  . $printRes2
-                ."</div>"
-              ."</div>"
+              . "<div class=\"half\">";
+
+              $printresult .= "<div class=\"dialog\">"
+                    ."<h2>Skill</h2>"
+                    ."<h3>[ Name LVL 0 ]</h3>"
+                    ."<hr/>"
+                    ."<p>Skills ARE in a session now, BUT with zero skills we're getting zero results? Look this up..</p>"
+                  ."</div>";
+
+              // $printresult .=
+              //   "<div class=\"row\">"
+              //     . "<div class=\"expbar\">"
+              //       . "<div class=\"counter\">"
+              //           // ."<i class=\"fa fa-cog\"></i>&nbsp;EXP :&nbsp;"
+              //           ."EXP :&nbsp;"
+              //           ."<span id=\"expUsed\">".$exp['exp_used']."</span>"
+              //             ."&nbsp;/&nbsp;"
+              //           . "<span id=\"expTotal\">".$exp['exp_total']."</span>"
+              //         ."</div>"
+              //     . "</div>"
+              //   . "</div>";
+
+
+
+              $printresult .= "<hr style=\"opacity: 0.25;\"/>"
+                . $printRes2
+              . "</div>";
+
+
+
+              $printresult .=
+                "</div>"
               ."</form>";
 
             } else {
@@ -189,7 +289,16 @@
   </div>
 </div>
 
-<div class="wsright cell"></div>
+<div class="wsright cell">
+  <?php
+    // echo "<pre>";
+    // var_dump($_SESSION['skill']);
+    // echo "</pre>";
+  ?>
+</div>
 
 <?php
   include_once($APP["root"] . "/footer.php");
+  ?>
+  <script type="text/javascript" src="<?=$APP['header']?>/_includes/js/functions.skills.js"></script>
+  <?php

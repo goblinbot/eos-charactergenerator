@@ -59,8 +59,43 @@ function getSkills($select = "newest", $parents = "all") {
 }
 // END SILVESTER FUNCTIONS - THANKS!
 
-function getSkillAugs($sheetID = null,$skillIndex = null,$skillLevel = null) {
+function getSkillAugs($sheetID = null) {
 
   global $UPLINK,$jid;
+
+}
+
+function getFactionModifiers($faction) {
+
+  global $UPLINK;
+
+  if(isset($faction)) {
+    $faction = strtolower($faction);
+
+    // validate faction
+    if($faction == "aquila" || $faction == "dugo" || $faction == "ekanesh" || $faction == "pendzal" || $faction == "sona") {
+
+      $sql = "SELECT type, skill_id, cost_modifier FROM `ecc_factionmodifiers` WHERE faction_siteindex = '".mysqli_real_escape_string($UPLINK,$faction)."'";
+      $res = $UPLINK->query($sql);
+      if($res && mysqli_num_rows($res) > 0) {
+
+        $returnArr = array();
+
+        while($row = mysqli_fetch_assoc($res)){
+          $returnArr[$row['skill_id']] = array();
+          $returnArr[$row['skill_id']]['type'] = $row['type'];
+          $returnArr[$row['skill_id']]['cost_modifier'] = $row['cost_modifier'];
+        }
+        return $returnArr;
+      }
+
+    } else {
+      echo "<h1>[ERROR 622] NO VALID FACTION</h1>";
+      exit();
+    }
+  } else {
+    echo "<h1>[ERROR 623] NO FACTION SELECTED</h1>";
+    exit();
+  }
 
 }

@@ -11,6 +11,7 @@ $wit   : #ccd1dd; // text color
 $green : #31e184;
 $cyan  : #38e8de;
 $blue  : #386ae8;
+$tomato : tomato;
 
 // button detail colors.
 $btnshadow   : $bg;
@@ -132,10 +133,18 @@ a {
   }
 }
 
+.tomato {
+  color: $tomato;
+}
+
 hr {
   border: 0;
   border-top: 1px solid $textmuted;
   margin: 1.5rem 1px;
+}
+
+.flex1 {
+  flex: 1;
 }
 
 .text-muted {
@@ -532,10 +541,20 @@ button, .button {
   .skillgroup {
 
     width: 100%;
+    display: flex;
+    flex-direction: row;
 
     label {
       text-transform: uppercase;
       font-family: $fontbold;
+      flex: 1;
+
+      &.strong {
+        color: lighten($green, 10%);
+      }
+      &.weak {
+        color: lighten($tomato, 10%);
+      }
     }
 
   }
@@ -543,14 +562,16 @@ button, .button {
 
 .expbar {
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  .counter {
-    margin: 0 1.5rem 0.5rem 0;
-    padding: 0.8rem;
-    border-radius: 5px;
-    font-size: 2.2rem;
-    background: $medi;
+  padding: 0.8rem;
+  font-size: 2.4rem;
+  background: $medi;
+  border-radius: 5px;
+
+  a {
+    font-size: 1.5rem;
+    button {
+      margin: 0;
+    }
   }
 }
 

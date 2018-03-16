@@ -97,7 +97,13 @@
 <div class="main cell">
   <div class="content">
 
-    <h1><?=EMS_echo($activeCharacter["character_name"])?>&nbsp;-&nbsp;<?=EMS_echo($activeCharacter["faction"])?></h1>
+    <?php
+      if(!isset($activeCharacter["character_name"]) || $activeCharacter["character_name"] == "") {
+        $activeCharacter["character_name"] = "[CHARACTER NAME]";
+      }
+    ?>
+
+    <h1><?=$activeCharacter["character_name"]?>&nbsp;-&nbsp;<?=EMS_echo($activeCharacter["faction"])?></h1>
 
     <?php
       if(isset($activeCharacter['sheets'])) {
@@ -306,12 +312,12 @@
                 echo "<div class=\"block btnmenu\">"
 
                   . "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&viewSheet=".$value['charSheetID']."\" class=\"button blue\">"
-                    ."<i class=\"far fa-folder-open\"></i>&nbsp;Open"
-                  ."</a>"
+                    ."<i class=\"fas fa-eye\"></i>&nbsp;View"
+                  ."</a>";
 
-                  . "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&copySheet=".$value['charSheetID']."\" class=\"button green\" onclick=\"return confirm('Are you sure you want to copy this character sheet?')\">"
-                    . "<i class=\"far fa-copy\"></i>&nbsp;New&nbsp;Version"
-                  . "</a>";
+                  // . "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&copySheet=".$value['charSheetID']."\" class=\"button green\" onclick=\"return confirm('Are you sure you want to copy this character sheet?')\">"
+                  //   . "<i class=\"far fa-copy\"></i>&nbsp;New&nbsp;Version"
+                  // . "</a>";
 
                 // if($value['status'] == 'ontwerp') {
                 //   echo "&nbsp;" . "<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&deleteSheet=".$value['charSheetID']."\" class=\"button\" onclick=\"return confirm('Are you sure?')\">"

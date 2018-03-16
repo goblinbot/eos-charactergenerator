@@ -41,7 +41,7 @@ function disableButtonGroup(e, levels) {
 		}
 
 		/* this previously clicked button */
-		var target = $(e);
+		let target = $(e);
 
 		/* for every level, go one div upwards. */
 		for(i = 0; i < levels; i++) {
@@ -67,7 +67,7 @@ function disableButtonGroup(e, levels) {
 
 /* append the nickname form */
 function SH_nicknameForm(charID,sheetID) {
-	var postdata = {
+	let postdata = {
 		"char" : charID,
 		"sheet": sheetID
 	};
@@ -90,7 +90,7 @@ function SH_nicknameForm(charID,sheetID) {
 
 /* append the nickanme form */
 function SH_editPlayedForm(charID,sheetID) {
-	var postdata = {
+	let postdata = {
 		"char" : charID,
 		"sheet": sheetID
 	};

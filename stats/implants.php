@@ -164,3 +164,4 @@
   include_once($APP["root"] . "/footer.php");
 ?>
 <script type="text/javascript" src="<?=$APP['header']?>/_includes/js/functions.implants.js"></script>
+<?php

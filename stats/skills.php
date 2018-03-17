@@ -117,12 +117,20 @@
                     }
                   }
 
-                  $printresult .= "<label ".$xCLASS.">". $skillGroup['name'] ."</label>"."<br/>";
+                  $printresult .= "<label ".$xCLASS.">". $skillGroup['name'] . "&nbsp;&nbsp;"
+                  . "<span class=\"search\" title=\"Preview skill\" onclick=\"previewSkill('".$skillGroup['primaryskill_id']."');\">"
+                  . "<i class=\"fa fa-info-circle\"></i>"
+                  . "</span>"
+                  ."</label>";
+
+                  // $printresult .= "<button class=\"button\" "
+                  // ." onclick=\"previewSkill('".$skillGroup['primaryskill_id']."');\">"
+                  // ."<i class=\"fa fa-search\"></i>"."</button>";
 
                   $getSkills = getSkills("newest",$skillGroup['primaryskill_id']);
 
                   // set the skills in a session to access this in the handler later.
-                  $_SESSION['skill'][$skillGroup['primaryskill_id']] = $getSkills;
+                  // $_SESSION['skill'][$skillGroup['primaryskill_id']] = $getSkills;
 
                   $printresult .= "<div class=\"flex1\">";
 
@@ -132,7 +140,6 @@
 
                     // open the input
                     $printresult .= "<input type=\"checkbox\""
-                    ." onmouseover=\"skillTooltip(this);\""
                     ." onclick=\"toggleSkillBoxes(this);\""
                     ." name=\"skillform[skill]['".$skills['skill_id']."']\""
                     ." class=\"skillcheck\""
@@ -168,17 +175,23 @@
                           $getSpecialty = getSkills("newest",$specialty['primaryskill_id']);
 
                           // set the skills in a session for later access in the handler.
-                          $_SESSION['skill'][$skillGroup['primaryskill_id']] = $getSpecialty;
+                          // $_SESSION['skill'][$skillGroup['primaryskill_id']] = $getSpecialty;
 
                           // $printresult .= "<pre> == ".$specialty['name']." UNLOCKED</pre>";
                           $printRes2 .= "<div id=\"sg_".$specialty['primaryskill_id']."\" class=\"skillgroup formitem\">";
-                          $printRes2 .= "<label>". $specialty['name'] ."</label>"."<br/>";
+                          // $printRes2 .= "<label>". $specialty['name'] ."</label>"."<br/>";
+
+                          $printRes2 .= "<label>". $specialty['name'] . "&nbsp;&nbsp;"
+                            . "<span class=\"search\" title=\"Preview skill\" onclick=\"previewSkill('".$specialty['primaryskill_id']."');\">"
+                            . "<i class=\"fa fa-info-circle\"></i>"
+                            . "</span>"
+                          ."</label>";
+
                           $printRes2 .= "<div class=\"flex1\">";
 
                           foreach($getSpecialty AS $Xspecialty) {
 
                             $printRes2 .= "<input type=\"checkbox\""
-                              ." onmouseover=\"skillTooltip(this);\""
                               ." onclick=\"toggleSkillBoxes(this);\""
                               ." name=\"skillform[skill]['".$Xspecialty['skill_id']."']\""
                               ." class=\"skillcheck specialty\""
@@ -232,27 +245,10 @@
               $printresult .= "</div>"
               . "<div class=\"half\">";
 
-              $printresult .= "<div class=\"dialog\">"
-                    ."<h2>Skill</h2>"
-                    ."<h3>[ Name LVL 0 ]</h3>"
-                    ."<hr/>"
-                    ."<p>Skills ARE in a session now, BUT with zero skills we're getting zero results? Look this up..</p>"
-                  ."</div>";
-
-              // $printresult .=
-              //   "<div class=\"row\">"
-              //     . "<div class=\"expbar\">"
-              //       . "<div class=\"counter\">"
-              //           // ."<i class=\"fa fa-cog\"></i>&nbsp;EXP :&nbsp;"
-              //           ."EXP :&nbsp;"
-              //           ."<span id=\"expUsed\">".$exp['exp_used']."</span>"
-              //             ."&nbsp;/&nbsp;"
-              //           . "<span id=\"expTotal\">".$exp['exp_total']."</span>"
-              //         ."</div>"
-              //     . "</div>"
-              //   . "</div>";
-
-
+              $printresult .= "<div id=\"previewSkill\" class=\"dialog\">"
+                ."<br/><br/>"
+                ."<h3 class=\"text-center\">Click the '<i class=\"fa fa-info-circle\"></i>' icons to preview the skills.</h3>"
+              ."</div>";
 
               $printresult .= "<hr style=\"opacity: 0.25;\"/>"
                 . $printRes2

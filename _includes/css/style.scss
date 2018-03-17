@@ -440,8 +440,17 @@ button, .button {
 
 }
 
-// form
+#previewSkill {
+  // height: 28rem;
+  min-height: 15rem;
+  transition: 0.4s;
 
+  h2,h3 {
+    margin: 0.25rem 0 0.75rem 0;
+  }
+}
+
+// form
 .formitem {
   width: auto;
   flex: 1;
@@ -557,6 +566,14 @@ button, .button {
       }
     }
 
+  }
+
+  .search {
+    cursor: pointer;
+    transition: 0.3s;
+    &:hover {
+      color: $cyan;
+    }
   }
 }
 

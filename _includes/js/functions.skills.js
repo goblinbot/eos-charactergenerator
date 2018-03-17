@@ -88,15 +88,45 @@ function updateExpUsed() {
 }
 /* end of update EXP used */
 
-/* tooltip the skills when mouseover happens AND the timer runs out.. */
+/* tooltip the skills.. */
 
-  function skillTooltip(e) {
+  function previewSkill(groupid) {
 
-    let skilldata = $(e).data();
+    let target = $('#previewSkill');
 
+    target.empty();
+
+    $.ajax({
+      type: 'POST',
+      url: '/eoschargen/handler/skills.php',
+      data: { previewSkill : groupid }
+    })
+    .done(function(data){
+      target.html(data);
+    })
+    .fail(function() {
+      target.html('<h2>Err: no skills found.</h2>');
+    });
+
+    /* prevent a refresh by returning false in the end. */
+    return false;
+
+  }
+/* end tooltip */
+/* tooltip navigation start */
+function navPreview(direction) {
+
+
+  let target = $('#previewSkill').find('.tab.active');
+
+  if(direction == 'next') {
+    $(target).hide().removeClass('active');
+    $(target).next().show().addClass('active');
+
+  } else if(direction == 'prev') {
+    $(target).hide().removeClass('active');
+    $(target).prev().show().addClass('active');
 
   }
 
-
-
-/* end tooltip */
+}

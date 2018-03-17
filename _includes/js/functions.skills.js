@@ -8,6 +8,10 @@ function toggleSkillBoxes(e) {
     /* set all PREVIOUS checkboxes to TRUE */
     $(e).prevAll().prop("checked", true);
 
+    if(skillData['level'] == 5 && skillData['index']) {
+      toggleSpecialties(skillData['index']);
+    }
+
   } else if(e.checked == false) {
 
     /* check if the NEXT checkbox is already set. If this is the case...*/
@@ -30,13 +34,57 @@ function toggleSkillBoxes(e) {
 
 
 /* grab the specialty or hide the specialty, based on your skill level. */
-function toggleSpecialties(e) {
+function toggleSpecialties(index) {
 
+  if($('#specialtycontainer').length > 0) {
 
+    let target = $('#specialtycontainer');
 
-  /* finally: update the EXP used */
-  updateExpUsed();
+    $.ajax({
+      type: 'POST',
+      url: '/eoschargen/handler/skills.php',
+      data: { getSpecialtySkills : index }
+    })
+    .done(function(data){
+      /*target.append(data);*/
+      data = (JSON.parse(data));
+
+      $.each(data, function(key,value) {
+
+        if($('#sg_' + key).length > 0) {
+
+          /* ALREADY EXISTS */
+          return false;
+
+        } else {
+
+          /* doesn't exist? make the fields. */
+          let printresult = "";
+
+          for(let i = 1; i < 9; i++) {
+            printresult += value[i];
+          }
+
+          target.append(printresult);
+
+        }
+
+      });
+
+    })
+    .fail(function() {
+      /*target.html('<h2>Err: no skills found.</h2>');*/
+    });
+
+    /* finally: update the EXP used */
+    updateExpUsed();
+  }
+
+  /* prevent a refresh by returning false in the end. */
+  return false;
+
 }
+
 /* end of toggleSpecialties */
 
 
@@ -115,7 +163,6 @@ function updateExpUsed() {
 /* end tooltip */
 /* tooltip navigation start */
 function navPreview(direction) {
-
 
   let target = $('#previewSkill').find('.tab.active');
 

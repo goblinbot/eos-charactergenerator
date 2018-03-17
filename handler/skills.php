@@ -15,6 +15,55 @@ if(!isset($UPLINK)) {
 
 
 
+if(isset($_POST['getSpecialtySkills']) && $_POST['getSpecialtySkills'] != "") {
+
+  $printresult = "";
+
+  $sql = "SELECT primaryskill_id, name FROM `ecc_skills_groups` WHERE parents = '".$_POST['getSpecialtySkills']."' ORDER BY name ASC";
+  $res = $UPLINK->query($sql);
+  if($res && mysqli_num_rows($res) > 0) {
+
+    $printresult = array();
+
+    while($row = mysqli_fetch_assoc($res)){
+
+      $getSpecialty = getSkills("newest",$row['primaryskill_id']);
+      $printresult[$row['primaryskill_id']] = array();
+
+      $printresult[$row['primaryskill_id']][] = $row['primaryskill_id'];
+
+      $printresult[$row['primaryskill_id']][] .= "<div id=\"sg_".$row['primaryskill_id']."\" class=\"skillgroup formitem\">"
+      . "<label>". $row['name'] . "&nbsp;&nbsp;"
+        . "<span class=\"search\" title=\"Preview skill\" onclick=\"previewSkill('".$row['primaryskill_id']."');\">"
+        . "<i class=\"fa fa-info-circle\"></i>"
+        . "</span>"
+      ."</label>";
+      $printresult[$row['primaryskill_id']][] .= "<div class=\"flex1\">";
+
+      foreach($getSpecialty AS $Xspecialty) {
+
+        $printresult[$row['primaryskill_id']][] .= "<input type=\"checkbox\""
+          ." onclick=\"toggleSkillBoxes(this);\""
+          ." name=\"skillform[skill]['".$Xspecialty['skill_id']."']\""
+          ." class=\"skillcheck specialty\""
+          ." data-siteindex=\"".$Xspecialty['skill_index']."\" "
+          ." data-level=\"".(int)$Xspecialty['level']."\""
+          ." data-skillgroup=\"".(int)$row['primaryskill_id']."\"/>&nbsp;";
+
+      }
+      $printresult[$row['primaryskill_id']][] .= "</div></div>"; //flex 1
+
+    }
+
+  }
+
+  $printresult = json_encode($printresult);
+  echo $printresult; unset($printresult);
+  exit();
+}
+
+
+
 if(isset($_POST['previewSkill']) && $_POST['previewSkill'] != ""){
 
   $getSkills = getSkills("newest",$_POST['previewSkill']);
@@ -41,8 +90,7 @@ if(isset($_POST['previewSkill']) && $_POST['previewSkill'] != ""){
     }
   }
 
-  echo $printresult; unset($printresult); unset($getSkills);
+  echo $printresult;
+  unset($printresult); unset($getSkills);
   exit();
-
-  // skill_id, label, skill_index, parent, level, version, description
 }

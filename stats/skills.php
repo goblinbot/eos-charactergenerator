@@ -123,26 +123,19 @@
                   . "</span>"
                   ."</label>";
 
-                  // $printresult .= "<button class=\"button\" "
-                  // ." onclick=\"previewSkill('".$skillGroup['primaryskill_id']."');\">"
-                  // ."<i class=\"fa fa-search\"></i>"."</button>";
-
+                  // get the skills
                   $getSkills = getSkills("newest",$skillGroup['primaryskill_id']);
-
-                  // set the skills in a session to access this in the handler later.
-                  // $_SESSION['skill'][$skillGroup['primaryskill_id']] = $getSkills;
 
                   $printresult .= "<div class=\"flex1\">";
 
                   foreach($getSkills AS $skills) {
-
-                    // $printresult .= $skills['label'] . ' | ' . $skills['skill_index'] . ' | ' .' lvl '. $skills['level'];
 
                     // open the input
                     $printresult .= "<input type=\"checkbox\""
                     ." onclick=\"toggleSkillBoxes(this);\""
                     ." name=\"skillform[skill]['".$skills['skill_id']."']\""
                     ." class=\"skillcheck\""
+                    ." data-index=\"".$skillGroup['siteindex']."\" "
                     ." data-siteindex=\"".$skills['skill_index']."\""
                     ." data-level=\"".(int)$skills['level']."\""
                     ." data-skillgroup=\"".(int)$skillGroup['primaryskill_id']."\" ";
@@ -163,7 +156,7 @@
 
                       $printresult .= " checked=\"checked\" ";
 
-                      if($skills['level'] == 5) {
+                      if($skills['level'] == 5 && $characterSheet['aantal_events'] > 0) {
 
                         $xPSY = $skillGroup['psychic'];
                         $xPARENT = $skillGroup['siteindex'];
@@ -174,12 +167,7 @@
 
                           $getSpecialty = getSkills("newest",$specialty['primaryskill_id']);
 
-                          // set the skills in a session for later access in the handler.
-                          // $_SESSION['skill'][$skillGroup['primaryskill_id']] = $getSpecialty;
-
-                          // $printresult .= "<pre> == ".$specialty['name']." UNLOCKED</pre>";
                           $printRes2 .= "<div id=\"sg_".$specialty['primaryskill_id']."\" class=\"skillgroup formitem\">";
-                          // $printRes2 .= "<label>". $specialty['name'] ."</label>"."<br/>";
 
                           $printRes2 .= "<label>". $specialty['name'] . "&nbsp;&nbsp;"
                             . "<span class=\"search\" title=\"Preview skill\" onclick=\"previewSkill('".$specialty['primaryskill_id']."');\">"
@@ -250,14 +238,17 @@
                 ."<h3 class=\"text-center\">Click the '<i class=\"fa fa-info-circle\"></i>' icons to preview the skills.</h3>"
               ."</div>";
 
-              $printresult .= "<hr style=\"opacity: 0.25;\"/>"
-                . $printRes2
-              . "</div>";
-
-
+              if($characterSheet['aantal_events'] > 0) {
+                $printresult .= "<hr style=\"opacity: 0.25;\"/>"
+                  . "<h4>SPECIALISATIONS</h4>"
+                  . "<div id=\"specialtycontainer\">"
+                  . $printRes2
+                  . "</div>";
+              }
 
               $printresult .=
-                "</div>"
+                  "</div>"
+                ."</div>"
               ."</form>";
 
             } else {

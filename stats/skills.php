@@ -18,16 +18,7 @@
 
 ?>
 <div class="wsleft cell">
-  <?php /*
-  <!-- <h1>#1: CSS SUB GRID GEBRUIKEN IN MAIN</h1>
-    <hr/>
-  <h1>#2: IDENTIEKE DIV/INPUTS MAKEN OM INTERACTIVE/VASTE TE SPLITTEN</h1>
-    <hr/>
-  <h1>#3: + EN -</h1>
-    <hr/>
-  <h1>#4: GETIMPLANTS()</h1> -->
 
-  */?>
 </div>
 
 <div class="menu cell">
@@ -37,6 +28,7 @@
 <div class="main cell">
   <div class="content">
   <?php
+
     $printresult = "";
     $printRes2 = "";
 
@@ -54,14 +46,39 @@
             $exp['exp_total'] = calcTotalExp($characterSheet['aantal_events']);
             $exp['exp_used'] = calcUsedExp(EMS_echo($characterSheet['skills']), $character['faction']);
 
+
+            if(isset($_POST['skillform']) && $_POST['skillform'] != ""){
+              // first, we check if this character is actually alive. Oh bother.
+              check4dead($_GET['viewChar']);
+
+              // second, IS the character IN DESIGN?
+              if($character['status'] == 'in design' && $characterSheet['status'] == 'ontwerp') {
+
+                // yes? okay. Third: Clear pre-existing entries.
+                $sql = "DELETE FROM `ecc_char_skills` WHERE `char_sheet_id` = '".$_GET['viewSheet']."' ";
+                $res = $UPLINK->query($sql);
+
+                foreach($_POST['skillform']['skill'] AS $SKid => $SKlevel) {
+
+                  $sql = "INSERT INTO `ecc_char_skills` (`skill_id`, `char_sheet_id`) VALUES (
+                      '".(int)$SKid."',
+                      '".mysqli_real_escape_string($UPLINK,$_GET['viewSheet'])."'
+                    );";
+                  $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
+                }
+
+              }
+
+              header('location: '.$APP['header'].'/stats/skills.php?viewChar='.$_GET['viewChar'].'&viewSheet='.$_GET['viewSheet'].'&update=true');
+              exit();
+
+            }
+
             // faction skills [strong/weak]
             $factionMod = getFactionModifiers($character['faction']);
-            $augmentations = getSkillAugs($_GET['viewSheet']);
+            $augmentations = getImplants($_GET['viewSheet']);
+            $augmentations = filterSkillAugs($augmentations);
 
-            // echo "<pre>";
-            // var_dump($factionMod);
-            // echo "</pre>";
-            // exit();
 
             $isPsychic = $character['psychic'];
             $hasParent = "none";
@@ -79,16 +96,26 @@
             $printresult .=
               "<div class=\"row\">"
                 . "<div class=\"expbar\">"
-                    // ."<i class=\"fa fa-cog\"></i>&nbsp;EXP :&nbsp;"
-                    ."EXP :&nbsp;"
-                    ."<span id=\"expUsed\">".$exp['exp_used']."</span>"
-                      ."&nbsp;/&nbsp;"
-                    . "<span id=\"expTotal\">".$exp['exp_total']."</span>"
 
-                  ."<a style=\"float:right;\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
-                    ."<button><i class=\"fas fa-arrow-left\"></i>&nbsp;Back</button>"
-                  ."</a>"
+                  ."EXP&nbsp;:&nbsp;"
 
+                  ."<span id=\"expUsed\">".$exp['exp_used']."</span>"
+                    ."&nbsp;/&nbsp;"
+                  . "<span id=\"expTotal\">".$exp['exp_total']."</span>"
+
+                  ."<span style=\"float:right;\">"
+
+                    ."<a class=\"button\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
+                      ."<i class=\"fas fa-arrow-left\"></i>&nbsp;Back"
+                    ."</a>&nbsp;";
+
+                  if($character['status'] == 'in design' && $characterSheet['status'] == 'ontwerp') {
+                    $printresult .= "<a class=\"button green no-bg\" href=\"javascript:void(0);\" onclick=\"submitSkillsheet();\">"
+                      ."<i class=\"fas fa-save\"></i>&nbsp;Save"
+                    ."</a>";
+                  }
+
+                $printresult .= "</span>"
                 . "</div>"
               . "</div>"
               . "<hr style=\"opacity: 0.5;\"/>";
@@ -97,7 +124,7 @@
             // check for sheet, then check for status
             if(isset($characterSheet) && $characterSheet != "") {
 
-              $printresult .= "<form id=\"skillsheet\" method=\"post\" action=\"skills.php\">"
+              $printresult .= "<form id=\"skillsheet\" method=\"post\" action=\"skills.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
                 . "<div class=\"row skillbox\">"
                   . "<div class=\"half\">";
 
@@ -133,8 +160,9 @@
                     // open the input
                     $printresult .= "<input type=\"checkbox\""
                     ." onclick=\"toggleSkillBoxes(this);\""
-                    ." name=\"skillform[skill]['".$skills['skill_id']."']\""
+                    ." name=\"skillform[skill][".$skills['skill_id']."]\""
                     ." class=\"skillcheck\""
+                    ." value=\"".(int)$skills['level']."\""
                     ." data-index=\"".$skillGroup['siteindex']."\" "
                     ." data-siteindex=\"".$skills['skill_index']."\""
                     ." data-level=\"".(int)$skills['level']."\""
@@ -142,15 +170,12 @@
 
                     if($skills['level'] == 1) {
                       if(isset($factionMod[(int)$skillGroup['primaryskill_id']]) && $factionMod[(int)$skillGroup['primaryskill_id']] != "") {
-
                         $printresult .= " data-expmodifier=\"".$factionMod[(int)$skillGroup['primaryskill_id']]['cost_modifier']."\" ";
-
                       }
                     }
 
                     $checked = "";
                     $inputfield = "";
-
 
                     if(isset($characterSheet['skills'][$skills['skill_index']]) && $characterSheet['skills'][$skills['skill_index']] != "") {
 
@@ -181,8 +206,10 @@
 
                             $printRes2 .= "<input type=\"checkbox\""
                               ." onclick=\"toggleSkillBoxes(this);\""
-                              ." name=\"skillform[skill]['".$Xspecialty['skill_id']."']\""
+                              ." name=\"skillform[skill][".$Xspecialty['skill_id']."]\""
                               ." class=\"skillcheck specialty\""
+                              ." value=\"".(int)$Xspecialty['level']."\""
+                              ." data-parentID=\"".$skillGroup['primaryskill_id']."\""
                               ." data-siteindex=\"".$Xspecialty['skill_index']."\" "
                               ." data-level=\"".(int)$Xspecialty['level']."\""
                               ." data-skillgroup=\"".(int)$specialty['primaryskill_id']."\" ";
@@ -200,7 +227,7 @@
                           }
 
                           $printRes2 .= "</div>"; //flex 1
-                          $printRes2 .= "</div>";
+                          $printRes2 .= "</div>"; // end of 'specialty row'
 
                           unset($getSpecialty);
                         }
@@ -217,15 +244,34 @@
                   }
 
                   $printresult .= "</div>"; //flex1
-                  $printresult .= "</div>";
-                  // $printresult .= $printRes2;
-                  // unset($printRes2);
+                  $printresult .= "</div>"; // end of skill row
+
+                  $augResult = 0;
+                  $printAugs = "";
+
+                  if(isset($augmentations) && $augmentations != "") {
+
+                    foreach($augmentations AS $aug) {
+                      if($aug['skillgroup_siteindex'] == $skillGroup['siteindex']) {
+                        $augResult = 1;
+                        $printAugs .= "<p class=\"text-muted\">".($aug['type'] == 'cybernetic' ? '<i class="fa fa-cog"></i>' : '<i class="fa fa-bug"></i>') . "&nbsp;Augment: " . $aug['name'] . ' level '. $aug['level'] . "</p>";
+                      }
+                    }
+                    // $skillGroup['skillgroup_siteindex']
+                    if($augResult > 0) {
+                      $printresult .= "<div class=\"\">".$printAugs."</div>";
+                    }
+
+                  }
+                  // garbage collection:
+                  unset($augResult); unset($printAugs);
                 }
 
 
               } else {
 
                 // STATUS  NIET IN ONTWERP MODUS
+              
 
               }
 
@@ -233,10 +279,21 @@
               $printresult .= "</div>"
               . "<div class=\"half\">";
 
-              $printresult .= "<div id=\"previewSkill\" class=\"dialog\">"
-                ."<br/><br/>"
-                ."<h3 class=\"text-center\">Click the '<i class=\"fa fa-info-circle\"></i>' icons to preview the skills.</h3>"
-              ."</div>";
+
+              if(isset($_GET['update']) && $_GET['update'] == true) {
+
+                $printresult .= "<div id=\"previewSkill\" class=\"dialog\">"
+                  ."<br/><br/>"
+                  ."<h1 class=\"text-center\"><strong><i class=\"fa fa-check green\"></i>&nbsp;Skills updated</strong></h1>"
+                ."</div>";
+              } else {
+
+                $printresult .= "<div id=\"previewSkill\" class=\"dialog\">"
+                  ."<br/><br/>"
+                  ."<h3 class=\"text-center\">Click the '<i class=\"fa fa-info-circle\"></i>' icons to preview the skills.</h3>"
+                ."</div>";
+              }
+
 
               if($characterSheet['aantal_events'] > 0) {
                 $printresult .= "<hr style=\"opacity: 0.25;\"/>"
@@ -265,23 +322,12 @@
 
     echo $printresult;
 
-    // echo "<br/><pre>";
-    // var_dump($sheetArr["characters"][$_GET['viewChar']]);
-    // var_dump($character);
-    // echo "</pre>";
-    // echo "<br/><pre>";
-    // var_dump($getSkills);
-    // echo "</pre>";
   ?>
   </div>
 </div>
 
 <div class="wsright cell">
-  <?php
-    // echo "<pre>";
-    // var_dump($_SESSION['skill']);
-    // echo "</pre>";
-  ?>
+
 </div>
 
 <?php

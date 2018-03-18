@@ -12,6 +12,11 @@ function toggleSkillBoxes(e) {
       toggleSpecialties(skillData['index']);
     }
 
+    if(skillData['level'] > 5 && skillData['parentid']) {
+      /*let parentTarget = $('#sg_'+skillData['parentid']);*/
+      $('#sg_'+skillData['parentid']).find('input').addClass('disabled').attr('readonly', true);
+    }
+
   } else if(e.checked == false) {
 
     /* check if the NEXT checkbox is already set. If this is the case...*/
@@ -20,6 +25,13 @@ function toggleSkillBoxes(e) {
     /* ...we set the clicked box to TRUE instead of disabling it as well. This feels more natural. */
     if(next[0] && next[0]['checked'] == true) {
       $(e).prop("checked", true);
+    } else {
+
+      if(skillData['level'] == 6 && skillData['parentid']) {
+        /*let parentTarget = $('#sg_'+skillData['parentid']);*/
+        $('#sg_'+skillData['parentid']).find('input').removeClass('disabled').attr('readonly', false);
+      }
+
     }
 
     /* set all NEXT checkboxes to false. */
@@ -116,11 +128,13 @@ function updateExpUsed() {
           if(divdata.level) {
             newExpUsed = (newExpUsed + divdata.level);
           }
+
         }
 
       });
 
       expUsedCont.html(newExpUsed);
+
       if(newExpUsed > expTotal) {
         expUsedCont.addClass('tomato');
       } else {
@@ -177,3 +191,43 @@ function navPreview(direction) {
   }
 
 }
+
+function submitSkillsheet() {
+
+  updateExpUsed();
+
+  let expUsed = parseInt($('#expUsed').text());
+  let expTotal = parseInt($('#expTotal').text());
+
+  if(expUsed > expTotal) {
+    let previewDiv = $('#previewSkill');
+
+    previewDiv.empty().html('<br/><h3 class=\"text-center\" style=\"display:none;\"><i class=\"fa fa-times\"></i>&nbsp;Error: Character is using more points than available.</h3>');
+    previewDiv.find('h3').fadeIn();
+
+  } else {
+
+    $('#skillsheet').submit();
+  }
+
+
+
+}
+
+$(document).ready(function(){
+
+  var lastCheckedSkill = 0;
+  let specialtyDivs = $('.specialty');
+
+  if(specialtyDivs.length > 0) {
+    specialtyDivs.each(function(){
+      let xData = $(this).data();
+      if(lastCheckedSkill != xData['parentid']) {
+        lastCheckedSkill = xData['parentid'];
+        $('#sg_' + lastCheckedSkill).find('.skillcheck').addClass('disabled');
+      }
+    });
+  }
+
+});
+/* end of functions.skills */

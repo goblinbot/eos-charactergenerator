@@ -44,8 +44,9 @@ if(isset($_POST['getSpecialtySkills']) && $_POST['getSpecialtySkills'] != "") {
 
         $printresult[$row['primaryskill_id']][] .= "<input type=\"checkbox\""
           ." onclick=\"toggleSkillBoxes(this);\""
-          ." name=\"skillform[skill]['".$Xspecialty['skill_id']."']\""
+          ." name=\"skillform[skill][".$Xspecialty['skill_id']."]\""
           ." class=\"skillcheck specialty\""
+          ." value=\"".(int)$Xspecialty['level']."\""
           ." data-siteindex=\"".$Xspecialty['skill_index']."\" "
           ." data-level=\"".(int)$Xspecialty['level']."\""
           ." data-skillgroup=\"".(int)$row['primaryskill_id']."\"/>&nbsp;";

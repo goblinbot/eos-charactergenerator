@@ -83,6 +83,11 @@ p {
   text-align: center;
 }
 
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
 .responsive {
   max-width: 100%;
   display: block;
@@ -575,6 +580,7 @@ button, .button {
       color: $cyan;
     }
   }
+
 }
 
 .expbar {
@@ -584,7 +590,7 @@ button, .button {
   background: $medi;
   border-radius: 5px;
 
-  a {
+  a, input {
     font-size: 1.5rem;
     button {
       margin: 0;

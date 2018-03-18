@@ -307,7 +307,7 @@
                 echo "<div class=\"character\">"
                 . "<div class=\"block\">".EMS_echo($value['nickname'])."</div>"
                 . "<div class=\"block\">".(int)$value['aantal_events']."</div>"
-                . "<div class=\"block\">".$value['status']."</div>";
+                . "<div class=\"block\">".($value['status'] == 'ontwerp' ? 'in design' : $value['status'])."</div>";
 
                 echo "<div class=\"block btnmenu\">"
 
@@ -340,8 +340,7 @@
         } else {
 
           // no sheet yet? No problem. Make the first one.
-          $sql = "INSERT INTO `ecc_char_sheet`
-            (
+          $sql = "INSERT INTO `ecc_char_sheet` (
               `characterID`,
               `accountID`,
               `aantal_events`

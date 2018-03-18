@@ -59,11 +59,6 @@ function getSkills($select = "newest", $parents = "all") {
 }
 // END SILVESTER FUNCTIONS - THANKS!
 
-function getSkillAugs($sheetID = null) {
-
-  global $UPLINK,$jid;
-
-}
 
 function getFactionModifiers($faction) {
 
@@ -98,4 +93,29 @@ function getFactionModifiers($faction) {
     exit();
   }
 
+}
+
+// grab the augmentation array, and pick only the skillbased augs.
+function filterSkillAugs($augmentationArray = null) {
+
+  $return = "";
+
+  if(isset($augmentationArray) && $augmentationArray != ""){
+
+    $return = array();
+
+    foreach($augmentationArray AS $augment) {
+      if($augment['status'] == 'active') {
+        if($augment["skillgroup_level"] > 0 && $augment['type'] != "flavour") {
+          $return[$augment['modifierID']] = array();
+          $return[$augment['modifierID']]['name'] = $augment["name"];
+          $return[$augment['modifierID']]['skillgroup_siteindex'] = $augment["skillgroup_siteindex"];
+          $return[$augment['modifierID']]['level'] = $augment["skillgroup_level"];
+          $return[$augment['modifierID']]['type'] = $augment["type"];
+        }
+      }
+    }
+  }
+
+  return $return;
 }

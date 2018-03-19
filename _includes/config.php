@@ -15,6 +15,7 @@ $APP["header"] = "/eoschargen";
 // define the root folder by adding the header (location) to the server root, defined by PHP.
 $APP["root"] = $_SERVER["DOCUMENT_ROOT"] . $APP["header"];
 
-
+// define the login page to redirect to if there is no $jid set/inherited.
+$APP["loginpage"] = "https://www.eosfrontier.space/component/users/?view=login";
 
 $jid = 451;

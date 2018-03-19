@@ -3,12 +3,21 @@
 
 
   if(!isset($jid) || $jid == false || $jid == null || $jid == "") {
-    die('You are not logged in. If this message keeps showing, please contact Eos IT. [ERR 101]');
+
+    if(!isset($APP["loginpage"]) || $APP["loginpage"] == "" || $APP["loginpage"] == "/" || $APP["loginpage"] == "#") {
+
+      die('You are not logged in, and no valid login page has been set. Please contact Eos IT for more information.');
+      exit();
+
+    } else {
+
+      header("location: ".$APP["loginpage"]);
+      exit();
+
+    }
+
   }
 
-  $CSSVERSION = "?" . time();
-
-  $COMINGEVENT = "Frontier9";
   $sheetArr = getCharacterSheets();
 ?>
 
@@ -27,7 +36,7 @@
   <title>CHARGEN</title>
 
   <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/reset.css" />
-  <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/style.css<?=EMS_echo($CSSVERSION)?>" />
+  <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/style.css" />
 </head>
 <body class="notransition" onload="">
 

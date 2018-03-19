@@ -214,6 +214,29 @@ function checkSheetStatus($sheetID) {
 
 }
 
+
+
+function generateCode($codelength = 10, $type = 'hex') {
+
+  switch($type) {
+    case 'hex': default:
+      $allowed = '0123456789ABCDEF';
+      break;
+    case 'number':
+      $allowed = '0123456789';
+      break;
+  }
+
+  // legacy: faction STARTING numbers. Here in comments for later use.
+  /* Aquila: 7 Pendzal: 9 Ekanesh: 8 Dugo: 3 Sona: 5 */
+  $output = '';
+
+  for ($i = 0; $i < $codelength; $i++) {
+    $output .= substr($allowed, mt_rand(0, strlen($allowed)-1), 1);
+  }
+  return $output;
+}
+
 function check4dead($charID) {
   global $UPLINK;
 
@@ -242,7 +265,7 @@ function sanitize_spaces($input = null) {
 // spam / escape filter, named after a friend of mine who taught me the importance of filtering user input.
 function huizingfilter($input = null) {
 
-  $triggers    = array('http','tps:/','tp:/',"src=","src =",'<','>','><','.js','$','@S','@s','GOTO ','DBCC ');
+  $triggers    = array('http','tps:/','tp:/',"src=","src =",'<','>','><','.js','@S','@s','GOTO ','DBCC ');
   $error       = false;
 
   foreach ($triggers as $trigger) { // loops through the huizing-huizingtriggertriggertrigger

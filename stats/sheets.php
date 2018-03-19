@@ -121,6 +121,8 @@
       <?php
       if(isset($_GET['viewSheet']) && $_GET['viewSheet'] != "") {
         ?><a href="<?=$APP['header']?>/index.php?viewChar=<?=$activeCharacter['characterID']?>" class="button"><?php
+      } else if (isset($activeCharacter['characterID']) && $activeCharacter['characterID'] != "") {
+        ?><a href="<?=$APP['header']?>/index.php?viewChar=<?=$activeCharacter['characterID']?>" class="button"><?php
       } else {
         ?><a href="<?=$APP['header']?>/index.php" class="button"><?php
       }

@@ -1,9 +1,31 @@
 <?php
+
+
 // globals
 include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
 include_once($APP["root"] . "/_includes/functions.global.php");
 include_once($APP["root"] . "/_includes/functions.sheet.php");
 
+
+echo "<pre>";
+echo "<p>".generateCode(25, 'hex')."</p>";
+echo "<p>".generateCode(25, 'hex')."</p>";
+echo "<p>".generateCode(25, 'hex')."</p>";
+echo "<p>".generateCode(25, 'hex')."</p>";
+echo "<p>".generateCode(25, 'hex')."</p>";
+echo "<p>".generateCode(25, 'hex')."</p>";
+echo "</pre>";
+echo "<br/><br/>";
+echo "faction samples: ";
+echo "<pre>";
+echo "<p>(5)".generateCode(12, 'number')."</p>";
+echo "<p>(5)".generateCode(12, 'number')."</p>";
+echo "<p>(9)".generateCode(12, 'number')."</p>";
+echo "<p>(8)".generateCode(12, 'number')."</p>";
+echo "<p>(7)".generateCode(12, 'number')."</p>";
+echo "<p>(7)".generateCode(12, 'number')."</p>";
+echo "</pre>";
+exit();
 
 // $sql = "SELECT * FROM `ecc_skills_groups`";
 // $res = $UPLINK->query($sql);

@@ -222,10 +222,12 @@ $(document).ready(function(){
 
   if(specialtyDivs.length > 0) {
     specialtyDivs.each(function(){
-      let xData = $(this).data();
-      if(lastCheckedSkill != xData['parentid']) {
-        lastCheckedSkill = xData['parentid'];
-        $('#sg_' + lastCheckedSkill).find('.skillcheck').addClass('disabled');
+      if(this['checked'] == true) {
+        let xData = $(this).data();
+        if(lastCheckedSkill != xData['parentid']) {
+          lastCheckedSkill = xData['parentid'];
+          $('#sg_' + lastCheckedSkill).find('.skillcheck').addClass('disabled');
+        }
       }
     });
   }

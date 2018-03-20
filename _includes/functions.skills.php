@@ -6,13 +6,12 @@ function getSkillGroup($psychic = NULL, $parents = NULL, $status = NULL) {
   global $UPLINK;
   $returnArr = array();
 
-
   $SKILLSTATUS = "AND status='active' ";
 
   if($status == 'beta') {
-    $SKILLSTATUS = "AND status='active' OR status='beta'";
-  } else if($status == 'active') {
-    $SKILLSTATUS = "AND status='active' OR status='alpha' OR status='beta'";
+    $SKILLSTATUS = "AND (status='active' OR status='beta')";
+  } else if($status == 'alpha') {
+    $SKILLSTATUS = "AND (status='active' OR status='alpha' OR status='beta')";
   }
 
   if(isset($psychic) && $psychic != 'true') {

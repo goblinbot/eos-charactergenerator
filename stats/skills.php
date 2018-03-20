@@ -54,7 +54,7 @@
             $character = $sheetArr["characters"][$_GET['viewChar']];
             $characterSheet = getFullCharSheet($_GET['viewSheet']);
 
-            echo "<div id=\"charStatus\" class=\"hidden\" style=\"display: none;\">".$characterSheet['status']."</div>";
+            echo "<div id=\"charStatus\" class=\"hidden\" style=\"display: none;\">".$character['status']."</div>";
 
             // calc skills
             $exp = array();

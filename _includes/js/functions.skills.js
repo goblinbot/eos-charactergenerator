@@ -51,12 +51,12 @@ function toggleSpecialties(index) {
   if($('#specialtycontainer').length > 0) {
 
     let target = $('#specialtycontainer');
-    /*let checkforbeta = $('#charStatus').text();*/
-
+    let checkforbeta = $('#charStatus').text(); /* check  if a skill is in beta or alpha */
+    
     $.ajax({
       type: 'POST',
       url: '/eoschargen/handler/skills.php',
-      data: { getSpecialtySkills : index }
+      data: { getSpecialtySkills : index, charstatus : checkforbeta }
     })
     .done(function(data){
       /*target.append(data);*/
@@ -97,7 +97,6 @@ function toggleSpecialties(index) {
   return false;
 
 }
-
 /* end of toggleSpecialties */
 
 
@@ -152,30 +151,30 @@ function updateExpUsed() {
 /* end of update EXP used */
 
 /* tooltip the skills.. */
+function previewSkill(groupid) {
 
-  function previewSkill(groupid) {
+  let target = $('#previewSkill');
 
-    let target = $('#previewSkill');
+  target.empty();
 
-    target.empty();
+  $.ajax({
+    type: 'POST',
+    url: '/eoschargen/handler/skills.php',
+    data: { previewSkill : groupid }
+  })
+  .done(function(data){
+    target.html(data);
+  })
+  .fail(function() {
+    target.html('<h2>Err: no skills found.</h2>');
+  });
 
-    $.ajax({
-      type: 'POST',
-      url: '/eoschargen/handler/skills.php',
-      data: { previewSkill : groupid }
-    })
-    .done(function(data){
-      target.html(data);
-    })
-    .fail(function() {
-      target.html('<h2>Err: no skills found.</h2>');
-    });
+  /* prevent a refresh by returning false in the end. */
+  return false;
 
-    /* prevent a refresh by returning false in the end. */
-    return false;
-
-  }
+}
 /* end tooltip */
+
 /* tooltip navigation start */
 function navPreview(direction) {
 
@@ -210,8 +209,6 @@ function submitSkillsheet() {
 
     $('#skillsheet').submit();
   }
-
-
 
 }
 

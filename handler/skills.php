@@ -18,11 +18,16 @@ if(!isset($UPLINK)) {
 if(isset($_POST['getSpecialtySkills']) && $_POST['getSpecialtySkills'] != "") {
 
   $printresult = "";
+  $temp = "AND status='active' ";
 
-  if(isset($_POST["charStatus"]) && $_POST["charStatus"] != "") {
-    $temp = " AND status = '".mysqli_real_escape_string($UPLINK,$_POST["charStatus"])."' ";
-  } else {
-    $temp = " AND status = 'active' ";
+  if(isset($_POST["charstatus"]) && $_POST["charstatus"] != "") {
+
+    if($_POST["charstatus"] == 'beta') {
+      $temp = "AND (status='active' OR status='beta')";
+    } else if($_POST["charstatus"] == 'alpha') {
+      $temp = "AND (status='active' OR status='alpha' OR status='beta')";
+    }
+
   }
 
   $sql = "SELECT primaryskill_id, name FROM `ecc_skills_groups` WHERE parents = '".mysqli_real_escape_string($UPLINK,$_POST['getSpecialtySkills'])."' ".$temp." ORDER BY name ASC";

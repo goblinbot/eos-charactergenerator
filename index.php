@@ -185,7 +185,7 @@
 
                   ."<div class=\"formitem\">"
                     ."<h3><i class=\"far fa-calendar-alt\"></i>&nbsp;Birth date</h3>"
-                    ."<input type=\"text\" placeholder=\"...\" maxlength=\"24\" name=\"editchar[ic_birthday]\" value=\"".EMS_echo($character['ic_birthday'])."\"></input>"
+                    ."<input type=\"text\" placeholder=\"..( current IC year: 240NT )\" maxlength=\"24\" name=\"editchar[ic_birthday]\" value=\"".EMS_echo($character['ic_birthday'])."\"></input>"
                   ."</div>"
                   ."<br/>";
 

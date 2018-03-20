@@ -52,7 +52,7 @@
               check4dead($_GET['viewChar']);
 
               // second, IS the character IN DESIGN?
-              if($character['status'] == 'in design' && $characterSheet['status'] == 'ontwerp') {
+              if($characterSheet['status'] == 'ontwerp') {
 
                 // yes? okay. Third: Clear pre-existing entries.
                 $sql = "DELETE FROM `ecc_char_skills` WHERE `char_sheet_id` = '".$_GET['viewSheet']."' ";
@@ -99,7 +99,7 @@
 
                   ."EXP&nbsp;:&nbsp;"
 
-                  ."<span id=\"expUsed\">".$exp['exp_used']."</span>"
+                  ."<span id=\"expUsed\" ".($exp['exp_used'] > $exp['exp_total'] ? 'class="tomato"' : '').">".$exp['exp_used']."</span>"
                     ."&nbsp;/&nbsp;"
                   . "<span id=\"expTotal\">".$exp['exp_total']."</span>"
 
@@ -109,7 +109,7 @@
                       ."<i class=\"fas fa-arrow-left\"></i>&nbsp;Back"
                     ."</a>&nbsp;";
 
-                  if($character['status'] == 'in design' && $characterSheet['status'] == 'ontwerp') {
+                  if($characterSheet['status'] == 'ontwerp') {
                     $printresult .= "<a class=\"button green no-bg\" href=\"javascript:void(0);\" onclick=\"submitSkillsheet();\">"
                       ."<i class=\"fas fa-save\"></i>&nbsp;Save"
                     ."</a>";
@@ -129,7 +129,7 @@
                   . "<div class=\"half\">";
 
               // is the CHARACTER in design mode, AND is the character SHEET?
-              if($character['status'] == 'in design' && $characterSheet['status'] == 'ontwerp') {
+              if($characterSheet['status'] == 'ontwerp') {
 
                 foreach($skillGroupArr AS $skillGroup) {
 
@@ -271,7 +271,7 @@
               } else {
 
                 // STATUS  NIET IN ONTWERP MODUS
-              
+
 
               }
 

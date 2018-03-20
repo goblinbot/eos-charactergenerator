@@ -20,7 +20,10 @@ function generateMenu($param = 'Home') {
     $printresult .= "<a href=\"".$APP['header']."/index.php\" class=\"menuitem $class\"><i class=\"fas fa-user\"></i><span>&nbsp;Character(s)</span></a>";
 
   $class = (strtolower($param) == 'myaccount') ? 'active' : '';
-    $printresult .= "<a href=\"".$APP['header']."/myaccount.php\" class=\"menuitem $class\"><i class=\"fas fa-cog\"></i><span>&nbsp;My account</span></a>";
+    $printresult .= "<a href=\"".$APP['header']."/myaccount.php\" class=\"menuitem disabled $class\"><i class=\"fas fa-cog\"></i><span>&nbsp;My account</span></a>";
+
+  $class = (strtolower($param) == 'about') ? 'active' : '';
+    $printresult .= "<a href=\"".$APP['header']."/about.php\" class=\"menuitem $class\"><i class=\"fas fa-info-circle\"></i><span>&nbsp;About</span></a>";
 
   // $class = 'disabled';
     $printresult .= "<a href=\"https://www.eosfrontier.space\" class=\"menuitem\"><i class=\"fas fa-arrow-left\"></i><span>&nbsp;Back to site</span></a>";

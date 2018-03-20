@@ -15,6 +15,19 @@
     exit();
   }
 
+  if(isset($_GET['viewSheet']) && $_GET['viewSheet'] != "") {
+    $sql = "SELECT charSheetID FROM `ecc_char_sheet` WHERE accountID = '".(int)$jid."' AND characterID = '".(int)$_GET['viewChar']."' AND charSheetID = '".(int)$_GET['viewSheet']."' LIMIT 1";
+    $res = $UPLINK->query($sql);
+
+    if($res && mysqli_num_rows($res) != 1) {
+      echo "<h1>Error 0447 : invalid character/sheet combination.</h1>";
+      exit();
+    }
+  } else {
+    echo "<h1>Error 0445</h1>";
+    exit();
+  }
+
   if(isset($sheetArr['characters'][$_GET['viewChar']]) && $sheetArr['characters'][$_GET['viewChar']] != "") {
     $activeCharacter = $sheetArr['characters'][$_GET['viewChar']];
 

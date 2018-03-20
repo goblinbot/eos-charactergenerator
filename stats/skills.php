@@ -16,6 +16,19 @@
     exit();
   }
 
+  if(isset($_GET['viewSheet']) && $_GET['viewSheet'] != "") {
+    $sql = "SELECT charSheetID FROM `ecc_char_sheet` WHERE accountID = '".(int)$jid."' AND characterID = '".(int)$_GET['viewChar']."' AND charSheetID = '".(int)$_GET['viewSheet']."' LIMIT 1";
+    $res = $UPLINK->query($sql);
+
+    if($res && mysqli_num_rows($res) != 1) {
+      echo "<h1>Error 0447 : invalid character/sheet combination.</h1>";
+      exit();
+    }
+  } else {
+    echo "<h1>Error 0445</h1>";
+    exit();
+  }
+
 ?>
 <div class="wsleft cell">
 
@@ -40,6 +53,8 @@
 
             $character = $sheetArr["characters"][$_GET['viewChar']];
             $characterSheet = getFullCharSheet($_GET['viewSheet']);
+
+            echo "<div id=\"charStatus\" class=\"hidden\" style=\"display: none;\">".$characterSheet['status']."</div>";
 
             // calc skills
             $exp = array();

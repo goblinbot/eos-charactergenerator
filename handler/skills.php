@@ -5,11 +5,11 @@ include_once($APP["root"] . "/_includes/functions.skills.php");
 
 /* no login means NO PLAY. GET OUT. */
 if(!isset($jid)) {
-  echo "[ERR 440]";
+  echo "<h1>[ERR 440]</h1>";
   exit();
 }
 if(!isset($UPLINK)) {
-  echo "[ERR 442]";
+  echo "<h1>[ERR 442]</h1>";
   exit();
 }
 
@@ -19,7 +19,13 @@ if(isset($_POST['getSpecialtySkills']) && $_POST['getSpecialtySkills'] != "") {
 
   $printresult = "";
 
-  $sql = "SELECT primaryskill_id, name FROM `ecc_skills_groups` WHERE parents = '".$_POST['getSpecialtySkills']."' ORDER BY name ASC";
+  if(isset($_POST["charStatus"]) && $_POST["charStatus"] != "") {
+    $temp = " AND status = '".mysqli_real_escape_string($UPLINK,$_POST["charStatus"])."' ";
+  } else {
+    $temp = " AND status = 'active' ";
+  }
+
+  $sql = "SELECT primaryskill_id, name FROM `ecc_skills_groups` WHERE parents = '".mysqli_real_escape_string($UPLINK,$_POST['getSpecialtySkills'])."' ".$temp." ORDER BY name ASC";
   $res = $UPLINK->query($sql);
   if($res && mysqli_num_rows($res) > 0) {
 

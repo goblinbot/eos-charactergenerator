@@ -51,6 +51,7 @@ function toggleSpecialties(index) {
   if($('#specialtycontainer').length > 0) {
 
     let target = $('#specialtycontainer');
+    /*let checkforbeta = $('#charStatus').text();*/
 
     $.ajax({
       type: 'POST',

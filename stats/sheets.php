@@ -137,9 +137,9 @@
 
       if(isset($activeCharacter['sheets'])) {
 
-        if(count($activeCharacter['sheets']) > 0) {
+        if(count($activeCharacter['sheets']) > 0 || isset($_GET['createSheet']) && $_GET['createSheet'] != "") {
 
-          if(isset($_GET['viewSheet']) && (int)$_GET['viewSheet'] != 0) {
+          if((count($activeCharacter['sheets']) > 0) && isset($_GET['viewSheet']) && (int)$_GET['viewSheet'] != 0) {
 
             // buttons?
             echo "<div class=\"row\">";
@@ -342,20 +342,22 @@
         } else {
 
           // no sheet yet? No problem. Make the first one.
-          $sql = "INSERT INTO `ecc_char_sheet` (
-              `characterID`,
-              `accountID`,
-              `aantal_events`
-            ) VALUES (
-              '".mysqli_real_escape_string($UPLINK,(int)$_GET['viewChar'])."',
-              '".mysqli_real_escape_string($UPLINK,(int)$jid)."',
-              '0'
-            );";
 
-          // $res = $UPLINK->query($sql) or die(mysqli_error($UPLINK));
-          $res = $UPLINK->query($sql);
 
-          header("location: ".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']);
+          // $sql = "INSERT INTO `ecc_char_sheet` (
+          //     `characterID`,
+          //     `accountID`,
+          //     `aantal_events`
+          //   ) VALUES (
+          //     '".mysqli_real_escape_string($UPLINK,(int)$_GET['viewChar'])."',
+          //     '".mysqli_real_escape_string($UPLINK,(int)$jid)."',
+          //     '0'
+          //   );";
+          //
+          // // $res = $UPLINK->query($sql) or die(mysqli_error($UPLINK));
+          // $res = $UPLINK->query($sql);
+
+          header("location: ".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&createSheet=true");
           exit();
         }
       } else {

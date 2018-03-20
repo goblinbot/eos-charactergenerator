@@ -14,15 +14,15 @@
 <div class="wsleft cell"></div>
 
 <div class="menu cell">
-  <?=generateMenu('myaccount');?>
+  <?=generateMenu('about');?>
 </div>
 
 <div class="main cell">
   <div class="content">
 
-    <h1>Account settings</h1>
+    <h1>About..</h1>
 
-    <p>Hi! this is a WIP screen. You shouldn't really be here, get of my lawn ;)</p>
+
 
   </div>
 </div>

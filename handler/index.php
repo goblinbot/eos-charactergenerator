@@ -4,11 +4,11 @@ include_once($APP["root"] . "/_includes/functions.global.php");
 
 /* no login means NO PLAY. GET OUT. */
 if(!isset($jid)) {
-  echo "[ERR 440]";
+  echo "<h1 style=\"font-family: arial;\">[ERR 440]</h1>";
   exit();
 }
 if(!isset($UPLINK)) {
-  echo "[ERR 442]";
+  echo "<h1 style=\"font-family: arial;\">[ERR 442]</h1>";
   exit();
 }
 

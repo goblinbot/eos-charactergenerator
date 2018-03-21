@@ -23,9 +23,6 @@
       echo "<h1>Error 0447 : invalid character/sheet combination.</h1>";
       exit();
     }
-  } else {
-    echo "<h1>Error 0445</h1>";
-    exit();
   }
 
   if(isset($sheetArr['characters'][$_GET['viewChar']]) && $sheetArr['characters'][$_GET['viewChar']] != "") {

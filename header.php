@@ -6,7 +6,7 @@
 
     if(!isset($APP["loginpage"]) || $APP["loginpage"] == "" || $APP["loginpage"] == "/" || $APP["loginpage"] == "#") {
 
-      die('You are not logged in, and no valid login page has been set. Please contact Eos IT for more information.');
+      die('You are not logged in, and no valid login page has been set. Please contact Eos IT for more information. [ ERR: 101 ]');
       exit();
 
     } else {
@@ -48,5 +48,5 @@
   <div class="grid">
 
     <div class="logo cell">
-      <img class="responsive" src="<?=$APP['header']?>/img/outpost.png" alt="OUTPOST" title="OUTPOST"/>
+      <img class="responsive" src="<?=$APP['header']?>/img/outpost-icc-pm.png" alt="logo" title="ICC logo"/>
     </div>

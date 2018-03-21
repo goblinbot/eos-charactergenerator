@@ -23,9 +23,6 @@
       echo "<h1>Error 0447 : invalid character/sheet combination.</h1>";
       exit();
     }
-  } else {
-    echo "<h1>Error 0445</h1>";
-    exit();
   }
 
   if(isset($sheetArr['characters'][$_GET['viewChar']]) && $sheetArr['characters'][$_GET['viewChar']] != "") {
@@ -133,7 +130,7 @@
     <div class="row">
       <?php
       if(isset($_GET['viewSheet']) && $_GET['viewSheet'] != "") {
-        ?><a href="<?=$APP['header']?>/index.php?viewChar=<?=$activeCharacter['characterID']?>" class="button"><?php
+        ?><a href="<?=$APP['header']?>/stats/sheets.php?viewChar=<?=$activeCharacter['characterID']?>" class="button"><?php
       } else if (isset($activeCharacter['characterID']) && $activeCharacter['characterID'] != "") {
         ?><a href="<?=$APP['header']?>/index.php?viewChar=<?=$activeCharacter['characterID']?>" class="button"><?php
       } else {

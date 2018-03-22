@@ -217,6 +217,48 @@ function checkSheetStatus($sheetID) {
 
 }
 
+/* legacy... : */
+/* Aquila: 7 Pendzal: 9 Ekanesh: 8 Dugo: 3 Sona: 5 */
+function generateICCID($faction) {
+
+  global $UPLINK;
+
+  $faction = strTolower($faction);
+
+  switch($faction) {
+    case 'aquila':
+    default:
+      $start = '7';
+      break;
+    case 'dugo':
+      $start = '3';
+      break;
+    case 'ekanesh':
+      $start = '8';
+      break;
+    case 'pendzal':
+      $start = '9';
+      break;
+   case 'sona':
+     $start = '5';
+     break;
+  }
+
+  // add FACTION NUMBER + 14 RANDOM
+  $output = $start . generateCode(14,'icc');
+
+  // PREVENT double ICC numbers.
+  $sql = "SELECT * FROM `ecc_characters` WHERE `ICC_number` = '".$output."' LIMIT 1";
+  $res = $UPLINK->query($sql);
+
+  if($res && mysqli_num_rows($res) > 0) {
+    generateICCID($faction);
+  } else {
+    return $output;
+  }
+
+}
+
 
 
 function generateCode($codelength = 10, $type = 'hex') {
@@ -226,16 +268,19 @@ function generateCode($codelength = 10, $type = 'hex') {
       $allowed = '0123456789ABCDEF';
       break;
     case 'number':
+    case 'icc':
       $allowed = '0123456789';
       break;
   }
 
-  // legacy: faction STARTING numbers. Here in comments for later use.
-  /* Aquila: 7 Pendzal: 9 Ekanesh: 8 Dugo: 3 Sona: 5 */
   $output = '';
 
   for ($i = 0; $i < $codelength; $i++) {
-    $output .= substr($allowed, mt_rand(0, strlen($allowed)-1), 1);
+    if(($i == 3 || $i == 9) && $type == 'icc') {
+      $output .= " ";
+    } else {
+      $output .= substr($allowed, mt_rand(0, strlen($allowed)-1), 1);
+    }
   }
   return $output;
 }

@@ -20,7 +20,13 @@ function getSkillGroup($psychic = NULL, $parents = NULL, $status = NULL) {
     $PSYSTATUS = "";
   }
 
-  $sql = "SELECT primaryskill_id, name, siteindex, psychic, parents, status FROM `ecc_skills_groups` WHERE ".$PSYSTATUS." parents='".$parents."' $SKILLSTATUS ORDER BY name ASC";
+  if(isset($parents) && $parents != "") {
+    $xPARENTS = "( parents='".$parents."' OR parents LIKE '%".$parents.",%') ";
+  } else {
+    $xPARENTS = "";
+  }
+
+  $sql = "SELECT primaryskill_id, name, siteindex, psychic, parents, status FROM `ecc_skills_groups` WHERE ".$PSYSTATUS." ".$xPARENTS." $SKILLSTATUS ORDER BY name ASC";
   $res = $UPLINK->query($sql);
   if($res && mysqli_num_rows($res) > 0) {
 

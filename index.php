@@ -23,12 +23,15 @@
 
       $psyCharacter = ($_POST['newchar'] == 'ekanesh' ? 'true' : 'false');
 
-      $sql = "INSERT INTO `ecc_characters` (`accountID`, `faction`, `status`, `psychic`)
+      $ICCID = generateICCID($_POST['newchar']);
+
+      $sql = "INSERT INTO `ecc_characters` (`accountID`, `faction`, `status`, `psychic`, `ICC_number`)
         VALUES (
           '".(int)$jid."',
           '".mysqli_real_escape_string($UPLINK,$_POST['newchar'])."',
           'in design',
-          '".mysqli_real_escape_string($UPLINK,$psyCharacter)."'
+          '".mysqli_real_escape_string($UPLINK,$psyCharacter)."',
+          '".mysqli_real_escape_string($UPLINK,$ICCID)."'
         );";
       $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
 
@@ -179,7 +182,13 @@
                 $printresult .=
                   "<div class=\"formitem\">"
                     ."<h3><i class=\"fas fa-users\"></i>&nbsp;Faction</h3>"
-                    ."<p class=\"text-muted\">".EMS_echo($character['faction'])."</p>"
+                    ."<p class=\"text-muted\">".ucfirst(EMS_echo($character['faction']))."</p>"
+                  ."</div>"
+                  ."<br/>"
+
+                  ."<div class=\"formitem\">"
+                    ."<h3><i class=\"fas fa-users\"></i>&nbsp;ICC Number:</h3>"
+                    ."<p class=\"text-muted\">".EMS_echo($character['ICC_number'])."</p>"
                   ."</div>"
                   ."<br/>"
 

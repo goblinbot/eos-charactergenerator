@@ -30,7 +30,7 @@ if(isset($_POST['getSpecialtySkills']) && $_POST['getSpecialtySkills'] != "") {
 
   }
 
-  $sql = "SELECT primaryskill_id, name FROM `ecc_skills_groups` WHERE parents = '".mysqli_real_escape_string($UPLINK,$_POST['getSpecialtySkills'])."' ".$temp." ORDER BY name ASC";
+  $sql = "SELECT primaryskill_id, name FROM `ecc_skills_groups` WHERE (parents = '".mysqli_real_escape_string($UPLINK,$_POST['getSpecialtySkills'])."' OR parents LIKE '%".mysqli_real_escape_string($UPLINK,$_POST['getSpecialtySkills']).",%' ) ".$temp." ORDER BY name ASC";
   $res = $UPLINK->query($sql);
   if($res && mysqli_num_rows($res) > 0) {
 

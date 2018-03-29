@@ -26,6 +26,8 @@ $inputbg : #424959;
 $inputselected : $lite;
 $hr : $inputbg;
 
+$popout : 0 1px 8px 0 rgba(0,0,0,.2),0 3px 4px 0 rgba(0,0,0,.14),0 3px 3px -2px rgba(0,0,0,.12);
+
 // extra.
 $olive: #94c02f;
 
@@ -598,6 +600,10 @@ button, .button {
   }
 }
 
+input.skillcheck, .popout {
+  box-shadow: $popout;
+}
+
 // faction blurb
 .factionblurb, .factionblurb.dialog {
 
@@ -629,6 +635,7 @@ button, .button {
 
   &.header {
     background: $inputbg;
+    // box-shadow: $popout;
 
     .button {
       margin-bottom: 0;
@@ -703,6 +710,7 @@ button, .button {
   background: $inputbg;
   margin: 0.5rem 0 1.5rem 0;
   border-radius: 5px;
+  box-shadow: $popout;
 }
 
 .fa,.fab,.far,.fal,.fas {

@@ -54,6 +54,7 @@ if(isset($_POST['getSpecialtySkills']) && $_POST['getSpecialtySkills'] != "") {
       foreach($getSpecialty AS $Xspecialty) {
 
         $printresult[$row['primaryskill_id']][] .= "<input type=\"checkbox\""
+          ." autocomplete=\"off\""
           ." onclick=\"toggleSkillBoxes(this);\""
           ." name=\"skillform[skill][".$Xspecialty['skill_id']."]\""
           ." class=\"skillcheck specialty\""

@@ -51,7 +51,7 @@ if(isset($_POST['createImplantForm']) && $_POST['createImplantForm'] == true) {
             $printresult .= "</select></div>";
 
             $printresult .= "<div class=\"formitem\"><label><h3>Skill Level:</h3></label>"
-            . "<input type=\"number\" max=\"5\" min=\"1\" name=\"newImplant[skillgroup_level]\" value=\"1\" />"
+            . "<input autocomplete=\"off\" type=\"number\" max=\"5\" min=\"1\" name=\"newImplant[skillgroup_level]\" value=\"1\" />"
             . "</div>";
           }
 
@@ -72,7 +72,7 @@ if(isset($_POST['createImplantForm']) && $_POST['createImplantForm'] == true) {
             $printresult .= "</select></div>";
 
             $printresult .= "<div class=\"formitem\"><label><h3>Skill Level:</h3></label>"
-            . "<input type=\"number\" max=\"5\" min=\"1\" name=\"newImplant[skillgroup_level]\" value=\"1\" />"
+            . "<input autocomplete=\"off\" type=\"number\" max=\"5\" min=\"1\" name=\"newImplant[skillgroup_level]\" value=\"1\" />"
             . "</div>";
           }
 
@@ -125,7 +125,7 @@ if(isset($_POST['nickNameForm']) && $_POST['nickNameForm'] != "") {
   $printresult .= "<form name=\"\" action=\"".$APP['header']."/stats/sheets.php?viewChar=".$xDATA['char']."&viewSheet=".$xDATA['sheet']."\" method=\"post\">"
   . "<div class=\"formitem\">"
     . "<label>Nickname your character sheet</label><br/>"
-    . "<input type=\"text\" name=\"updateNickname[value]\" value=\"".$row."\" maxlength=\"30\"/>"
+    . "<input autocomplete=\"off\" type=\"text\" name=\"updateNickname[value]\" value=\"".$row."\" maxlength=\"30\"/>"
   . "</div><div class=\"formitem\">"
     . "<input type=\"submit\" class=\"button green no-bg\" value=\"Update\"/>"
   . "</div>"
@@ -159,7 +159,7 @@ if(isset($_POST['EventsPlayedForm']) && $_POST['EventsPlayedForm'] != "") {
   $printresult .= "<form name=\"\" action=\"".$APP['header']."/stats/sheets.php?viewChar=".$xDATA['char']."&viewSheet=".$xDATA['sheet']."\" method=\"post\">"
   . "<div class=\"formitem\">"
     . "<label>Events played:</label><br/>"
-    . "<input type=\"number\" name=\"updateEventsPlayed[value]\" value=\"".$row."\" min=\"0\" max=\"25\" />"
+    . "<input autocomplete=\"off\" type=\"number\" name=\"updateEventsPlayed[value]\" value=\"".$row."\" min=\"0\" max=\"25\" />"
   . "</div><div class=\"formitem\">"
     . "<input type=\"submit\" class=\"button green no-bg\" value=\"Update\"/>"
   . "</div>"

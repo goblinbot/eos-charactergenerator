@@ -175,7 +175,7 @@
                 $printresult .=
                   "<div class=\"formitem\">"
                     ."<h3><i class=\"fas fa-user\"></i>&nbsp;Character Name</h3>"
-                    ."<input type=\"text\" placeholder=\"Character Name\" maxlength=\"99\" name=\"editchar[character_name]\" value=\"".EMS_echo($character['character_name'])."\"></input>"
+                    ."<input autocomplete=\"off\" type=\"text\" placeholder=\"Character Name\" maxlength=\"99\" name=\"editchar[character_name]\" value=\"".EMS_echo($character['character_name'])."\"></input>"
                   ."</div>";
                   // ."<br/>";
 
@@ -194,18 +194,18 @@
 
                   ."<div class=\"formitem\">"
                     ."<h3><i class=\"far fa-calendar-alt\"></i>&nbsp;Birth date</h3>"
-                    ."<input type=\"text\" placeholder=\"..( current IC year: 240NT )\" maxlength=\"24\" name=\"editchar[ic_birthday]\" value=\"".EMS_echo($character['ic_birthday'])."\"></input>"
+                    ."<input autocomplete=\"off\" type=\"text\" placeholder=\"..( current IC year: 240NT )\" maxlength=\"24\" name=\"editchar[ic_birthday]\" value=\"".EMS_echo($character['ic_birthday'])."\"></input>"
                   ."</div>";
                   // ."<br/>";
 
                 $printresult .=
                   "<div class=\"formitem\">"
                     ."<h3><i class=\"fas fa-globe\"></i>&nbsp;Birth planet</h3>"
-                    ."<input type=\"text\" placeholder=\"...\" maxlength=\"99\" name=\"editchar[birthplanet]\" value=\"".EMS_echo($character['birthplanet'])."\"></input>"
+                    ."<input autocomplete=\"off\" type=\"text\" placeholder=\"...\" maxlength=\"99\" name=\"editchar[birthplanet]\" value=\"".EMS_echo($character['birthplanet'])."\"></input>"
                   ."</div>"/*."<br/>"*/
                   ."<div class=\"formitem\">"
                     ."<h3><i class=\"fas fa-globe\"></i>&nbsp;Current/home planet</h3>"
-                    ."<input type=\"text\" placeholder=\"...\" maxlength=\"99\" name=\"editchar[homeplanet]\" value=\"".EMS_echo($character['homeplanet'])."\"></input>"
+                    ."<input autocomplete=\"off\" type=\"text\" placeholder=\"...\" maxlength=\"99\" name=\"editchar[homeplanet]\" value=\"".EMS_echo($character['homeplanet'])."\"></input>"
                   ."</div>";
                   /*."<br/>"*/
 
@@ -325,6 +325,7 @@
                   $xCLASS = " text-muted";
                   break;
                 case 'ready':
+                case 'sent':
                   $xICON = "<i class=\"fas fa-check green\"></i>";
                   $xCLASS = " active";
                   break;

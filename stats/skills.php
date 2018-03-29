@@ -174,6 +174,7 @@
 
                     // open the input
                     $printresult .= "<input type=\"checkbox\""
+                    ." autocomplete=\"off\""
                     ." onclick=\"toggleSkillBoxes(this);\""
                     ." name=\"skillform[skill][".$skills['skill_id']."]\""
                     ." class=\"skillcheck\""
@@ -220,6 +221,7 @@
                           foreach($getSpecialty AS $Xspecialty) {
 
                             $printRes2 .= "<input type=\"checkbox\""
+                              ." autocomplete=\"off\""
                               ." onclick=\"toggleSkillBoxes(this);\""
                               ." name=\"skillform[skill][".$Xspecialty['skill_id']."]\""
                               ." class=\"skillcheck specialty\""

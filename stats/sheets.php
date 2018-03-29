@@ -279,11 +279,11 @@
 
                 ."<div class=\"formitem\">"
                   ."<h3>Amount of events played as this character:</h3>"
-                  ."<input name=\"newSheet\" placeholder=\"0\" type=\"number\" value=\"0\" min=\"0\" max=\"21\" required=\"required\"></input>"
+                  ."<input autocomplete=\"off\" name=\"newSheet\" placeholder=\"0\" type=\"number\" value=\"0\" min=\"0\" max=\"21\" required=\"required\"></input>"
                 ."</div>"
 
                 ."<div class=\"formitem\">"
-                  ."<input type=\"submit\" class=\"button blue\" value=\"Create sheet\"></input>"
+                  ."<input type=\"submit\" class=\"button blue popout\" value=\"Create sheet\"></input>"
                 ."</div>"
               ."</form>";
 

@@ -425,6 +425,17 @@ button, .button {
     }
   }
 
+  &.tomato {
+    color: $tomato;
+    border-color: $tomato;
+    background: none;
+    &:hover, &:focus, &:active {
+      background: $tomato;
+      color: #222;
+      text-shadow: none;
+    }
+  }
+
   &.disabled {
     background: $btndisabled;
     border-color: $lite;

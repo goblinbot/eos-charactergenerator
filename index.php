@@ -130,6 +130,36 @@
 
            // "De Aquilaanse Republiek is een parlementaire democratie waar alle inwoners stemrecht moeten verdienen door dienstbaarheid, veelal in het leger. Hierdoor staan de Legioenen centraal in de maatschappij en zorgt voor een samenleving met plichtbesef, offergezindheid en grote politieke betrokkenheid. De keerzijde is het nodige misplaatste patriottisme en het neerkijken op zij die niet willen dienen, de Mulum. Als Aquilaan vind je spelmogelijkheden op alle lagen behalve misschien economie, vrijwel altijd met een militair tintje en een nadruk op teamwerk boven individueel gewin."
 
+      } else if(isset($_GET['delChar']) && $_GET['delChar'] != "") {
+
+        $printresult .= "<div class=\"dialog\">"
+        . "<h2>Are you sure you want to submit ".($sheetArr["characters"][$_GET['delChar']]['character_name'] != "" ? $sheetArr["characters"][$_GET['delChar']]['character_name'] : "Nameless Character" )." to the biomass processing queue?</h2>"
+        . "<p>Don't worry, it's okay. It wants to thank you for the time you've spent together.</p><br/>";
+
+        $printresult .= "<p><strong>Character deletion cannot be reversed.</strong></p><br/>";
+
+        $printresult .= "<a href=\"".$APP['header']."/?delChar=".$_GET['delChar']."&soylentGreenMe=true\" class=\"button blue\">I am sure. Please stop guilt tripping me.</a></div>";
+
+        if(isset($_GET['soylentGreenMe']) && $_GET['soylentGreenMe'] == "true") {
+
+          check4dead($_GET['delChar']);
+
+          if(isset($sheetArr["characters"][$_GET['delChar']]['accountID']) && EMS_echo($sheetArr["characters"][$_GET['delChar']]['accountID']) == $jid) {
+
+            $sql = "UPDATE `ecc_characters` SET `sheet_status` = '90', `status` = 'inactive' WHERE `characterID` = '".mysqli_real_escape_string($UPLINK,$_GET['delChar'])."' AND `accountID` = '".mysqli_real_escape_string($UPLINK,$jid)."' ";
+            $res = $UPLINK->query($sql);
+
+            header("location: ".$APP['header']."/index.php");
+            exit();
+
+          } else {
+            // JID no match, redirect.
+            header("location: ".$APP['header']."/index.php");
+            exit();
+          }
+
+        }
+
       } else if(isset($_GET['viewChar']) && $_GET['viewChar'] != "") {
 
         if(isset($_GET['u']) && $_GET['u'] == 1) {
@@ -153,6 +183,9 @@
 
               if(isset($_GET['editInfo']) && $_GET['editInfo'] == true) {
 
+                $printresult .= "<img class=\"passphoto popout\" alt=\" \" src=\"".$APP['header']."/img/passphoto/".$character['characterID'].".jpg\" />";
+
+                $printresult .= "<style>.grid .main .content .row {width: auto;}</style>";
                 $printresult .= "<div class=\"row\">"
                     ."<a href=\"".$APP['header']."/index.php?viewChar=".$character['characterID']."\"><button><i class=\"fas fa-arrow-left\"></i>&nbsp;Back</button></a>"
                   ."</div>"
@@ -254,11 +287,31 @@
                   ."</a>"
                 ."</div>";
 
-                $printresult .= "<div class=\"box33\">"
-                  ."<a class=\"disabled\" href=\"".$APP['header']."/index.php?viewChar=".$character['characterID']."\">"
-                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"far fa-user\"></i>&nbsp;Placeholder</button>"
-                  ."</a>"
-                ."</div>";
+
+                $printresult .= "<div class=\"box33\">";
+
+                  if($character['status'] != "deceased") {
+
+                    if($character['sheet_status']['code'] == 0) {
+
+                      $printresult .= "<a class=\"\" href=\"".$APP['header']."/index.php?delChar=".$character['characterID']."\">"
+                          ."<button type=\"button\" class=\"tomato bar\" name=\"button\"><i class=\"fas fa-user-times\"></i>&nbsp;Mark for delete</button>"
+                        ."</a>";
+
+                    } else if ($character['sheet_status']['code'] == 90) {
+
+                      $printresult .= "<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fas fa-times\"></i>&nbsp;Marked for delete</button>";
+
+                    } else {
+
+                      $printresult .= "<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fas fa-user-times\"></i>&nbsp(Delete disabled)</button>";
+
+                    }
+
+                  }
+
+                $printresult .= "</div>"; //sluit box33
+
 
                 $printresult .= "<div class=\"box33\"></div>";
 

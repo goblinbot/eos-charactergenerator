@@ -114,6 +114,39 @@ function updateCharacterInfo($params = array(), $charID = 0) {
 
 }
 
+// parse the sheet status here.
+function parseSheetStatus($statusCode) {
+
+  $return = array();
+
+  if(isset($statusCode) && $statusCode != "") {
+
+
+    if(stripos($statusCode, "_") && $statusCode != 0 ) {
+
+      $SPLIT = explode("_", $statusCode);
+
+      $return['code'] = (int)$SPLIT[0];
+      $return['last_sheet'] = (int)$SPLIT[1];
+
+    } else {
+
+      $return['code'] = $statusCode;
+      $return['last_sheet'] = "none";
+
+    }
+
+  } else {
+
+    $return['code'] = (int)0;
+    $return['last_sheet'] = "none";
+
+  }
+
+  return $return;
+
+}
+
 
 // get character sheets
 function getCharacterSheets() {
@@ -125,7 +158,7 @@ function getCharacterSheets() {
 
   if(isset($UPLINK) && isset($jid) && $jid != "") {
 
-    $sql = "SELECT * FROM ecc_characters WHERE accountID = '".(int)$jid."'";
+    $sql = "SELECT characterID, accountID, character_name, ICC_number, faction, bloodtype, sheet_status, status, psychic, ic_birthday, birthplanet, homeplanet FROM ecc_characters WHERE accountID = '".(int)$jid."'";
     $res = $UPLINK->query($sql);
 
     if($res) {
@@ -141,6 +174,8 @@ function getCharacterSheets() {
             $return['characters'][$row['characterID']][$KEY] = EMS_echo($VALUE);
 
           }//foreach
+
+          $return['characters'][$row['characterID']]['sheet_status'] = parseSheetStatus($return['characters'][$row['characterID']]['sheet_status']);
 
           if(count($return['characters']) > 0) {
 
@@ -184,6 +219,10 @@ function getCharacterSheets() {
     $return['status'] = "noDB";
   }
 
+  // echo "<pre>";
+  // var_dump($return);
+  // echo "</pre>";
+  // exit();
   return $return;
 }
 
@@ -248,7 +287,7 @@ function generateICCID($faction) {
   $output = $start . generateCode(14,'icc');
 
   // PREVENT double ICC numbers.
-  $sql = "SELECT * FROM `ecc_characters` WHERE `ICC_number` = '".$output."' LIMIT 1";
+  $sql = "SELECT characterID, ICC_number FROM `ecc_characters` WHERE `ICC_number` = '".$output."' LIMIT 1";
   $res = $UPLINK->query($sql);
 
   if($res && mysqli_num_rows($res) > 0) {

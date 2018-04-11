@@ -218,8 +218,8 @@
             echo "</div>";
 
             echo "<div class=\"box33\">"
-              ."<a class=\"disabled\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
-                ."<button type=\"button\" class=\"button bar green disabled\" name=\"button\"><i class=\"fas fa-check\"></i>&nbsp;Submit sheet</button>"
+              ."<a class=\"disabled\" href=\"".$APP['header']."/stats/submit.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
+                ."<button type=\"button\" class=\"button bar disabled green no-bg\" name=\"button\"><i class=\"fas fa-check\"></i>&nbsp;Submit sheet</button>"
               ."</a>"
             ."</div>";
 

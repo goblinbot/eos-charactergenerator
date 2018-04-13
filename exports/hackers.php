@@ -18,7 +18,7 @@
 </div>
 
 <div class="main cell">
-  <div class="content">
+  <div class="content" style="display: flex; flex-direction: column;">
 
     <h1>IC Hacker overview</h1>
     <hr>
@@ -26,6 +26,7 @@
     <?php
 
     echo "<h3>Characters with informatica 1 or higher</h3>";
+    echo "<div style=\"width: 100%; flex: 1;\">";
 
       $printCharacters = array();
 
@@ -44,7 +45,7 @@
             if(mysqli_num_rows($xRES) == 1) {
               $xROW = mysqli_fetch_assoc($xRES);
 
-              $yySQL = "SELECT characterID, character_name, faction FROM `ecc_characters` WHERE characterID = '".$xROW['characterID']."' LIMIT 1";
+              $yySQL = "SELECT characterID, character_name, faction FROM `ecc_characters` WHERE characterID = '".$xROW['characterID']."'  AND status != 'inactive' AND status != 'deceased' LIMIT 1";
               $yyRES = $UPLINK->query($yySQL);
 
               if(mysqli_num_rows($yyRES) == 1) {
@@ -64,7 +65,7 @@
         if(count($printCharacters)  > 0) {
           foreach($printCharacters AS $key => $value) {
 
-            echo "<h4>*&nbsp;".$value['name']." | ".$value['faction']."</h4>";
+            echo "<h4 style=\"width:auto; float: left; padding: 15px; margin: 5px; border: 1px solid #eee;\">".$value['name']." | ".$value['faction']."</h4>";
           }
         } else {
           echo "<h4>None.</h4>";
@@ -75,7 +76,8 @@
         echo "<h4>None.</h4>";
       }
 
-    echo "<br/><hr/><h3>Characters with informatica augmentations</h3>";
+    echo "</div><br/><hr/><h3>Characters with informatica augmentations</h3>";
+    echo "<div style=\"width: 100%; flex: 1;\">";
 
     $printCharacters = array();
 
@@ -125,6 +127,8 @@
     } else {
       echo "<h4>None.</h4>";
     }
+
+    echo "</div>";
 
     ?>
   </div>

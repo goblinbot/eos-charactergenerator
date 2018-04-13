@@ -14,7 +14,7 @@ function getSkillGroup($psychic = NULL, $parents = NULL, $status = NULL) {
     $SKILLSTATUS = "AND (status='active' OR status='alpha' OR status='beta')";
   }
 
-  if(isset($psychic) && $psychic != 'true') {
+  if(isset($psychic) && $psychic != 'true' && $psychic != 'TRUE') {
     $PSYSTATUS = "psychic = 'false' AND";
   } else {
     $PSYSTATUS = "";

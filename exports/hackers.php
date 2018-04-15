@@ -18,7 +18,7 @@
 </div>
 
 <div class="main cell">
-  <div class="content" style="display: flex; flex-direction: column;">
+  <div class="content">
 
     <h1>IC Hacker overview</h1>
     <hr>

@@ -63,10 +63,11 @@
     $newNickname = EMS_echo($_POST['updateNickname']['value']);
     // $newNickname = silvesterFilter($newNickname);
     $newNickname = trim($newNickname);
+    huizingfilter($newNickname);
 
     $sql = "UPDATE `ecc_char_sheet`
       SET `nickname` = '".mysqli_real_escape_string($UPLINK,$newNickname)."'
-      WHERE `charSheetID` = '".mysqli_real_escape_string($UPLINK,$_GET['viewSheet'])."'
+      WHERE `charSheetID` = '".mysqli_real_escape_string($UPLINK,(int)$_GET['viewSheet'])."'
       AND `accountID` = '".mysqli_real_escape_string($UPLINK,$jid)."'";
     $res = $UPLINK->query($sql);
 
@@ -87,7 +88,7 @@
 
     $sql = "UPDATE `ecc_char_sheet`
       SET `aantal_events` = '".mysqli_real_escape_string($UPLINK,(int)$xINPUT)."'
-      WHERE `charSheetID` = '".mysqli_real_escape_string($UPLINK,$_GET['viewSheet'])."'
+      WHERE `charSheetID` = '".mysqli_real_escape_string($UPLINK,(int)$_GET['viewSheet'])."'
       AND `accountID` = '".mysqli_real_escape_string($UPLINK,$jid)."'";
     $res = $UPLINK->query($sql);
 
@@ -456,22 +457,7 @@
 
         } else {
 
-          // no sheet yet? No problem. Make the first one.
-
-
-          // $sql = "INSERT INTO `ecc_char_sheet` (
-          //     `characterID`,
-          //     `accountID`,
-          //     `aantal_events`
-          //   ) VALUES (
-          //     '".mysqli_real_escape_string($UPLINK,(int)$_GET['viewChar'])."',
-          //     '".mysqli_real_escape_string($UPLINK,(int)$jid)."',
-          //     '0'
-          //   );";
-          //
-          // // $res = $UPLINK->query($sql) or die(mysqli_error($UPLINK));
-          // $res = $UPLINK->query($sql);
-
+          // no sheet -> redirect to Createsheet.
           header("location: ".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&createSheet=true");
           exit();
         }

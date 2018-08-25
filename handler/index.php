@@ -248,8 +248,6 @@ if(isset($_POST['newImplant']) && $_POST['newImplant'] == true) {
       $value = EMS_echo($value);
         huizingfilter($key);
         huizingfilter($value);
-      // $key = silvesterFilter($key);
-      // $value = silvesterFilter($value);
     }
     // END VALIDATIONS
 

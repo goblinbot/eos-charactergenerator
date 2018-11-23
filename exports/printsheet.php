@@ -61,34 +61,14 @@
 <body>
 
   <?php
-    // Match with maati's JID as a unsecure token.
-    $sql = "SELECT accountID FROM `ecc_characters` WHERE `characterID` = '1' LIMIT 1";
-    $res = $UPLINK->query($sql);
-    $AUTHTOKEN = mysqli_fetch_assoc($res)['accountID'];
 
-    $authTag = "?auth=$AUTHTOKEN";
-    $getTags = "";
-
-
-    if(isset($_GET['auth']) && $_GET['auth'] == $AUTHTOKEN) {
-
+    $EVENTIDS = '(1,36,37,38,39,40,41,42,43,45,46,47,48,49,50,51,52,53,54,55,56,58,59,61,62,64,65,66,67,68,69,71,72,73,74,75,78,79,80,81,82,83,84,86,87,88,90,93,97,98,99,100,102,103,104,105,106,107,108,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,135,136,137,139,140,141,143,144,145,147,154,155,164,168,170,176,179,183,186,192,195,197,200,203,204,206,209,211,215,231,234)';
       $offset = 0;
       $perPage = 20;
-
-      if(isset($_GET['count']) && (int)$_GET['count'] != 0  && (int)$_GET['count'] > 0) {
-        $perPage = (int)$_GET['count'];
-        $getTags .= "&count=".$perPage;
-      }
-
-
 
       if (isset($_GET['sheetID']) && (int)$_GET['sheetID'] != 0) {
 
         echo "<div style=\"padding: 15px 45px; 0 15px;\">";
-
-        if(isset($_GET['offset']) && (int)$_GET['offset'] > 0) {
-          $getTags .= "&offset=".(int)$_GET['offset'];
-        }
 
         include_once($APP["root"] . "/_includes/functions.sheet.php");
         include_once($APP["root"] . "/_includes/functions.skills.php");
@@ -112,8 +92,7 @@
 
 
             echo "<p><span style=\"float: left;\">"
-              ."<a class=\"noprint\" href=\"".$APP['header']."/exports/printsheet.php".$authTag.$getTags."&characterID=".$row['characterID']."\">[ Character sheet ]</a></span>"
-              // ."<span style=\"float: right;\"><strong>".ucfirst($xCHAR['faction'])."</strong></span>"
+              ."<a class=\"noprint\" href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."\">[ Character sheet ]</a></span>"
             ."</p>"
             ."<br/>";
 
@@ -131,11 +110,6 @@
             ."</h3>";
 
             echo "<hr/>";
-
-            // debug
-            // echo "<pre>";
-            // var_dump($characterSheet);
-            // echo "</pre>";
 
             // SKILLS
             echo "<div style=\"width: 55%; float: left;\">";
@@ -173,11 +147,6 @@
               unset($yRES);
               unset($yROW);
             }
-
-            // debug
-            // echo "<pre>";
-            // var_dump($skillArr);
-            // echo "</pre>";
 
             // and Third: It's time to print those skills!
 
@@ -234,17 +203,13 @@
 
         echo "<div style=\"padding:15px;\">";
 
-          if(isset($_GET['offset']) && (int)$_GET['offset'] > 0) {
-            $getTags .= "&offset=".(int)$_GET['offset'];
-          }
-
           $sql = "SELECT characterID, character_name, faction, sheet_status FROM `ecc_characters` WHERE characterID = '".(int)$_GET['characterID']."' LIMIT 1";
           $res = $UPLINK->query($sql);
 
           if($res) {
             if(mysqli_num_rows($res) == 1) {
 
-              echo "<a href=\"".$APP['header']."/exports/printsheet.php".$authTag.$getTags."\"><button>Terug</button></a> <br/><br/>";
+              echo "<a href=\"".$APP['header']."/exports/printsheet.php\"><button>Terug</button></a> <br/><br/>";
 
               $row = mysqli_fetch_assoc($res);
 
@@ -270,11 +235,10 @@
 
               if($xTOPRINT == true) {
 
-                echo "<p><a href=\"".$APP['header']."/exports/printsheet.php".$authTag.$getTags."&characterID=".$row['characterID']."&print=confirm\">"
+                echo "<p><a href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."&print=confirm\">"
                  . "<button style=\"width: 100%;\">&#x2713; Bevestig printstatus</button>"
                  ."</a></p><br/>";
 
-                //href=\"".$APP['header']."/exports/printsheet.php".$authTag.$getTags."&characterID=".$row['characterID']."\"
               }
 
               unset($xTOPRINT);
@@ -301,7 +265,7 @@
                     . "<td>".$row['aantal_events']."</td>"
                     . "<td>".$row['status']."</td>"
                     . "<td>".$row['versionNumber']."</td>"
-                    . "<td><a href=\"".$APP['header']."/exports/printsheet.php".$authTag.$getTags."&sheetID=".$row['charSheetID']."\" ><button>OPEN</button></a></td>"
+                    . "<td><a href=\"".$APP['header']."/exports/printsheet.php?sheetID=".$row['charSheetID']."\"><button>OPEN</button></a></td>"
                     . "</tr>";
                   }
 
@@ -325,7 +289,16 @@
 
       } else {
 
-        $sql = "SELECT count( `characterID` ) AS totalchars FROM `ecc_characters` WHERE `status` NOT LIKE 'inactive' AND `status` NOT LIKE 'deceased'  AND `status` NOT LIKE 'npcOn'  AND `status` NOT LIKE 'npcOff' ";
+        $sql = "SELECT count( `characterID` )
+                AS totalchars
+                FROM `ecc_characters`
+                WHERE `status`
+                NOT LIKE 'inactive'
+                AND `status` NOT LIKE 'deceased'
+                AND `status` NOT LIKE 'npcOn'
+                AND `status` NOT LIKE 'npcOff'
+                AND `characterID` IN $EVENTIDS
+              ";
         $res = $UPLINK->query($sql);
         $resCOUNT = mysqli_fetch_assoc($res)['totalchars'];
 
@@ -348,7 +321,7 @@
           if(($pageNumber-1) == $offset) {
             echo "<span style=\"padding:8px 4px; color: red;\"><strong>[$pageNumber]&nbsp;</strong></span>";
           } else {
-            echo "<a style=\"padding:8px 4px;\" href=\"".$APP['header']."/exports/printsheet.php".$authTag.$getTags."&offset=".($pageNumber-1)."\">[$pageNumber]&nbsp;</a>";
+            echo "<a style=\"padding:8px 4px;\" href=\"".$APP['header']."/exports/printsheet.php?offset=".($pageNumber-1)."\">[$pageNumber]&nbsp;</a>";
           }
 
           $pageNumber++;
@@ -356,13 +329,13 @@
 
         echo "<br/><br/>";
 
-        if(isset($_GET['offset']) && (int)$_GET['offset'] > 0) {
-          $getTags .= "&offset=".(int)$_GET['offset'];
-        }
-
         $sql = "SELECT characterID, character_name, faction, sheet_status
           FROM `ecc_characters`
-          WHERE `status` NOT LIKE 'inactive' AND `status` NOT LIKE 'deceased'  AND `status` NOT LIKE 'npcOn'  AND `status` NOT LIKE 'npcOff'
+          WHERE `status` NOT LIKE 'inactive'
+          AND `status` NOT LIKE 'deceased'
+          AND `status` NOT LIKE 'npcOn'
+          AND `status` NOT LIKE 'npcOff'
+          AND `characterID` IN $EVENTIDS
           ORDER BY faction,character_name
           LIMIT ".(int)$limitFirst." , ".(int)$perPage." ";
         $res = $UPLINK->query($sql);
@@ -392,7 +365,7 @@
             echo "<tr>"
               ."<td>#".$row['characterID']."</td>"
               ."<td>".$row['character_name']."</td><td>". $row['faction'] ."</td><td>". $xSTATUS ."</td>"
-              ."<td><a href=\"".$APP['header']."/exports/printsheet.php".$authTag.$getTags."&characterID=".$row['characterID']."\"><button>Sheets</button></a></td>"
+              ."<td><a href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."\" target=\"_blank\"><button>Sheets</button></a></td>"
             ."</tr>";
             unset($xSTATUS);
           }
@@ -405,15 +378,6 @@
       }
 
       echo "</div>";
-
-    } else {
-
-      echo "<h1>Nothing to see here citizen.</h1>";
-
-    }
-
-
-
 
   ?>
 

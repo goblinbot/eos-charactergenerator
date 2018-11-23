@@ -167,11 +167,11 @@
               ."</a>"
             ."</div>";
 
-            echo "<div class=\"box33\">"
-              ."<a class=\"disabled\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
-                ."<button type=\"button\" class=\"button bar blue disabled\" name=\"button\"><i class=\"fas fa-file-code\"></i>&nbsp;Export to JSON</button>"
-              ."</a>"
-            ."</div>";
+            // echo "<div class=\"box33\">"
+            //   ."<a class=\"disabled\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
+            //     ."<button type=\"button\" class=\"button bar blue disabled\" name=\"button\"><i class=\"fas fa-file-code\"></i>&nbsp;Export to JSON</button>"
+            //   ."</a>"
+            // ."</div>";
 
             echo "</div>";
 
@@ -189,11 +189,11 @@
               ."</a>"
             ."</div>";
 
-            echo "<div class=\"box33\">"
-              ."<a class=\"disabled\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
-                ."<button type=\"button\" class=\"button bar blue disabled\" name=\"button\"><i class=\"far fa-file-pdf\"></i>&nbsp;Download PDF</button>"
-              ."</a>"
-            ."</div>";
+            // echo "<div class=\"box33\">"
+            //   ."<a class=\"disabled\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
+            //     ."<button type=\"button\" class=\"button bar blue disabled\" name=\"button\"><i class=\"far fa-file-pdf\"></i>&nbsp;Download PDF</button>"
+            //   ."</a>"
+            // ."</div>";
 
             echo "</div>";
 
@@ -211,18 +211,18 @@
                 // if (confirm_this()) { document.location.href='".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&deleteSheet=".$_GET['viewSheet']."'; }\">"
 
               } else {
-                echo "<a class=\"disabled\">"
-                  ."<button type=\"button\" class=\"button disabled bar\" name=\"button\"><i class=\"fas fa-trash-alt\"></i>&nbsp;Delete sheet</button>"
-                ."</a>";
+                // echo "<a class=\"disabled\">"
+                //   ."<button type=\"button\" class=\"button disabled bar\" name=\"button\"><i class=\"fas fa-trash-alt\"></i>&nbsp;Delete sheet</button>"
+                // ."</a>";
               }
 
             echo "</div>";
 
-            echo "<div class=\"box33\">"
-              ."<a class=\"disabled\" href=\"".$APP['header']."/stats/submit.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
-                ."<button type=\"button\" class=\"button bar disabled green no-bg\" name=\"button\"><i class=\"fas fa-check\"></i>&nbsp;Submit sheet</button>"
-              ."</a>"
-            ."</div>";
+            // echo "<div class=\"box33\">"
+            //   ."<a class=\"disabled\" href=\"".$APP['header']."/stats/submit.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
+            //     ."<button type=\"button\" class=\"button bar disabled green no-bg\" name=\"button\"><i class=\"fas fa-check\"></i>&nbsp;Submit sheet</button>"
+            //   ."</a>"
+            // ."</div>";
 
             echo "<div class=\"box33\">"."</div>";
 
@@ -415,7 +415,7 @@
               echo "<div class=\"character header\">"
               . "<div class=\"block\">Nickname</div>"
               . "<div class=\"block\">Events played</div>" // amount of events played
-                . "<div class=\"block\">Status</div>" // faction
+                // . "<div class=\"block\">Status</div>" // status
                 . "<div class=\"block\">&nbsp;</div>" // edit
               . "</div>";
 
@@ -425,7 +425,8 @@
                 echo "<div class=\"character\">"
                 . "<div class=\"block\">".EMS_echo($value['nickname'])."</div>"
                 . "<div class=\"block\">".(int)$value['aantal_events']."</div>"
-                . "<div class=\"block\">".($value['status'] == 'ontwerp' ? 'in design' : $value['status'])."</div>";
+                // . "<div class=\"block\">".($value['status'] == 'ontwerp' ? 'in design' : $value['status'])."</div>"
+                ;
 
                 echo "<div class=\"block btnmenu\">"
 

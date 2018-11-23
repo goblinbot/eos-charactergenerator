@@ -172,32 +172,32 @@ hr {
 
   display: grid;
 
-  grid-template-columns: 1fr 170px 1000px 1fr;
+  grid-template-columns: 1fr 1170px 1fr;
   grid-template-rows: 64px 1fr 32px;
   grid-gap: 2px 2px;
   grid-template-areas:
-    "wsleft logo main wsright"
-    "wsleft menu main wsright"
-    "wsleft footer footer wsright";
+    "wsleft logo wsright"
+    "wsleft main wsright"
+    "wsleft footer wsright";
 
   @media(max-width:1200px) {
-    grid-template-columns: 1fr 150px 820px 1fr;
+    grid-template-columns: 1fr 970px 1fr;
     grid-template-rows: 64px 1fr 32px;
     grid-template-areas:
-      "wsleft logo main wsright"
-      "wsleft menu main wsright"
-      "wsleft footer footer wsright";
+      "wsleft logo wsright"
+      "wsleft main wsright"
+      "wsleft footer wsright";
   }
   @media(max-width:992px) {
     min-height: 90vh;
     height: auto;
     margin-top: 0;
-    grid-template-columns: 110px 1fr;
-    grid-template-rows: 64px 1fr auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: 64px 1fr 32px;
     grid-template-areas:
-      "menu menu"
-      "main main"
-      "footer footer";
+      "logo"
+      "main"
+      "footer";
   }
 
   // class for every grid item
@@ -230,9 +230,9 @@ hr {
   .logo {
     grid-area: logo;
     background: $medi;
-    @media(max-width:992px) {
-      display: none;
-    }
+    // @media(max-width:992px) {
+    //   display: none;
+    // }
 
     h2 {
       margin: 0;
@@ -240,6 +240,7 @@ hr {
     }
     img {
       margin-top: 5px;
+      max-height: 59px;
     }
   }
 
@@ -287,6 +288,7 @@ hr {
       }
     }
 
+    display: none;
   }
 
   .main {

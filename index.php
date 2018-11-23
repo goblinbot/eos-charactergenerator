@@ -48,10 +48,6 @@
 ?>
 <div class="wsleft cell"></div>
 
-<div class="menu cell">
-  <?=generateMenu('characters');?>
-</div>
-
 <div class="main cell">
   <div class="content">
 
@@ -272,41 +268,41 @@
                   ."</a>"
                 ."</div>";
 
-                $printresult .= "<div class=\"box33\">"
-                  ."<a class=\"disabled\" href=\"".$APP['header']."/index.php?viewChar=".$character['characterID']."\">"
-                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"far fa-lightbulb\"></i>&nbsp;Your story</button>"
-                  ."</a>"
-                ."</div>";
+                // $printresult .= "<div class=\"box33\">"
+                //   ."<a class=\"disabled\" href=\"".$APP['header']."/index.php?viewChar=".$character['characterID']."\">"
+                //     ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"far fa-lightbulb\"></i>&nbsp;Your story</button>"
+                //   ."</a>"
+                // ."</div>";
 
                 // end first row, start second row
                 $printresult .= "</div><div class=\"row\">";
 
-                $printresult .= "<div class=\"box33\">"
-                  ."<a class=\"disabled\" href=\"".$APP['header']."/index.php?viewChar=".$character['characterID']."\">"
-                    ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fas fa-list\"></i>&nbsp;Background-check details</button>"
-                  ."</a>"
-                ."</div>";
+                // $printresult .= "<div class=\"box33\">"
+                //   ."<a class=\"disabled\" href=\"".$APP['header']."/index.php?viewChar=".$character['characterID']."\">"
+                //     ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fas fa-list\"></i>&nbsp;Background-check details</button>"
+                //   ."</a>"
+                // ."</div>";
 
 
                 $printresult .= "<div class=\"box33\">";
 
                   if($character['status'] != "deceased") {
 
-                    if($character['sheet_status']['code'] == 0) {
+                    // if($character['sheet_status']['code'] == 0) {
+                    //
+                    //   $printresult .= "<a class=\"\" href=\"".$APP['header']."/index.php?delChar=".$character['characterID']."\">"
+                    //       ."<button type=\"button\" class=\"tomato bar\" name=\"button\"><i class=\"fas fa-user-times\"></i>&nbsp;Mark for delete</button>"
+                    //     ."</a>";
+                    //
+                    // } else if ($character['sheet_status']['code'] == 90) {
+                    //
+                    //   $printresult .= "<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fas fa-times\"></i>&nbsp;Marked for delete</button>";
+                    //
+                    // } else {
 
-                      $printresult .= "<a class=\"\" href=\"".$APP['header']."/index.php?delChar=".$character['characterID']."\">"
-                          ."<button type=\"button\" class=\"tomato bar\" name=\"button\"><i class=\"fas fa-user-times\"></i>&nbsp;Mark for delete</button>"
-                        ."</a>";
-
-                    } else if ($character['sheet_status']['code'] == 90) {
-
-                      $printresult .= "<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fas fa-times\"></i>&nbsp;Marked for delete</button>";
-
-                    } else {
-
-                      $printresult .= "<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fas fa-user-times\"></i>&nbsp(Delete disabled)</button>";
-
-                    }
+                      // $printresult .= "<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fas fa-user-times\"></i>&nbsp(Delete disabled)</button>";
+                    //
+                    // }
 
                   }
 
@@ -354,7 +350,7 @@
             . "<div class=\"block smflex hidden-xs\">&nbsp;</div>" // user icon
             . "<div class=\"block\">Full name</div>" // char name
             . "<div class=\"block\">Faction</div>" // faction
-            . "<div class=\"block\">Status</div>" // status of character (active, design, deceased, etc)
+            // . "<div class=\"block\">Status</div>" // status of character (active, design, deceased, etc)
             . "<div class=\"block\">&nbsp;</div>" // edit
 
           . "</div>";
@@ -389,7 +385,7 @@
                 . "<div class=\"block smflex hidden-xs\">".$xICON."</div>" // user icon
                 . "<div class=\"block\">" . ucfirst($character['character_name']) . "</div>" // char name
                 . "<div class=\"block\">" . ucfirst($character['faction']) . "</div>" // faction
-                . "<div class=\"block\">" . $character['status'] . "</div>" // status of character (active, design, deceased, etc)
+                // . "<div class=\"block\">" . $character['status'] . "</div>" // status of character (active, design, deceased, etc)
                 . "<div class=\"block\">"
                     ."<a href=\"".$APP['header']."/index.php?viewChar=".$character['characterID']."\">"
                       ."<button class=\"blue bar\"><i class=\"fas fa-folder-open\"></i>&nbsp;View</button>"

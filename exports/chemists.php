@@ -3,7 +3,7 @@
   include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
   include_once($APP["root"] . "/_includes/functions.global.php");
 
-
+  include_once('current-players.php');
   include_once($APP["root"] . "/header.php");
 
   if(!isset($_SESSION)) {
@@ -45,7 +45,7 @@
             if(mysqli_num_rows($xRES) == 1) {
               $xROW = mysqli_fetch_assoc($xRES);
 
-              $yySQL = "SELECT characterID, character_name, faction FROM `ecc_characters` WHERE characterID = '".$xROW['characterID']."'  AND status != 'inactive' AND status != 'deceased' LIMIT 1";
+              $yySQL = "SELECT characterID, character_name, faction FROM `ecc_characters` WHERE characterID = '".$xROW['characterID']."' AND status != 'deceased' AND characterID IN $EVENTIDS LIMIT 1";
               $yyRES = $UPLINK->query($yySQL);
 
               if(mysqli_num_rows($yyRES) == 1) {

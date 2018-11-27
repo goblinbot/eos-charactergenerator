@@ -2,7 +2,7 @@
   // globals
   include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
   include_once($APP["root"] . "/_includes/functions.global.php");
-
+  include_once('current-players.php');
 
   include_once($APP["root"] . "/header.php");
 
@@ -45,7 +45,7 @@
             if(mysqli_num_rows($xRES) == 1) {
               $xROW = mysqli_fetch_assoc($xRES);
 
-              $yySQL = "SELECT characterID, character_name, faction FROM `ecc_characters` WHERE characterID = '".$xROW['characterID']."'  AND status != 'inactive' AND status != 'deceased' LIMIT 1";
+              $yySQL = "SELECT characterID, character_name, faction FROM `ecc_characters` WHERE characterID = '".$xROW['characterID']."' AND status != 'deceased' AND characterID IN $EVENTIDS LIMIT 1";
               $yyRES = $UPLINK->query($yySQL);
 
               if(mysqli_num_rows($yyRES) == 1) {
@@ -76,57 +76,57 @@
         echo "<h4>None.</h4>";
       }
 
-    echo "</div><br/><hr/><h3>Characters with informatica augmentations</h3>";
-    echo "<div style=\"width: 100%; flex: 1;\">";
-
-    $printCharacters = array();
-
-    // first grab the skills
-    $sql = "SELECT sheetID FROM `ecc_char_implants` WHERE skillgroup_siteindex = 'it' ";
-    $res = $UPLINK->query($sql);
-
-    if($res) {
-      if(mysqli_num_rows($res) > 0) {
-
-        while($row = mysqli_fetch_assoc($res)){
-
-          $xSQL = "SELECT characterID FROM `ecc_char_sheet` WHERE charSheetID = '".$row['sheetID']."' LIMIT 1";
-          $xRES = $UPLINK->query($xSQL);
-
-          if(mysqli_num_rows($xRES) == 1) {
-            $xROW = mysqli_fetch_assoc($xRES);
-
-            $yySQL = "SELECT characterID, character_name, faction FROM `ecc_characters` WHERE characterID = '".$xROW['characterID']."' LIMIT 1";
-            $yyRES = $UPLINK->query($yySQL);
-
-            if(mysqli_num_rows($yyRES) == 1) {
-              $yyROW = mysqli_fetch_assoc($yyRES);
-
-              $printCharacters[$yyROW['characterID']]['id'] = $yyROW['characterID'];
-              $printCharacters[$yyROW['characterID']]['name'] = $yyROW['character_name'];
-              $printCharacters[$yyROW['characterID']]['faction'] = $yyROW['faction'];
-            }
-
-          }
-
-        }
-
-      }
-
-      if(count($printCharacters)  > 0) {
-
-        foreach($printCharacters AS $key => $value) {
-
-          echo "<h4>*&nbsp;".$value['name']." | ".$value['faction']."</h4>";
-        }
-
-      } else {
-        echo "<h4>None.</h4>";
-      }
-
-    } else {
-      echo "<h4>None.</h4>";
-    }
+    // echo "</div><br/><hr/><h3>Characters with informatica augmentations</h3>";
+    // echo "<div style=\"width: 100%; flex: 1;\">";
+    //
+    // $printCharacters = array();
+    //
+    // // first grab the skills
+    // $sql = "SELECT sheetID FROM `ecc_char_implants` WHERE skillgroup_siteindex = 'it' ";
+    // $res = $UPLINK->query($sql);
+    //
+    // if($res) {
+    //   if(mysqli_num_rows($res) > 0) {
+    //
+    //     while($row = mysqli_fetch_assoc($res)){
+    //
+    //       $xSQL = "SELECT characterID FROM `ecc_char_sheet` WHERE charSheetID = '".$row['sheetID']."' LIMIT 1";
+    //       $xRES = $UPLINK->query($xSQL);
+    //
+    //       if(mysqli_num_rows($xRES) == 1) {
+    //         $xROW = mysqli_fetch_assoc($xRES);
+    //
+    //         $yySQL = "SELECT characterID, character_name, faction FROM `ecc_characters` WHERE characterID = '".$xROW['characterID']."' LIMIT 1";
+    //         $yyRES = $UPLINK->query($yySQL);
+    //
+    //         if(mysqli_num_rows($yyRES) == 1) {
+    //           $yyROW = mysqli_fetch_assoc($yyRES);
+    //
+    //           $printCharacters[$yyROW['characterID']]['id'] = $yyROW['characterID'];
+    //           $printCharacters[$yyROW['characterID']]['name'] = $yyROW['character_name'];
+    //           $printCharacters[$yyROW['characterID']]['faction'] = $yyROW['faction'];
+    //         }
+    //
+    //       }
+    //
+    //     }
+    //
+    //   }
+    //
+    //   if(count($printCharacters)  > 0) {
+    //
+    //     foreach($printCharacters AS $key => $value) {
+    //
+    //       echo "<h4>*&nbsp;".$value['name']." | ".$value['faction']."</h4>";
+    //     }
+    //
+    //   } else {
+    //     echo "<h4>None.</h4>";
+    //   }
+    //
+    // } else {
+    //   echo "<h4>None.</h4>";
+    // }
 
     echo "</div>";
 

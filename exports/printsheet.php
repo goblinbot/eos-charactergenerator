@@ -3,7 +3,7 @@
   include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
   include_once($APP["root"] . "/_includes/functions.global.php");
 
-
+  include_once('current-players.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -61,8 +61,6 @@
 <body>
 
   <?php
-
-    $EVENTIDS = '(1,36,37,38,39,40,41,42,43,45,46,47,48,49,50,51,52,53,54,55,56,58,59,61,62,64,65,66,67,68,69,71,72,73,74,75,78,79,80,81,82,83,84,86,87,88,90,93,97,98,99,100,102,103,104,105,106,107,108,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,135,136,137,139,140,141,143,144,145,147,154,155,164,168,170,176,179,183,186,192,195,197,200,203,204,206,209,211,215,231,234)';
       $offset = 0;
       $perPage = 20;
 
@@ -90,11 +88,12 @@
             $xCHAR = mysqli_fetch_assoc($xRES);
             $jid = $xCHAR['accountID'];
 
+            // echo "<p><span style=\"float: left;\">"
+            //   ."<a class=\"noprint\" href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."\">[ Character sheet ]</a></span>"
+            // ."</p>"
+            // ."<br/>";
 
-            echo "<p><span style=\"float: left;\">"
-              ."<a class=\"noprint\" href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."\">[ Character sheet ]</a></span>"
-            ."</p>"
-            ."<br/>";
+            echo "<p>&nbsp;</p>";
 
             $characterSheet = getFullCharSheet($_GET['sheetID']);
             $characterSheet['exp_used'] = calcUsedExp(EMS_echo($characterSheet['skills']), $xCHAR['faction']);
@@ -209,7 +208,8 @@
           if($res) {
             if(mysqli_num_rows($res) == 1) {
 
-              echo "<a href=\"".$APP['header']."/exports/printsheet.php\"><button>Terug</button></a> <br/><br/>";
+              // echo "<a href=\"".$APP['header']."/exports/printsheet.php\"><button>Close</button></a> <br/><br/>";
+              echo "<button onclick=\"window.close();\">Close Window</button>";
 
               $row = mysqli_fetch_assoc($res);
 
@@ -236,7 +236,7 @@
               if($xTOPRINT == true) {
 
                 echo "<p><a href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."&print=confirm\">"
-                 . "<button style=\"width: 100%;\">&#x2713; Bevestig printstatus</button>"
+                 . "<button style=\"width: 100%;\">&#x2713; Confirm printstatus</button>"
                  ."</a></p><br/>";
 
               }
@@ -252,9 +252,9 @@
                   echo "<table style=\"border: 0;\">"
                   . "<tr>"
                     ."<th>Nickname</th>"
-                    ."<th>Aantal events</th>"
+                    ."<th>Events played</th>"
                     ."<th>Status</th>"
-                    ."<th>Versienummer</th>"
+                    ."<th>Version #</th>"
                     ."<th>&nbsp;</th>"
                   ."</tr>";
 
@@ -365,7 +365,8 @@
             echo "<tr>"
               ."<td>#".$row['characterID']."</td>"
               ."<td>".$row['character_name']."</td><td>". $row['faction'] ."</td><td>". $xSTATUS ."</td>"
-              ."<td><a href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."\" target=\"_blank\"><button>Sheets</button></a></td>"
+              // ."<td><a href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."\" target=\"_new\"><button>Sheets</button></a></td>"
+              ."<td><button onclick=\"window.open('{$APP["header"]}/exports/printsheet.php?characterID={$row['characterID']}','sheets','width=1280,height=768');\">View Sheet(s)</button></td>"
             ."</tr>";
             unset($xSTATUS);
           }

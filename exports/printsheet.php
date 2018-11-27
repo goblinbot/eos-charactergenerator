@@ -4,6 +4,8 @@
   include_once($APP["root"] . "/_includes/functions.global.php");
 
   include_once('current-players.php');
+
+  (string)$_FACTION = (isset($_GET['faction']) && $_GET['faction'] != "" ? $_GET['faction'] : 'aquila' );
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -292,16 +294,23 @@
         $sql = "SELECT count( `characterID` )
                 AS totalchars
                 FROM `ecc_characters`
-                WHERE `status`
-                NOT LIKE 'inactive'
-                AND `status` NOT LIKE 'deceased'
-                AND `status` NOT LIKE 'npcOn'
-                AND `status` NOT LIKE 'npcOff'
-                AND `characterID` IN $EVENTIDS
-              ";
+                WHERE `status` NOT LIKE 'deceased'
+                AND `faction` = '$_FACTION'
+                AND `characterID` IN $EVENTIDS";
+
         $res = $UPLINK->query($sql);
         $resCOUNT = mysqli_fetch_assoc($res)['totalchars'];
 
+        echo "<select id=\"factionswitch\"
+                  style=\"padding: 5px; border-radius: 2px; margin-bottom: 1rem;\"
+                  onchange=\"location.href = '{$APP['header']}/exports/printsheet.php?offset=0&faction=' + this.value; \">
+                <option value=\"\">Select faction</option>
+                <option value=\"aquila\">Aquila</option>
+                <option value=\"dugo\">Dugo</option>
+                <option value=\"ekanesh\">Ekanesh</option>
+                <option value=\"pendzal\">Pendzal</option>
+                <option value=\"sona\">Sona</option>
+              </select>";
         echo "<div style=\"padding: 15px;\">CHARACTERS : $resCOUNT<br/><br/>";
 
         $printresult = "";
@@ -316,12 +325,10 @@
         $pageNumber = 1;
         for($x = 0; $x < $resCOUNT; $x = ($x+$perPage)) {
 
-          // echo $pageNumber . ' -> '. $x . '/'.($x+$perPage).' (' . $skillcount . ')<br/>';
-
           if(($pageNumber-1) == $offset) {
             echo "<span style=\"padding:8px 4px; color: red;\"><strong>[$pageNumber]&nbsp;</strong></span>";
           } else {
-            echo "<a style=\"padding:8px 4px;\" href=\"".$APP['header']."/exports/printsheet.php?offset=".($pageNumber-1)."\">[$pageNumber]&nbsp;</a>";
+            echo "<a style=\"padding:8px 4px;\" href=\"".$APP['header']."/exports/printsheet.php?offset=".($pageNumber-1)."&faction=$_FACTION\">[$pageNumber]&nbsp;</a>";
           }
 
           $pageNumber++;
@@ -331,10 +338,8 @@
 
         $sql = "SELECT characterID, character_name, faction, sheet_status
           FROM `ecc_characters`
-          WHERE `status` NOT LIKE 'inactive'
-          AND `status` NOT LIKE 'deceased'
-          AND `status` NOT LIKE 'npcOn'
-          AND `status` NOT LIKE 'npcOff'
+          WHERE `status` NOT LIKE 'deceased'
+          AND `faction` = '$_FACTION'
           AND `characterID` IN $EVENTIDS
           ORDER BY faction,character_name
           LIMIT ".(int)$limitFirst." , ".(int)$perPage." ";

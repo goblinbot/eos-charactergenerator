@@ -268,21 +268,14 @@
                   ."</a>"
                 ."</div>";
 
-                // $printresult .= "<div class=\"box33\">"
-                //   ."<a class=\"disabled\" href=\"".$APP['header']."/index.php?viewChar=".$character['characterID']."\">"
-                //     ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"far fa-lightbulb\"></i>&nbsp;Your story</button>"
-                //   ."</a>"
-                // ."</div>";
+                $printresult .= "<div class=\"box33\">"
+                  ."<a href=\"https://www.eosfrontier.space/bgcheck\" target=\"_blank\">"
+                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fas fa-list\"></i>&nbsp;Background-check details</button>"
+                  ."</a>"
+                ."</div>";
 
                 // end first row, start second row
                 $printresult .= "</div><div class=\"row\">";
-
-                // $printresult .= "<div class=\"box33\">"
-                //   ."<a class=\"disabled\" href=\"".$APP['header']."/index.php?viewChar=".$character['characterID']."\">"
-                //     ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fas fa-list\"></i>&nbsp;Background-check details</button>"
-                //   ."</a>"
-                // ."</div>";
-
 
                 $printresult .= "<div class=\"box33\">";
 

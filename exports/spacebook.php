@@ -66,7 +66,7 @@
         }
       }
 
-      $sql = "SELECT `characterID`, `character_name`, `faction`, `rank` FROM `ecc_characters` WHERE `rank` NOT LIKE '%Conclav%' OR `rank` NOT LIKE '%Governor of%' ORDER BY `faction`, `rank`";
+      $sql = "SELECT `characterID`, `character_name`, `faction`, `rank` FROM `ecc_characters` WHERE `rank` NOT LIKE '%Conclav%' OR `rank` NOT LIKE '%Governor of%' AND `characterID` IN $EVENTIDS ORDER BY `faction`, `rank`";
       $res = $UPLINK->query($sql);
 
       if($res) {

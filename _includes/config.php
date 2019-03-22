@@ -2,6 +2,7 @@
 // include the db.php connection. This file is not available on my github for security reasons.
 // to make your own, see db.sample.php
 include_once($_SERVER["DOCUMENT_ROOT"] .'/eoschargen/db.php');
+require_once($_SERVER["DOCUMENT_ROOT"] . '/eoschargen/_includes/joomla.php');
 
 // config variable.
 $APP = array();
@@ -16,6 +17,6 @@ $APP["header"] = "/eoschargen";
 $APP["root"] = $_SERVER["DOCUMENT_ROOT"] . $APP["header"];
 
 // define the login page to redirect to if there is no $jid set/inherited.
-$APP["loginpage"] = "https://www.eosfrontier.space/component/users/?view=login";
+$APP["loginpage"] = "https://new.eosfrontier.space/component/users/?view=login";
 
-$jid = 451;
+// $jid = 451;

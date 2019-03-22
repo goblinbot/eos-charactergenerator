@@ -74,7 +74,7 @@
         include_once($APP["root"] . "/_includes/functions.skills.php");
 
 
-        $sql = "SELECT characterID, charSheetID, aantal_events FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,(int)$_GET['sheetID'])."' LIMIT 1";
+        $sql = "SELECT characterID, charSheetID, aantal_events FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,(int)$_GET['sheetID'])."'  LIMIT 1";
         $res = $UPLINK->query($sql);
 
         if($res && mysqli_num_rows($res) == 1) {
@@ -291,12 +291,10 @@
 
       } else {
 
-        $sql = "SELECT count( `characterID` )
-                AS totalchars
-                FROM `ecc_characters`
-                WHERE `status` NOT LIKE 'deceased'
-                AND `faction` = '$_FACTION'
-                AND `characterID` IN $EVENTIDS";
+        $sql = "SELECT count(SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1)) as totalchars, c1.faction from jml_eb_registrants r
+        join jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
+		join ecc_characters c1 on c1.characterID = SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1)
+        where r.event_id = '$EVENTID' AND `faction` = '$_FACTION' and ((r.published = 1 AND r.payment_method = 'os_ideal') OR (r.published in (0,1) AND r.payment_method = 'os_offline'));";
 
         $res = $UPLINK->query($sql);
         $resCOUNT = mysqli_fetch_assoc($res)['totalchars'];
@@ -311,7 +309,7 @@
                 <option value=\"pendzal\">Pendzal</option>
                 <option value=\"sona\">Sona</option>
               </select>";
-        echo "<div style=\"padding: 15px;\">CHARACTERS : $resCOUNT<br/><br/>";
+        echo "<div style=\"padding: 15px;\">$_FACTION CHARACTERS : $resCOUNT<br/><br/>";
 
         $printresult = "";
 
@@ -336,11 +334,11 @@
 
         echo "<br/><br/>";
 
-        $sql = "SELECT characterID, character_name, faction, sheet_status
-          FROM `ecc_characters`
-          WHERE `status` NOT LIKE 'deceased'
-          AND `faction` = '$_FACTION'
-          AND `characterID` IN $EVENTIDS
+
+        $sql = "SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1) as characterID, c1.character_name, c1.faction, c1.sheet_status from jml_eb_registrants r
+        join jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
+        join ecc_characters c1 on c1.characterID = SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1)
+        where r.event_id = '$EVENTID' and characterID <> 257 AND `faction` = '$_FACTION' and ((r.published = 1 AND r.payment_method = 'os_ideal') OR (r.published in (0,1) AND r.payment_method = 'os_offline'))
           ORDER BY faction,character_name
           LIMIT ".(int)$limitFirst." , ".(int)$perPage." ";
         $res = $UPLINK->query($sql);

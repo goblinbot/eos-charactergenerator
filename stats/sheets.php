@@ -449,7 +449,7 @@
 
               }
 
-              echo "<br/><a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&createSheet=true\" class=\"button no-bg green\"><i class=\"fas fa-user-plus\"></i>&nbsp;New sheet</a>";
+//              echo "<br/><a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$value['characterID']."&createSheet=true\" class=\"button no-bg green\"><i class=\"fas fa-user-plus\"></i>&nbsp;New sheet</a>";
 
             }
 

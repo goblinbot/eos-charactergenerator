@@ -123,17 +123,17 @@ function calcUsedExp($charSkillArr = array(), $faction = null) {
   return $result;
 }
 
-function getImplants($sheetID) {
+function getImplants($charID) {
 
   global $jid, $UPLINK;
 
   $return = false;
 
-  $sql = "SELECT i.modifierID,i.sheetID,i.accountID,i.type,i.skillgroup_level,i.skillgroup_siteindex,i.status,i.description,s.name
+  $sql = "SELECT i.modifierID,i.charID,i.accountID,i.type,i.skillgroup_level,i.skillgroup_siteindex,i.status,i.description,s.name
     FROM ecc_char_implants i
     LEFT JOIN ecc_skills_groups s ON i.skillgroup_siteindex = s.siteindex
     WHERE `accountID` = '".(int)$jid."'
-    AND `sheetID` = '".(int)$sheetID."' ";
+    AND `charID` = '".(int)$charID."' ";
 
   $res = $UPLINK->query($sql);
 

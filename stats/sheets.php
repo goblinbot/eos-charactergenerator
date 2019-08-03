@@ -155,78 +155,87 @@
             // buttons?
             echo "<div class=\"row\">";
 
+            //1
             echo "<div class=\"box33\">"
-              ."<a class=\"\" href=\"".$APP['header']."/stats/skills.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
+              ."<a class=\"\" href=\"{$APP['header']}/stats/skills.php?viewChar={$_GET['viewChar']}&viewSheet={$_GET['viewSheet']}\">"
                 ."<button type=\"button\" class=\"button bar blue\" name=\"button\"><i class=\"fas fa-book\"></i>&nbsp;Skills</button>"
               ."</a>"
             ."</div>";
 
+            //2
             echo "<div class=\"box33\">"
-              ."<a class=\"\" href=\"".$APP['header']."/stats/implants.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
+              ."<a class=\"\" href=\"{$APP['header']}/stats/implants.php?viewChar={$_GET['viewChar']}&viewSheet={$_GET['viewSheet']}\">"
                 ."<button type=\"button\" class=\"button bar blue\" name=\"button\"><i class=\"fas fa-microchip\"></i>&nbsp;Implants/Symbionts</button>"
               ."</a>"
             ."</div>";
 
+            //3
             echo "<div class=\"box33\">"
-              ."<a class=\"disabled\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
-                ."<button type=\"button\" class=\"button bar blue disabled\" name=\"button\"><i class=\"fas fa-file-code\"></i>&nbsp;Export to JSON</button>"
-              ."</a>"
-            ."</div>";
-
-            echo "</div>";
-
-            echo "<div class=\"row\">";
-
-            echo "<div class=\"box33\">"
-              ."<a onclick=\"SH_nicknameForm('".$_GET['viewChar']."','".$_GET['viewSheet']."')\">"
+              ."<a onclick=\"SH_nicknameForm('{$_GET['viewChar']}','{$_GET['viewSheet']}')\">"
                 ."<button type=\"button\" class=\"button blue no-bg bar\" name=\"button\"><i class=\"fas fa-sticky-note\"></i>&nbsp;Nickname this sheet</button>"
               ."</a>"
             ."</div>";
 
-            echo "<div class=\"box33\">"
-              ."<a onclick=\"SH_editPlayedForm('".$_GET['viewChar']."','".$_GET['viewSheet']."')\">"
-                ."<button type=\"button\" class=\"button blue no-bg bar\" name=\"button\"><i class=\"fas fa-sort-numeric-up\"></i>&nbsp;Events Played</button>"
-              ."</a>"
-            ."</div>";
-
-            echo "<div class=\"box33\">"
-              ."<a class=\"disabled\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
-                ."<button type=\"button\" class=\"button bar blue disabled\" name=\"button\"><i class=\"far fa-file-pdf\"></i>&nbsp;Download PDF</button>"
-              ."</a>"
-            ."</div>";
-
             echo "</div>";
 
             echo "<div class=\"row\">";
 
-            echo "<div class=\"box33\">";
+            //1
+            // echo "<div class=\"box33\">"
+            //   ."<a onclick=\"SH_editPlayedForm('{$_GET['viewChar']}','{$_GET['viewSheet']}')\">"
+            //     ."<button type=\"button\" class=\"button blue no-bg bar\" name=\"button\"><i class=\"fas fa-sort-numeric-up\"></i>&nbsp;Events Played</button>"
+            //   ."</a>"
+            // ."</div>";
 
-              // DELETE BUTTON - visible if the sheet is in design/ontwerp mode.
-              if(isset($activeCharacter['sheets'][$_GET['viewSheet']]['status']) && $activeCharacter['sheets'][$_GET['viewSheet']]['status'] == "ontwerp") {
-
-                echo "<a class=\"\" onclick=\"return confirm('Are you sure you wish to recycle this sheet? This cannot be reversed.');\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&deleteSheet=".$_GET['viewSheet']."\">"
-                  ."<button type=\"button\" class=\"button tomato bar\" name=\"button\"><i class=\"fas fa-trash-alt\"></i>&nbsp;Delete sheet</button>"
-                ."</a>";
-                // . "<a onclick=\"return confirm('Are you sure you wish to recycle this sheet? This cannot be reversed.');
-                // if (confirm_this()) { document.location.href='".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&deleteSheet=".$_GET['viewSheet']."'; }\">"
-
-              } else {
-                echo "<a class=\"disabled\">"
-                  ."<button type=\"button\" class=\"button disabled bar\" name=\"button\"><i class=\"fas fa-trash-alt\"></i>&nbsp;Delete sheet</button>"
-                ."</a>";
-              }
-
-            echo "</div>";
-
+            //2
             echo "<div class=\"box33\">"
-              ."<a class=\"disabled\" href=\"".$APP['header']."/stats/submit.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
+              ."<a class=\"disabled\" href=\"{$APP['header']}/stats/submit.php?viewChar={$_GET['viewChar']}&viewSheet={$_GET['viewSheet']}\">"
                 ."<button type=\"button\" class=\"button bar disabled green no-bg\" name=\"button\"><i class=\"fas fa-check\"></i>&nbsp;Submit sheet</button>"
               ."</a>"
             ."</div>";
 
+            //3 : leeg
             echo "<div class=\"box33\">"."</div>";
 
             echo "</div>";
+
+
+            // echo "<div class=\"box33\">";
+              // DELETE BUTTON - visible if the sheet is in design/ontwerp mode.
+              // if(isset($activeCharacter['sheets'][$_GET['viewSheet']]['status']) && $activeCharacter['sheets'][$_GET['viewSheet']]['status'] == "ontwerp") {
+              //
+              //   echo "<a class=\"\" onclick=\"return confirm('Are you sure you wish to recycle this sheet? This cannot be reversed.');\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&deleteSheet=".$_GET['viewSheet']."\">"
+              //     ."<button type=\"button\" class=\"button tomato bar\" name=\"button\"><i class=\"fas fa-trash-alt\"></i>&nbsp;Delete sheet</button>"
+              //   ."</a>";
+                // . "<a onclick=\"return confirm('Are you sure you wish to recycle this sheet? This cannot be reversed.');
+                // if (confirm_this()) { document.location.href='".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&deleteSheet=".$_GET['viewSheet']."'; }\">"
+              // } else {
+              //   echo "<a class=\"disabled\">"
+              //     ."<button type=\"button\" class=\"button disabled bar\" name=\"button\"><i class=\"fas fa-trash-alt\"></i>&nbsp;Delete sheet</button>"
+              //   ."</a>";
+              // }
+            // echo "</div>";
+
+            /*echo "<div class=\"row\">";
+
+            //1
+            echo "<div class=\"box33\">"
+              ."<a class=\"disabled\" href=\"{$APP['header']}/stats/sheets.php?viewChar={$_GET['viewChar']}&viewSheet={$_GET['viewSheet']}\">"
+                ."<button type=\"button\" class=\"button bar blue disabled\" name=\"button\"><i class=\"far fa-file-pdf\"></i>&nbsp;Download PDF</button>"
+              ."</a>"
+            ."</div>";
+
+            //2
+            echo "<div class=\"box33\">"
+              ."<a class=\"disabled\" href=\"{$APP['header']}/stats/sheets.php?viewChar={$_GET['viewChar']}&viewSheet={$_GET['viewSheet']}\">"
+                ."<button type=\"button\" class=\"button bar blue disabled\" name=\"button\"><i class=\"fas fa-file-code\"></i>&nbsp;Export to JSON</button>"
+              ."</a>"
+            ."</div>";
+
+            //3
+            echo "<div class=\"box33\">"."</div>";
+
+            echo "</div>"; // einde row*/
 
 
 
@@ -467,7 +476,6 @@
 
 
     ?>
-
     <div id="customForm" class="row"></div>
   </div>
 

@@ -89,10 +89,9 @@ function SH_nicknameForm(charID,sheetID) {
 }
 
 /* append the nickanme form */
-function SH_editPlayedForm(charID,sheetID) {
+function SH_editPlayedForm(charID) {
 	let postdata = {
-		"char" : charID,
-		"sheet": sheetID
+		"char" : charID
 	};
 
 	$.ajax({

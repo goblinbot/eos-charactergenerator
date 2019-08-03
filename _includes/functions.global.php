@@ -22,11 +22,11 @@ function generateMenu($param = 'Home') {
   // $class = (strtolower($param) == 'myaccount') ? 'active' : '';
     // $printresult .= "<a href=\"".$APP['header']."/myaccount.php\" class=\"menuitem disabled $class\"><i class=\"fas fa-cog\"></i><span>&nbsp;My account</span></a>";
 
-  $class = (strtolower($param) == 'about') ? 'active' : '';
-    $printresult .= "<a href=\"".$APP['header']."/about.php\" class=\"menuitem $class\"><i class=\"fas fa-info-circle\"></i><span>&nbsp;About</span></a>";
+  // $class = (strtolower($param) == 'about') ? 'active' : '';
+    // $printresult .= "<a href=\"".$APP['header']."/about.php\" class=\"menuitem $class\"><i class=\"fas fa-info-circle\"></i><span>&nbsp;About</span></a>";
 
   // $class = 'disabled';
-    $printresult .= "<a href=\"https://www.eosfrontier.space\" class=\"menuitem disabled\"><i class=\"fas fa-arrow-left\"></i><span>&nbsp;Back to site</span></a>";
+    // $printresult .= "<a href=\"https://www.eosfrontier.space\" class=\"menuitem disabled\"><i class=\"fas fa-arrow-left\"></i><span>&nbsp;Back to site</span></a>";
 
   return $printresult;
 
@@ -121,30 +121,25 @@ function parseSheetStatus($statusCode) {
 
   if(isset($statusCode) && $statusCode != "") {
 
-
     if(stripos($statusCode, "_") && $statusCode != 0 ) {
 
       $SPLIT = explode("_", $statusCode);
 
       $return['code'] = (int)$SPLIT[0];
       $return['last_sheet'] = (int)$SPLIT[1];
-
     } else {
 
       $return['code'] = $statusCode;
       $return['last_sheet'] = "none";
-
     }
 
   } else {
 
     $return['code'] = (int)0;
     $return['last_sheet'] = "none";
-
   }
 
   return $return;
-
 }
 
 
@@ -158,7 +153,7 @@ function getCharacterSheets() {
 
   if(isset($UPLINK) && isset($jid) && $jid != "") {
 
-    $sql = "SELECT characterID, accountID, character_name, ICC_number, faction, bloodtype, sheet_status, status, psychic, ic_birthday, birthplanet, homeplanet FROM ecc_characters WHERE accountID = '".(int)$jid."'";
+    $sql = "SELECT * FROM ecc_characters WHERE accountID = '".(int)$jid."'";
     $res = $UPLINK->query($sql);
 
     if($res) {
@@ -219,10 +214,6 @@ function getCharacterSheets() {
     $return['status'] = "noDB";
   }
 
-  // echo "<pre>";
-  // var_dump($return);
-  // echo "</pre>";
-  // exit();
   return $return;
 }
 
@@ -235,26 +226,26 @@ function silvesterFilter($input = null) {
 }
 
 // abort an operation if a character sheet is NOT edittable.
-function checkSheetStatus($sheetID) {
-  global $UPLINK;
+// function checkSheetStatus($sheetID) {
+//   global $UPLINK;
 
-  $sql = "SELECT status FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,(int)$sheetID)."' LIMIT 1";
-  $res = $UPLINK->query($sql);
+//   $sql = "SELECT status FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,(int)$sheetID)."' LIMIT 1";
+//   $res = $UPLINK->query($sql);
 
-  if(mysqli_num_rows($res) == 1) {
-    $row = mysqli_fetch_assoc($res);
-    if($row['status'] == 'ontwerp'){
-      return true;
-    } else {
-      echo "<p>Character sheet cannot be editted, as it is not in design mode.</p>";
-      exit();
-    }
-  } else {
-    echo "<p>Character sheet cannot be editted, as it is not in design mode.</p>";
-    exit();
-  }
+//   if(mysqli_num_rows($res) == 1) {
+//     $row = mysqli_fetch_assoc($res);
+//     if($row['status'] == 'ontwerp'){
+//       return true;
+//     } else {
+//       echo "<p>Character sheet cannot be editted, as it is not in design mode.</p>";
+//       exit();
+//     }
+//   } else {
+//     echo "<p>Character sheet cannot be editted, as it is not in design mode.</p>";
+//     exit();
+//   }
 
-}
+// }
 
 /* legacy... : */
 /* Aquila: 7 Pendzal: 9 Ekanesh: 8 Dugo: 3 Sona: 5 */

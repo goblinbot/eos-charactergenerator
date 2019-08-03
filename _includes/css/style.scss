@@ -90,6 +90,8 @@ p {
   flex-direction: row;
 }
 
+
+
 .responsive {
   max-width: 100%;
   display: block;
@@ -689,6 +691,10 @@ input.skillcheck, .popout {
       flex: 1;
     }
   }
+}
+
+#customForm {
+  margin-left: 1.5rem;
 }
 
 .implant {

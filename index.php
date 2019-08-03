@@ -409,7 +409,9 @@
       echo $printresult; unset($printresult);
 
     ?>
-    <div id="customForm" class="row"></div>
+    <div class="row">
+      <div id="customForm"></div>
+    </div>
 
   </div>
 

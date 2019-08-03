@@ -3,41 +3,40 @@ var activeImplantDiv = $('#activeImplants');
 var implantFormDiv = $('#implantForm');
 
 /* choose your implant type */
-function IM_chooseType(char,sheet) {
+function IM_chooseType(char, sheet) {
 
   activeImplantDiv.fadeOut();
 
   let printresult = "<h2>Choose a type of augmentation</h2><hr/><br/>"
-  + "<div class=\"row flexcolumn\">"
-    + "<button class=\"button no-bg\" style=\"font-size: 1.6rem; margin-bottom: 1.8rem;\" onclick=\"IM_creationForm('cybernetic','"+char+"','"+sheet+"');return false;\"><i class=\"fas fa-microchip cyan\"></i>&nbsp;Skill-based&nbsp;Cybernetic</button>"
-    + "<button class=\"button no-bg\" style=\"font-size: 1.6rem; margin-bottom: 1.8rem;\" onclick=\"IM_creationForm('symbiont','"+char+"','"+sheet+"');return false;\"><i class=\"fas fa-bug green\"></i>&nbsp;Skill-based&nbsp;Symbiont</button>"
-    + "<button class=\"button no-bg\" style=\"font-size: 1.6rem; margin-bottom: 1.8rem;\" onclick=\"IM_creationForm('flavour','"+char+"','"+sheet+"');return false;\"><i class=\"fas fa-cogs\"></i>&nbsp;Flavour/non-skill augmentation</button>"
-  + "</div>"
+    + "<div class=\"row flexcolumn\">"
+    + "<button class=\"button no-bg\" style=\"font-size: 1.6rem; margin-bottom: 1.8rem;\" onclick=\"IM_creationForm('cybernetic','" + char + "','" + sheet + "');return false;\"><i class=\"fas fa-microchip cyan\"></i>&nbsp;Skill-based&nbsp;Cybernetic</button>"
+    + "<button class=\"button no-bg\" style=\"font-size: 1.6rem; margin-bottom: 1.8rem;\" onclick=\"IM_creationForm('symbiont','" + char + "','" + sheet + "');return false;\"><i class=\"fas fa-bug green\"></i>&nbsp;Skill-based&nbsp;Symbiont</button>"
+    + "<button class=\"button no-bg\" style=\"font-size: 1.6rem; margin-bottom: 1.8rem;\" onclick=\"IM_creationForm('flavour','" + char + "','" + sheet + "');return false;\"><i class=\"fas fa-cogs\"></i>&nbsp;Flavour/non-skill augmentation</button>"
+    + "</div>"
 
   IM_animateFormDiv(printresult);
 
 }
 
 /* create an implant: form. */
-function IM_creationForm(type,char,sheet) {
+function IM_creationForm(type, char) {
 
   let postdata = {
-    "type" : type,
-    "char" : char,
-    "sheet": sheet
+    "type": type,
+    "char": char
   };
 
   $.ajax({
     type: 'POST',
     url: '/eoschargen/handler/index.php',
-    data: { createImplantForm : postdata }
+    data: { createImplantForm: postdata }
   })
-  .done(function(data){
-    IM_animateFormDiv(data); /* show the response */
-  })
-  .fail(function() {
-    IM_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Posting failed. [err 701]</h4>"); /* just in case posting your form failed */
-  });
+    .done(function (data) {
+      IM_animateFormDiv(data); /* show the response */
+    })
+    .fail(function () {
+      IM_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Posting failed. [err 701]</h4>"); /* just in case posting your form failed */
+    });
 
   /* prevent a refresh by returning false in the end. */
   return false;
@@ -56,12 +55,12 @@ function IM_animateFormDiv(printresult) {
   /* loading 'spinner' */
   implantFormDiv.empty().html('<br/><p class=\"text-center\"><i style=\"font-size:5rem;\" class=\"fas fa-cog fa-spin\"></i></p>').fadeOut();
 
-  setTimeout(function(){
+  setTimeout(function () {
 
     implantFormDiv.empty().html(printresult).fadeIn();
     return true;
 
-  },750);
+  }, 750);
 }
 
 /* submit the implantform */
@@ -74,38 +73,38 @@ function IM_submitNewImplant() {
     url: '/eoschargen/handler/index.php',
     data: postdata
   })
-  .done(function(data){
-    IM_animateFormDiv(data); /* show the response */
-    setTimeout(function(){
-      location.reload();
-    },2500);
-  })
-  .fail(function() {
-    IM_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Adding new augmentation failed. [ERR 703]</h4>"); /* just in case posting your form failed */
-  });
+    .done(function (data) {
+      IM_animateFormDiv(data); /* show the response */
+      setTimeout(function () {
+        location.reload();
+      }, 2500);
+    })
+    .fail(function () {
+      IM_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Adding new augmentation failed. [ERR 703]</h4>"); /* just in case posting your form failed */
+    });
 
 }
 
-function IM_removeImplant(sheetID,modifierID) {
+function IM_removeImplant(charID, modifierID) {
 
   activeImplantDiv.fadeOut();
 
   let postdata = {
-    "aug" : modifierID,
-    "sheet": sheetID
+    "aug": modifierID,
+    "char": charID
   };
 
   $.ajax({
     type: 'POST',
     url: '/eoschargen/handler/index.php',
-    data: { removeImplant : postdata }
+    data: { removeImplant: postdata }
   })
-  .done(function(data){
-    IM_animateFormDiv(data); /* show the response */
-  })
-  .fail(function() {
-    IM_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Posting failed. [ERR 706]</h4>"); /* just in case posting your form failed */
-  });
+    .done(function (data) {
+      IM_animateFormDiv(data); /* show the response */
+    })
+    .fail(function () {
+      IM_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Posting failed. [ERR 706]</h4>"); /* just in case posting your form failed */
+    });
 
   /* prevent a refresh by returning false in the end. */
   return false;
@@ -116,18 +115,18 @@ function IM_removeImplantConfirmed(modifierID) {
   $.ajax({
     type: 'POST',
     url: '/eoschargen/handler/index.php',
-    data: { deleteImplantConfirm : modifierID }
+    data: { deleteImplantConfirm: modifierID }
   })
-  .done(function(data){
-    IM_animateFormDiv(data); /* show the response */
+    .done(function (data) {
+      IM_animateFormDiv(data); /* show the response */
 
-    setTimeout(function(){
-      location.reload();
-    },3000);
-  })
-  .fail(function() {
-    IM_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Posting failed. [ERR 707]</h4>"); /* just in case posting your form failed */
-  });
+      setTimeout(function () {
+        location.reload();
+      }, 3000);
+    })
+    .fail(function () {
+      IM_animateFormDiv("<h4><i class=\"fas fa-warning\"></i>&nbsp;Posting failed. [ERR 707]</h4>"); /* just in case posting your form failed */
+    });
 
   /* prevent a refresh by returning false in the end. */
   return false;
@@ -135,6 +134,6 @@ function IM_removeImplantConfirmed(modifierID) {
 
 
 /* onload... */
-$(document).ready(function(){
+$(document).ready(function () {
 
 });

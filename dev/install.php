@@ -34,7 +34,7 @@
             `characterID` int(11) NOT NULL AUTO_INCREMENT,
             `accountID` int(11) NOT NULL,
             `character_name` varchar(100) DEFAULT NULL,
-            `ICC_number` int(15) NOT NULL DEFAULT '0',
+            `ICC_number` varchar(15) NOT NULL DEFAULT '0',
             `oc_name` varchar(75) DEFAULT NULL,
             `faction` varchar(25) NOT NULL,
             `bloodtype` varchar(6) NOT NULL DEFAULT 'A',

@@ -20,17 +20,17 @@ if(isset($_POST['createImplantForm']) && $_POST['createImplantForm'] == true) {
 
   if($AUG['type'] == 'symbiont' || $AUG['type'] == 'cybernetic' || $AUG['type'] == 'flavour') {
 
-    if(isset($AUG['sheet']) && $AUG['sheet'] != "") {
+    if(isset($AUG['char']) && $AUG['char'] != "") {
 
-      $AUG['sheet'] = (int)$AUG['sheet'];
+      $AUG['char'] = (int)$AUG['char'];
 
-      $sql = "SELECT charSheetID FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,$AUG['sheet'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$jid)."' LIMIT 1";
+      $sql = "SELECT characterID FROM `ecc_characters` WHERE characterID = '".mysqli_real_escape_string($UPLINK,$AUG['char'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$jid)."' LIMIT 1";
       $res = $UPLINK->query($sql);
 
       if($res && mysqli_num_rows($res) == 1) {
 
         $printresult = "<form name=\"newImplant\">"
-        . "<input type=\"hidden\" name=\"newImplant[sheet]\" value=\"".$AUG['sheet']."\" />"
+        . "<input type=\"hidden\" name=\"newImplant[char]\" value=\"".$AUG['char']."\" />"
         . "<input type=\"hidden\" name=\"newImplant[type]\" value=\"".$AUG['type']."\" />"
         . "<div class=\"formitem\"><label><h2>Augmentation type: ".$AUG['type']."</h2></label></div>";
 
@@ -105,37 +105,6 @@ if(isset($_POST['createImplantForm']) && $_POST['createImplantForm'] == true) {
   exit();
 }
 
-// edit the character sheet nickname
-if(isset($_POST['nickNameForm']) && $_POST['nickNameForm'] != "") {
-
-  $printresult = "";
-  $xDATA = $_POST['nickNameForm'];
-
-  // grab the existing nickname if it exists
-  $sql = "SELECT nickname FROM ecc_char_sheet WHERE accountID = '".mysqli_real_escape_string($UPLINK,$jid)."' AND charSheetID = '".mysqli_real_escape_string($UPLINK,$xDATA['sheet'])."' LIMIT 1";
-  $res = $UPLINK->query($sql);
-
-  if($res && mysqli_num_rows($res) == 1) {
-    $row = mysqli_fetch_assoc($res);
-    $row = $row['nickname'];
-  } else {
-    $row = "";
-  }
-
-  $printresult .= "<form name=\"\" action=\"".$APP['header']."/stats/sheets.php?viewChar=".$xDATA['char']."&viewSheet=".$xDATA['sheet']."\" method=\"post\">"
-  . "<div class=\"formitem\">"
-    . "<label>Nickname your character sheet</label><br/>"
-    . "<input autocomplete=\"off\" type=\"text\" name=\"updateNickname[value]\" value=\"".$row."\" maxlength=\"30\"/>"
-  . "</div><div class=\"formitem\">"
-    . "<input type=\"submit\" class=\"button green no-bg\" value=\"Update\"/>"
-  . "</div>"
-  . "</form>";
-
-  echo $printresult;
-  unset($printresult);
-  exit();
-}
-
 // edit the amounts of events played
 if(isset($_POST['EventsPlayedForm']) && $_POST['EventsPlayedForm'] != "") {
 
@@ -143,10 +112,9 @@ if(isset($_POST['EventsPlayedForm']) && $_POST['EventsPlayedForm'] != "") {
   $xDATA = $_POST['EventsPlayedForm'];
 
   check4dead($xDATA['char']);
-  checkSheetStatus($xDATA['sheet']);
 
   // grab the existing nickname if it exists
-  $sql = "SELECT aantal_events FROM ecc_char_sheet WHERE accountID = '".mysqli_real_escape_string($UPLINK,$jid)."' AND charSheetID = '".mysqli_real_escape_string($UPLINK,$xDATA['sheet'])."' LIMIT 1";
+  $sql = "SELECT aantal_events FROM ecc_characters WHERE accountID = '".mysqli_real_escape_string($UPLINK,$jid)."' AND characterID = '".mysqli_real_escape_string($UPLINK,$xDATA['char'])."' LIMIT 1";
   $res = $UPLINK->query($sql);
 
   if($res && mysqli_num_rows($res) == 1) {
@@ -156,10 +124,10 @@ if(isset($_POST['EventsPlayedForm']) && $_POST['EventsPlayedForm'] != "") {
     $row = "";
   }
 
-  $printresult .= "<form name=\"\" action=\"".$APP['header']."/stats/sheets.php?viewChar=".$xDATA['char']."&viewSheet=".$xDATA['sheet']."\" method=\"post\">"
+  $printresult .= "<form name=\"\" action=\"".$APP['header']."/index.php?viewChar=".$xDATA['char']."\" method=\"post\">"
   . "<div class=\"formitem\">"
     . "<label>Events played:</label><br/>"
-    . "<input autocomplete=\"off\" type=\"number\" name=\"updateEventsPlayed[value]\" value=\"".$row."\" min=\"0\" max=\"25\" />"
+    . "<input autocomplete=\"off\" type=\"number\" name=\"updateEventsPlayed[value]\" value=\"".$row."\" min=\"0\" max=\"35\" />"
   . "</div><div class=\"formitem\">"
     . "<input type=\"submit\" class=\"button green no-bg\" value=\"Update\"/>"
   . "</div>"
@@ -176,9 +144,7 @@ if(isset($_POST['removeImplant']) && $_POST['removeImplant'] != "") {
   $AUG = $_POST['removeImplant'];
   $printresult = false;
 
-  checkSheetStatus($AUG['sheet']);
-
-  $sql = "SELECT * FROM `ecc_char_implants` WHERE sheetID = '".mysqli_real_escape_string($UPLINK,$AUG['sheet'])."' AND modifierID = '".mysqli_real_escape_string($UPLINK,$AUG['aug'])."'  AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$jid)."' LIMIT 1";
+  $sql = "SELECT * FROM `ecc_char_implants` WHERE charID = '".mysqli_real_escape_string($UPLINK,$AUG['char'])."' AND modifierID = '".mysqli_real_escape_string($UPLINK,$AUG['aug'])."'  AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$jid)."' LIMIT 1";
   $res = $UPLINK->query($sql) or trigger_error(mysqli_error($res));
 
   if($res && mysqli_num_rows($res) == 1) {
@@ -232,7 +198,7 @@ if(isset($_POST['newImplant']) && $_POST['newImplant'] == true) {
 
   $NEWIMP = $_POST['newImplant'];
 
-  $sql = "SELECT charSheetID FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,$NEWIMP['sheet'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$jid)."' LIMIT 1";
+  $sql = "SELECT characterID FROM `ecc_characters` WHERE characterID = '".mysqli_real_escape_string($UPLINK,$NEWIMP['char'])."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$jid)."' LIMIT 1";
   $res = $UPLINK->query($sql);
 
   if($res && mysqli_num_rows($res) == 1) {
@@ -255,9 +221,9 @@ if(isset($_POST['newImplant']) && $_POST['newImplant'] == true) {
     if(isset($NEWIMP['type']) && $NEWIMP['type'] == "flavour") {
 
       $sql = "INSERT INTO `ecc_char_implants`
-      (`sheetID`, `accountID`, `type`, `skillgroup_level`, `skillgroup_siteindex`, `status`, `description`)
+      (`charID`, `accountID`, `type`, `skillgroup_level`, `skillgroup_siteindex`, `status`, `description`)
       VALUES
-      ('".(int)$NEWIMP['sheet']."', '".(int)$jid."', '".mysqli_real_escape_string($UPLINK,$NEWIMP['type'])."', '0', 'none', 'active', '".mysqli_real_escape_string($UPLINK,$NEWIMP['description'])."')";
+      ('".(int)$NEWIMP['char']."', '".(int)$jid."', '".mysqli_real_escape_string($UPLINK,$NEWIMP['type'])."', '0', 'none', 'active', '".mysqli_real_escape_string($UPLINK,$NEWIMP['description'])."')";
       $xRES = $UPLINK->query($sql) or trigger_error(mysqli_error($xRES));
 
       echo "<p class=\"dialog\"><i class=\"fas fa-check green\"></i>&nbsp;Added new augment. Refreshing...</p>";
@@ -265,7 +231,7 @@ if(isset($_POST['newImplant']) && $_POST['newImplant'] == true) {
     } else if(isset($NEWIMP['type']) && $NEWIMP['type'] == "cybernetic") {
 
       $sql = "INSERT INTO `ecc_char_implants` (
-        `sheetID`,
+        `charID`,
         `accountID`,
         `type`,
         `skillgroup_level`,
@@ -273,7 +239,7 @@ if(isset($_POST['newImplant']) && $_POST['newImplant'] == true) {
         `status`,
         `description`
       ) VALUES (
-        '".(int)$NEWIMP['sheet']."',
+        '".(int)$NEWIMP['char']."',
         '".(int)$jid."',
         '".mysqli_real_escape_string($UPLINK,$NEWIMP['type'])."',
         '".(int)$NEWIMP['skillgroup_level']."',
@@ -288,7 +254,7 @@ if(isset($_POST['newImplant']) && $_POST['newImplant'] == true) {
     } else if(isset($NEWIMP['type']) && $NEWIMP['type'] == "symbiont") {
 
       $sql = "INSERT INTO `ecc_char_implants` (
-        `sheetID`,
+        `charID`,
         `accountID`,
         `type`,
         `skillgroup_level`,
@@ -296,7 +262,7 @@ if(isset($_POST['newImplant']) && $_POST['newImplant'] == true) {
         `status`,
         `description`
       ) VALUES (
-        '".(int)$NEWIMP['sheet']."',
+        '".(int)$NEWIMP['char']."',
         '".(int)$jid."',
         '".mysqli_real_escape_string($UPLINK,$NEWIMP['type'])."',
         '".(int)$NEWIMP['skillgroup_level']."',

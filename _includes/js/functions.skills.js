@@ -3,33 +3,33 @@ function toggleSkillBoxes(e) {
 
   let skillData = $(e).data();
 
-  if(e.checked == true) {
+  if (e.checked == true) {
 
     /* set all PREVIOUS checkboxes to TRUE */
     $(e).prevAll().prop("checked", true);
 
-    if(skillData['level'] == 5 && skillData['index']) {
+    if (skillData['level'] == 5 && skillData['index']) {
       toggleSpecialties(skillData['index']);
     }
 
-    if(skillData['level'] > 5 && skillData['parentid']) {
+    if (skillData['level'] > 5 && skillData['parentid']) {
       /*let parentTarget = $('#sg_'+skillData['parentid']);*/
-      $('#sg_'+skillData['parentid']).find('input').addClass('disabled').attr('readonly', true);
+      $('#sg_' + skillData['parentid']).find('input').addClass('disabled').attr('readonly', true);
     }
 
-  } else if(e.checked == false) {
+  } else if (e.checked == false) {
 
     /* check if the NEXT checkbox is already set. If this is the case...*/
     let next = $(e).next();
 
     /* ...we set the clicked box to TRUE instead of disabling it as well. This feels more natural. */
-    if(next[0] && next[0]['checked'] == true) {
+    if (next[0] && next[0]['checked'] == true) {
       $(e).prop("checked", true);
     } else {
 
-      if(skillData['level'] == 6 && skillData['parentid']) {
+      if (skillData['level'] == 6 && skillData['parentid']) {
         /*let parentTarget = $('#sg_'+skillData['parentid']);*/
-        $('#sg_'+skillData['parentid']).find('input').removeClass('disabled').attr('readonly', false);
+        $('#sg_' + skillData['parentid']).find('input').removeClass('disabled').attr('readonly', false);
       }
 
     }
@@ -48,46 +48,46 @@ function toggleSkillBoxes(e) {
 /* grab the specialty or hide the specialty, based on your skill level. */
 function toggleSpecialties(index) {
 
-  if($('#specialtycontainer').length > 0) {
+  if ($('#specialtycontainer').length > 0) {
 
     let target = $('#specialtycontainer');
     let checkforbeta = $('#charStatus').text(); /* check  if a skill is in beta or alpha */
-    
+
     $.ajax({
       type: 'POST',
       url: '/eoschargen/handler/skills.php',
-      data: { getSpecialtySkills : index, charstatus : checkforbeta }
+      data: { getSpecialtySkills: index, charstatus: checkforbeta }
     })
-    .done(function(data){
-      /*target.append(data);*/
-      data = (JSON.parse(data));
+      .done(function (data) {
+        /*target.append(data);*/
+        data = (JSON.parse(data));
 
-      $.each(data, function(key,value) {
+        $.each(data, function (key, value) {
 
-        if($('#sg_' + key).length > 0) {
+          if ($('#sg_' + key).length > 0) {
 
-          /* ALREADY EXISTS */
-          return false;
+            /* ALREADY EXISTS */
+            return false;
 
-        } else {
+          } else {
 
-          /* doesn't exist? make the fields. */
-          let printresult = "";
+            /* doesn't exist? make the fields. */
+            let printresult = "";
 
-          for(let i = 1; i < 9; i++) {
-            printresult += value[i];
+            for (let i = 1; i < 9; i++) {
+              printresult += value[i];
+            }
+
+            target.append(printresult);
+
           }
 
-          target.append(printresult);
+        });
 
-        }
-
+      })
+      .fail(function () {
+        /*target.html('<h2>Err: no skills found.</h2>');*/
       });
-
-    })
-    .fail(function() {
-      /*target.html('<h2>Err: no skills found.</h2>');*/
-    });
 
     /* finally: update the EXP used */
     updateExpUsed();
@@ -107,25 +107,25 @@ function updateExpUsed() {
   let expUsed = expUsedCont.text();
   let expTotal = $('#expTotal').text();
 
-  if(expTotal && expUsed) {
+  if (expTotal && expUsed) {
 
     let activeSkillBoxes = $('input.skillcheck:checked');
 
-    if(activeSkillBoxes) {
+    if (activeSkillBoxes) {
       var newExpUsed = 0;
 
-      $(activeSkillBoxes).each(function(arr){
+      $(activeSkillBoxes).each(function (arr) {
 
         /* cache the current block, grab the data-attrs */
         let current = activeSkillBoxes[arr];
         let divdata = $(current).data();
 
         /* add and extract exp based on data-attr's */
-        if(divdata) {
-          if(divdata.expmodifier) {
+        if (divdata) {
+          if (divdata.expmodifier) {
             newExpUsed = (newExpUsed + divdata.expmodifier);
           }
-          if(divdata.level) {
+          if (divdata.level) {
             newExpUsed = (newExpUsed + divdata.level);
           }
 
@@ -135,10 +135,10 @@ function updateExpUsed() {
 
       expUsedCont.html(newExpUsed);
 
-      if(newExpUsed > expTotal) {
+      if (newExpUsed > expTotal) {
         expUsedCont.addClass('tomato');
       } else {
-        if(expUsedCont.hasClass('tomato')) {
+        if (expUsedCont.hasClass('tomato')) {
           expUsedCont.removeClass('tomato');
         }
       }
@@ -160,14 +160,14 @@ function previewSkill(groupid) {
   $.ajax({
     type: 'POST',
     url: '/eoschargen/handler/skills.php',
-    data: { previewSkill : groupid }
+    data: { previewSkill: groupid }
   })
-  .done(function(data){
-    target.html(data);
-  })
-  .fail(function() {
-    target.html('<h2>Err: no skills found.</h2>');
-  });
+    .done(function (data) {
+      target.html(data);
+    })
+    .fail(function () {
+      target.html('<h2>Err: no skills found.</h2>');
+    });
 
   /* prevent a refresh by returning false in the end. */
   return false;
@@ -180,11 +180,11 @@ function navPreview(direction) {
 
   let target = $('#previewSkill').find('.tab.active');
 
-  if(direction == 'next') {
+  if (direction == 'next') {
     $(target).hide().removeClass('active');
     $(target).next().show().addClass('active');
 
-  } else if(direction == 'prev') {
+  } else if (direction == 'prev') {
     $(target).hide().removeClass('active');
     $(target).prev().show().addClass('active');
 
@@ -199,7 +199,7 @@ function submitSkillsheet() {
   let expUsed = parseInt($('#expUsed').text());
   let expTotal = parseInt($('#expTotal').text());
 
-  if(expUsed > expTotal) {
+  if (expUsed > expTotal) {
     let previewDiv = $('#previewSkill');
 
     previewDiv.empty().html('<br/><h3 class=\"text-center\" style=\"display:none;\"><i class=\"fa fa-times\"></i>&nbsp;Error: Character is using more points than available.</h3>');
@@ -212,16 +212,16 @@ function submitSkillsheet() {
 
 }
 
-$(document).ready(function(){
+$(document).ready(function () {
 
   var lastCheckedSkill = 0;
   let specialtyDivs = $('.specialty');
 
-  if(specialtyDivs.length > 0) {
-    specialtyDivs.each(function(){
-      if(this['checked'] == true) {
+  if (specialtyDivs.length > 0) {
+    specialtyDivs.each(function () {
+      if (this['checked'] == true) {
         let xData = $(this).data();
-        if(lastCheckedSkill != xData['parentid']) {
+        if (lastCheckedSkill != xData['parentid']) {
           lastCheckedSkill = xData['parentid'];
           $('#sg_' + lastCheckedSkill).find('.skillcheck').addClass('disabled');
         }

@@ -165,34 +165,9 @@ function getCharacterSheets() {
 
           foreach($row AS $KEY => $VALUE) {
 
-            // $return['characters'][$row['characterID']][$KEY] = silvesterFilter(EMS_echo($VALUE));
             $return['characters'][$row['characterID']][$KEY] = EMS_echo($VALUE);
 
           }//foreach
-
-          $return['characters'][$row['characterID']]['sheet_status'] = parseSheetStatus($return['characters'][$row['characterID']]['sheet_status']);
-
-          if(count($return['characters']) > 0) {
-
-            $return['characters'][$row['characterID']]['sheets'] = array();
-
-            foreach($row AS $KEY => $VALUE) {
-
-              $xSQL = "SELECT * FROM ecc_char_sheet WHERE characterID = '".(int)$return['characters'][$row['characterID']]['characterID']."' ORDER BY versionNumber DESC";
-              $xRES = $UPLINK->query($xSQL);
-
-              if(mysqli_num_rows($xRES) > 0) {
-                while($xROW = mysqli_fetch_assoc($xRES)){
-
-                  foreach($xROW AS $xKEY => $xVALUE) {
-                    $return['characters'][$row['characterID']]['sheets'][$xROW['charSheetID']][$xKEY] = EMS_echo($xVALUE);
-                  }
-                }
-
-                $xRES->free();
-              }
-            }//foreach
-          }
 
         }
 
@@ -224,28 +199,6 @@ function silvesterFilter($input = null) {
   $output = $input; //temporarily disabled
   return $output;
 }
-
-// abort an operation if a character sheet is NOT edittable.
-// function checkSheetStatus($sheetID) {
-//   global $UPLINK;
-
-//   $sql = "SELECT status FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,(int)$sheetID)."' LIMIT 1";
-//   $res = $UPLINK->query($sql);
-
-//   if(mysqli_num_rows($res) == 1) {
-//     $row = mysqli_fetch_assoc($res);
-//     if($row['status'] == 'ontwerp'){
-//       return true;
-//     } else {
-//       echo "<p>Character sheet cannot be editted, as it is not in design mode.</p>";
-//       exit();
-//     }
-//   } else {
-//     echo "<p>Character sheet cannot be editted, as it is not in design mode.</p>";
-//     exit();
-//   }
-
-// }
 
 /* legacy... : */
 /* Aquila: 7 Pendzal: 9 Ekanesh: 8 Dugo: 3 Sona: 5 */
@@ -286,10 +239,7 @@ function generateICCID($faction) {
   } else {
     return $output;
   }
-
 }
-
-
 
 function generateCode($codelength = 10, $type = 'hex') {
 

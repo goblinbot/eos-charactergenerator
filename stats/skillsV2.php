@@ -1,6 +1,4 @@
 <?php
-  exit();
-
   // globals
   include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
   include_once($APP["root"] . "/_includes/functions.global.php");
@@ -15,19 +13,6 @@
 
   if(!isset($_GET['viewChar']) || $_GET['viewChar'] == "") {
     echo "<h1>Error 0444</h1>";
-    exit();
-  }
-
-  if(isset($_GET['viewSheet']) && $_GET['viewSheet'] != "") {
-    $sql = "SELECT charSheetID FROM `ecc_char_sheet` WHERE accountID = '".(int)$jid."' AND characterID = '".(int)$_GET['viewChar']."' AND charSheetID = '".(int)$_GET['viewSheet']."' LIMIT 1";
-    $res = $UPLINK->query($sql);
-
-    if($res && mysqli_num_rows($res) != 1) {
-      echo "<h1>Error 0447 : invalid character/sheet combination.</h1>";
-      exit();
-    }
-  } else {
-    echo "<h1>Error 0445</h1>";
     exit();
   }
 
@@ -54,46 +39,41 @@
           if(isset($sheetArr["characters"][$_GET['viewChar']]['accountID']) && EMS_echo($sheetArr["characters"][$_GET['viewChar']]['accountID']) == $jid) {
 
             $character = $sheetArr["characters"][$_GET['viewChar']];
-            $characterSheet = getFullCharSheet($_GET['viewSheet']);
+            $character['skills'] = getCharacterSkills($_GET['viewChar']);
 
             echo "<div id=\"charStatus\" class=\"hidden\" style=\"display: none;\">".$character['status']."</div>";
 
             // calc skills
             $exp = array();
-            $exp['exp_total'] = calcTotalExp($characterSheet['aantal_events']);
-            $exp['exp_used'] = calcUsedExp(EMS_echo($characterSheet['skills']), $character['faction']);
+            $exp['exp_total'] = calcTotalExp($character['aantal_events']);
+            $exp['exp_used'] = calcUsedExp(EMS_echo($character['skills']), $character['faction']);
 
-
-            if(isset($_POST['skillform']) && $_POST['skillform'] != ""){
-              // first, we check if this character is actually alive. Oh bother.
-              check4dead($_GET['viewChar']);
-
-              // second, IS the character IN DESIGN?
-              if($characterSheet['status'] == 'ontwerp') {
+              if(isset($_POST['skillform']) && $_POST['skillform'] != ""){
+                // first, we check if this character is actually alive. Oh bother.
+                check4dead($_GET['viewChar']);
 
                 // yes? okay. Third: Clear pre-existing entries.
-                $sql = "DELETE FROM `ecc_char_skills` WHERE `char_sheet_id` = '".$_GET['viewSheet']."' ";
+                $sql = "DELETE FROM `ecc_char_skills` WHERE `charID` = '".$_GET['viewChar']."' ";
                 $res = $UPLINK->query($sql);
 
                 foreach($_POST['skillform']['skill'] AS $SKid => $SKlevel) {
 
-                  $sql = "INSERT INTO `ecc_char_skills` (`skill_id`, `char_sheet_id`) VALUES (
+                  $sql = "INSERT INTO `ecc_char_skills` (`skill_id`, `charID`) VALUES (
                       '".(int)$SKid."',
-                      '".mysqli_real_escape_string($UPLINK,$_GET['viewSheet'])."'
+                      '".mysqli_real_escape_string($UPLINK,$_GET['viewChar'])."'
                     );";
                   $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
                 }
 
+                header('location: '.$APP['header'].'/stats/skillsV2.php?viewChar='.$_GET['viewChar'].'&update=true');
+                exit();
               }
-
-              header('location: '.$APP['header'].'/stats/skills.php?viewChar='.$_GET['viewChar'].'&viewSheet='.$_GET['viewSheet'].'&update=true');
-              exit();
 
             }
 
             // faction skills [strong/weak]
             $factionMod = getFactionModifiers($character['faction']);
-            $augmentations = getImplants($_GET['viewSheet']);
+            $augmentations = getImplants($_GET['viewChar']);
             $augmentations = filterSkillAugs($augmentations);
 
 
@@ -122,15 +102,15 @@
 
                   ."<span style=\"float:right;\">"
 
-                    ."<a class=\"button\" href=\"".$APP['header']."/stats/sheets.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
+                    ."<a class=\"button\" href=\"".$APP['header']."/index.php?viewChar=".$_GET['viewChar']."\">"
                       ."<i class=\"fas fa-arrow-left\"></i>&nbsp;Back"
                     ."</a>&nbsp;";
 
-                  if($characterSheet['status'] == 'ontwerp') {
+                  // if($characterSheet['status'] == 'ontwerp') {
                     $printresult .= "<a class=\"button green no-bg\" href=\"javascript:void(0);\" onclick=\"submitSkillsheet();\">"
                       ."<i class=\"fas fa-save\"></i>&nbsp;Save"
                     ."</a>";
-                  }
+                  // }
 
                 $printresult .= "</span>"
                 . "</div>"
@@ -139,14 +119,14 @@
 
 
             // check for sheet, then check for status
-            if(isset($characterSheet) && $characterSheet != "") {
+            if(isset($character['skills']) && $character['skills'] != "") {
 
-              $printresult .= "<form id=\"skillsheet\" method=\"post\" action=\"skills.php?viewChar=".$_GET['viewChar']."&viewSheet=".$_GET['viewSheet']."\">"
+              $printresult .= "<form id=\"skillsheet\" method=\"post\" action=\"skillsV2.php?viewChar=".$_GET['viewChar']."\">"
                 . "<div class=\"row skillbox\">"
                   . "<div class=\"half\">";
 
               // is the CHARACTER in design mode, AND is the character SHEET?
-              if($characterSheet['status'] == 'ontwerp') {
+              // if($characterSheet['status'] == 'ontwerp') {
 
                 foreach($skillGroupArr AS $skillGroup) {
 
@@ -195,11 +175,11 @@
                     $checked = "";
                     $inputfield = "";
 
-                    if(isset($characterSheet['skills'][$skills['skill_index']]) && $characterSheet['skills'][$skills['skill_index']] != "") {
+                    if(isset($character['skills'][$skills['skill_index']]) && $character['skills'][$skills['skill_index']] != "") {
 
                       $printresult .= " checked=\"checked\" ";
 
-                      if($skills['level'] == 5 && $characterSheet['aantal_events'] > 0) {
+                      if($skills['level'] == 5 && $character['aantal_events'] > 0) {
 
                         $xPSY = $skillGroup['psychic'];
                         $xPARENT = $skillGroup['siteindex'];
@@ -234,7 +214,7 @@
                               ." data-skillgroup=\"".(int)$specialty['primaryskill_id']."\" ";
 
 
-                            if(isset($characterSheet['skills'][$Xspecialty['skill_index']]) && $characterSheet['skills'][$Xspecialty['skill_index']] != "") {
+                            if(isset($character['skills'][$Xspecialty['skill_index']]) && $character['skills'][$Xspecialty['skill_index']] != "") {
 
                               $printRes2 .= " checked=\"checked\" ";
 
@@ -287,12 +267,12 @@
                 }
 
 
-              } else {
+              // } else {
 
                 // STATUS  NIET IN ONTWERP MODUS
 
 
-              }
+              // }
 
 
               $printresult .= "</div>"
@@ -314,7 +294,7 @@
               }
 
 
-              if($characterSheet['aantal_events'] > 0) {
+              if($character['aantal_events'] > 0) {
                 $printresult .= "<hr style=\"opacity: 0.25;\"/>"
                   . "<h4>SPECIALISATIONS</h4>"
                   . "<div id=\"specialtycontainer\">"
@@ -337,7 +317,7 @@
             // error 451 because JID is lacking
           }
         }
-      }
+      // }
 
     echo $printresult;
 

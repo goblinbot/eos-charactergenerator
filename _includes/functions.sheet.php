@@ -1,57 +1,38 @@
 <?php
-function getFullCharSheet($sheetID = null) {
+function getCharacterSkills($charID = null) {
 
   global $jid, $UPLINK;
 
   $returnArr = array();
 
-  if(isset($sheetID) && (int)$sheetID != 0) {
+  if(isset($charID) && (int)$charID != 0) {
 
-    // check if sheetID belongs to the active account.
-    $sql = "SELECT characterID, charSheetID, nickname, accountID, status, aantal_events FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,(int)$sheetID)."' AND accountID = '".mysqli_real_escape_string($UPLINK,(int)$jid)."' LIMIT 1";
+    // select all skills belonging to current character.
+    $sql = "SELECT skill_id FROM `ecc_char_skills` WHERE `charID` = '$charID' ";
     $res = $UPLINK->query($sql);
 
-    if($res && mysqli_num_rows($res) == 1) {
+    if($res && mysqli_num_rows($res) > 0) {
 
-      $xtemp = mysqli_fetch_assoc($res);
+      while($row = mysqli_fetch_assoc($res)){
 
-      $returnArr['status'] = $xtemp['status'];
-      $returnArr['aantal_events'] = $xtemp['aantal_events'];
-      $returnArr['nickname'] = EMS_echo($xtemp['nickname']);
+        $xSQL = "SELECT label, skill_index, parent, level
+          FROM ecc_skills_allskills
+          WHERE skill_id = '".(int)$row['skill_id']."'";
 
-      // select all skills belonging to current character.
-      $sql = "SELECT skill_id FROM `ecc_char_skills` WHERE `char_sheet_id` = '$sheetID' ";
-      $res = $UPLINK->query($sql);
+        $xRES = $UPLINK->query($xSQL);
+        $xROW = mysqli_fetch_array($xRES);
 
-      if($res && mysqli_num_rows($res) > 0) {
-
-        while($row = mysqli_fetch_assoc($res)){
-
-          $xSQL = "SELECT label, skill_index, parent, level
-            FROM ecc_skills_allskills
-            WHERE skill_id = '".(int)$row['skill_id']."'";
-
-          $xRES = $UPLINK->query($xSQL);
-          $xROW = mysqli_fetch_array($xRES);
-
-          $returnArr['skills'][$xROW['skill_index']]['id'] = (int)$row['skill_id'];
-          $returnArr['skills'][$xROW['skill_index']]['label'] = $xROW['label'];
-          $returnArr['skills'][$xROW['skill_index']]['skill_index'] = $xROW['skill_index'];
-          $returnArr['skills'][$xROW['skill_index']]['parent'] = $xROW['parent'];
-          $returnArr['skills'][$xROW['skill_index']]['level'] = (int)$xROW['level'];
-        }
-
-      } else {
-        // character has zero skills yet. Neat!
-
+        $returnArr[$xROW['skill_index']]['id'] = (int)$row['skill_id'];
+        $returnArr[$xROW['skill_index']]['label'] = $xROW['label'];
+        $returnArr[$xROW['skill_index']]['skill_index'] = $xROW['skill_index'];
+        $returnArr[$xROW['skill_index']]['parent'] = $xROW['parent'];
+        $returnArr[$xROW['skill_index']]['level'] = (int)$xROW['level'];
       }
-
     } else {
-      // character and active account don't match.
+      // character has zero skills yet. Neat!
     }
-
   } else {
-    // no character requested.
+    // character and active account don't match.
   }
 
   return $returnArr;
@@ -67,7 +48,6 @@ function calcTotalExp($eventCount = 0){
   }
 
   return $basic;
-
 }
 
 

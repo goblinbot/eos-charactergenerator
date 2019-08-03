@@ -173,10 +173,9 @@
 
               if(isset($_GET['editInfo']) && $_GET['editInfo'] == true) {
 
-                $printresult .= "<img class=\"passphoto popout\" alt=\" \" src=\"{$APP['header']}/img/passphoto/{$character['characterID']}.jpg\" />";
-
-                $printresult .= "<style>.grid .main .content .row {width: auto;}</style>";
-                $printresult .= "<div class=\"row\">"
+                $printresult .= "<img class=\"passphoto popout\" alt=\" \" src=\"{$APP['header']}/img/passphoto/{$character['characterID']}.jpg\" />"
+                . "<style>.grid .main .content .row {width: auto;}</style>"
+                . "<div class=\"row\">"
                     ."<a href=\"".$APP['header']."/index.php?viewChar={$character['characterID']}\"><button><i class=\"fas fa-arrow-left\"></i>&nbsp;Back</button></a>"
                   ."</div>"
                 ."<hr/>";
@@ -253,7 +252,7 @@
                 ."</div>";
 
                 $printresult .= "<div class=\"box33\">"
-                  ."<a href=\"{$APP['header']}/stats/sheets.php?viewChar={$character['characterID']}\">"
+                  ."<a href=\"{$APP['header']}/stats/skillsV2.php?viewChar={$character['characterID']}\">"
                     ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fas fa-book\"></i>&nbsp;Character Skills</button>"
                   ."</a>"
                 ."</div>";

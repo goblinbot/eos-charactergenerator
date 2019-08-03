@@ -12,7 +12,7 @@ echo "<style>th,td { padding: 0 5px; }</style>";
 $sql = "SELECT count(id) FROM ecc_char_skills";
 $res = mysqli_fetch_assoc($UPLINK->query($sql));
 
-(int)$LIMIT = 133;
+(int)$LIMIT = 125;
 (int)$COUNT = $res['count(id)'];
 $RATIO = $COUNT / $LIMIT;
 $ROUND = ceil($RATIO);
@@ -36,18 +36,12 @@ if(isset($_GET['limit']) && (int)$_GET['limit'] < 0) {
 if(!isset($_GET['limit']) || $_GET['limit'] == "" || $_GET['limit'] == 0) {
 
   $FROM = 0;
+  $sql = "ALTER TABLE `ecc_char_skills` ADD `charID` INT NOT NULL AFTER `char_sheet_id`;";
+  $UPLINK->query($sql);
 
 } else if (isset($_GET['limit']) && $_GET['limit'] != "" && (int)$_GET['limit'] > 0) {
 
   $FROM = (((int)$_GET['limit'] * $LIMIT) + 1 );
-
-
-} else if($_GET['limit'] > $ROUND) {
-  echo "<h3>Done!</h3>";
-
-  $sql = "ALTER TABLE `ecc_char_skills` CHANGE `char_sheet_id` `charID` INT(11) NOT NULL";
-  $res = $UPLINK->query($sql);
-  exit();
 
 } else {
   exit('Uncaught error..');
@@ -60,7 +54,7 @@ $LIMITBY = "LIMIT $FROM, $LIMIT";
 $sql = "SELECT s.id as id, s.char_sheet_id as char_sheet_id, h.charSheetID, h.characterID as characterID
   FROM ecc_char_skills s
   LEFT JOIN ecc_char_sheet h ON s.char_sheet_id = h.charSheetID
-  ORDER BY char_sheet_id ASC
+  ORDER BY s.id ASC
   $LIMITBY";
 
 $res = $UPLINK->query($sql);
@@ -78,21 +72,6 @@ if($res) {
 
     while($row = mysqli_fetch_assoc($res)){
 
-      // if($row['characterID'] == NULL || $row['characterID'] == "") {
-
-
-        // echo "<tr>
-        // <td style=\"width: 50px;\">#{$row['id']}</td>
-        // <td style=\"width: 50px;\">{$row['char_sheet_id']}</td>
-        // <td style=\"width: 550px;\">Character not found! Removing leftovers..</td>
-        // </tr>";
-
-        // DELETE UITGEZET: DIT DOEN WE IVM PERFORMANCE/TIMEOUTS EEN ANDERE KEER
-        // $sql3 = "DELETE FROM `ecc_char_skills` WHERE id = '".$row['id']."' ";
-        // $res3 = $UPLINK->query($sql3);
-
-      // } else {
-
         echo "<tr>
           <td style=\"width: 50px;\">#{$row['id']}</td>
           <td style=\"width: 50px;\">{$row['char_sheet_id']}</td>
@@ -100,7 +79,7 @@ if($res) {
         ";
 
         $sql2 = "UPDATE `ecc_char_skills`
-          SET `char_sheet_id` = '{$row['characterID']}'
+          SET `charID` = '{$row['characterID']}'
           WHERE id = '{$row['id']}'
           LIMIT 1";
         $update = $UPLINK->query($sql2) or trigger_error(mysqli_error($UPLINK));
@@ -109,9 +88,6 @@ if($res) {
         echo "<td>-</td>
         </tr>";
 
-      // }
-
-      echo "<tr><td colspan=\"5\">$i</td></tr>";
     }
 
     echo "</table>";

@@ -47,10 +47,6 @@
 ?>
 <div class="wsleft cell"></div>
 
-<div class="menu cell">
-  <?=generateMenu('characters');?>
-</div>
-
 <div class="main cell">
   <div class="content">
 
@@ -278,9 +274,9 @@
                 ."</div>";
 
                 $printresult .= "<div class=\"box33\">"
-                  // ."<a class=\"disabled\" href=\"{$APP['header']}/index.php?viewChar={$character['characterID']}\">"
-                  //   ."<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"far fa-lightbulb\"></i>&nbsp;Your story</button>"
-                  // ."</a>"
+                ."<a href=\"https://www.eosfrontier.space/bgcheck\" target=\"_blank\">"
+                  ."<button type=\"button\" class=\"blue no-bg bar\" name=\"button\"><i class=\"fas fa-list\"></i>&nbsp;Background-check details</button>"
+                ."</a>"
                 ."</div>";
 
 
@@ -345,12 +341,13 @@
 
             // set the header
             $printresult .= "<div class=\"character header\">"
-              . "<div class=\"block smflex hidden-xs\">&nbsp;</div>" // user icon
-              . "<div class=\"block\">Full name</div>" // char name
-              . "<div class=\"block\">Faction</div>" // faction
-              . "<div class=\"block\">Status</div>" // status of character (active, design, deceased, etc)
-              . "<div class=\"block\">&nbsp;</div>" // edit
-            . "</div>";
+            . "<div class=\"block smflex hidden-xs\">&nbsp;</div>" // user icon
+            . "<div class=\"block\">Full name</div>" // char name
+            . "<div class=\"block\">Faction</div>" // faction
+            // . "<div class=\"block\">Status</div>" // status of character (active, design, deceased, etc)
+            . "<div class=\"block\">&nbsp;</div>" // edit
+
+          . "</div>";
 
             // iterate through the characters
             foreach ($sheetArr['characters'] AS $character) {
@@ -382,7 +379,7 @@
                 . "<div class=\"block smflex hidden-xs\">".$xICON."</div>" // user icon
                 . "<div class=\"block\">" . ucfirst($character['character_name']) . "</div>" // char name
                 . "<div class=\"block\">" . ucfirst($character['faction']) . "</div>" // faction
-                . "<div class=\"block\">" . $character['status'] . "</div>" // status of character (active, design, deceased, etc)
+                // . "<div class=\"block\">" . $character['status'] . "</div>" // status of character (active, design, deceased, etc)
                 . "<div class=\"block\">"
                     ."<a href=\"".$APP['header']."/index.php?viewChar=".$character['characterID']."\">"
                       ."<button class=\"blue bar\"><i class=\"fas fa-folder-open\"></i>&nbsp;View</button>"

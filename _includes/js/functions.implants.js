@@ -19,12 +19,11 @@ function IM_chooseType(char,sheet) {
 }
 
 /* create an implant: form. */
-function IM_creationForm(type,char,sheet) {
+function IM_creationForm(type,char) {
 
   let postdata = {
     "type" : type,
-    "char" : char,
-    "sheet": sheet
+    "char" : char
   };
 
   $.ajax({
@@ -86,13 +85,13 @@ function IM_submitNewImplant() {
 
 }
 
-function IM_removeImplant(sheetID,modifierID) {
+function IM_removeImplant(charID,modifierID) {
 
   activeImplantDiv.fadeOut();
 
   let postdata = {
     "aug" : modifierID,
-    "sheet": sheetID
+    "char": charID
   };
 
   $.ajax({

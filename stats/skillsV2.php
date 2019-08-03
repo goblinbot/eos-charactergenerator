@@ -69,51 +69,51 @@
                 exit();
               }
 
-            }
+          }
 
-            // faction skills [strong/weak]
-            $factionMod = getFactionModifiers($character['faction']);
-            $augmentations = getImplants($_GET['viewChar']);
-            $augmentations = filterSkillAugs($augmentations);
+          // faction skills [strong/weak]
+          $factionMod = getFactionModifiers($character['faction']);
+          $augmentations = getImplants($_GET['viewChar']);
+          $augmentations = filterSkillAugs($augmentations);
 
 
-            $isPsychic = $character['psychic'];
-            $hasParent = "none";
-            $isCurrent = $sheetArr["characters"][$_GET['viewChar']]['status'];
-            $skillGroupArr = getSkillGroup($isPsychic,$hasParent,$isCurrent);
+          $isPsychic = $character['psychic'];
+          $hasParent = "none";
+          $isCurrent = $sheetArr["characters"][$_GET['viewChar']]['status'];
+          $skillGroupArr = getSkillGroup($isPsychic,$hasParent,$isCurrent);
 
-            // Character Banner
-            if(EMS_echo($character['character_name']) != "") {
-              $printresult .= "<h1><strong>skills:</strong>&nbsp;".$character['character_name']." - ".$character['faction']."</h1>";
-            } else {
-              $printresult .= "<h1><strong>skills:</strong>&nbsp;[character name] - ".$character['faction']."</h1>";
-            }
+          // Character Banner
+          if(EMS_echo($character['character_name']) != "") {
+            $printresult .= "<h1><strong>skills:</strong>&nbsp;".$character['character_name']." - ".$character['faction']."</h1>";
+          } else {
+            $printresult .= "<h1><strong>skills:</strong>&nbsp;[character name] - ".$character['faction']."</h1>";
+          }
 
-            // exp bar && Back button
-            $printresult .=
-              "<div class=\"row\">"
-                . "<div class=\"expbar\">"
+          // exp bar && Back button
+          $printresult .=
+            "<div class=\"row\">"
+              . "<div class=\"expbar\">"
 
-                  ."EXP&nbsp;:&nbsp;"
+                ."EXP&nbsp;:&nbsp;"
 
-                  ."<span id=\"expUsed\" ".($exp['exp_used'] > $exp['exp_total'] ? 'class="tomato"' : '').">".$exp['exp_used']."</span>"
-                    ."&nbsp;/&nbsp;"
-                  . "<span id=\"expTotal\">".$exp['exp_total']."</span>"
+                ."<span id=\"expUsed\" ".($exp['exp_used'] > $exp['exp_total'] ? 'class="tomato"' : '').">".$exp['exp_used']."</span>"
+                  ."&nbsp;/&nbsp;"
+                . "<span id=\"expTotal\">".$exp['exp_total']."</span>"
 
-                  ."<span style=\"float:right;\">"
+                ."<span style=\"float:right;\">"
 
-                    ."<a class=\"button\" href=\"".$APP['header']."/index.php?viewChar=".$_GET['viewChar']."\">"
-                      ."<i class=\"fas fa-arrow-left\"></i>&nbsp;Back"
-                    ."</a>&nbsp;";
+                  ."<a class=\"button\" href=\"".$APP['header']."/index.php?viewChar=".$_GET['viewChar']."\">"
+                    ."<i class=\"fas fa-arrow-left\"></i>&nbsp;Back"
+                  ."</a>&nbsp;";
 
-                  // if($characterSheet['status'] == 'ontwerp') {
-                    $printresult .= "<a class=\"button green no-bg\" href=\"javascript:void(0);\" onclick=\"submitSkillsheet();\">"
-                      ."<i class=\"fas fa-save\"></i>&nbsp;Save"
-                    ."</a>";
-                  // }
+                // if($characterSheet['status'] == 'ontwerp') {
+                  $printresult .= "<a class=\"button green no-bg\" href=\"javascript:void(0);\" onclick=\"submitSkillsheet();\">"
+                    ."<i class=\"fas fa-save\"></i>&nbsp;Save"
+                  ."</a>";
+                // }
 
-                $printresult .= "</span>"
-                . "</div>"
+            $printresult .= "</span>"
+              . "</div>"
               . "</div>"
               . "<hr style=\"opacity: 0.5;\"/>";
 

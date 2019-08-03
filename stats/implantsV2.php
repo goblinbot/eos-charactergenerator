@@ -111,7 +111,7 @@
         // 0 augmentations bound to this character sheet. And that is fine.
         } else {
 
-          $printresult = "<h3>Character sheet does not currently have any augmentations.</h3>";
+          $printresult = "<h3>Character does not currently have any augmentations.</h3>";
 
           $printresult .= "<p class=\"ws-bot-2\">You can add them below. Keep in mind that non-flavour* augmentations have to be obtained in game.</p>";
 

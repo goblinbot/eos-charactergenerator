@@ -97,10 +97,14 @@
 
         $printresult .=
           "<div class=\"formitem\">"
-            ."<input type=\"submit\" class=\"button blue\" value=\"Create character\"></input>"
-          ."</div>";
+            ."<input type=\"submit\" class=\"button blue\" value=\"Create character\"></input>";
 
-        $printresult .= "</form>";
+        if($sheetArr['characters'] && count($sheetArr['characters']) > 0) {
+          $printresult .= "&nbsp;<a class=\"button\" href=".$APP['header']."/index.php\">Back</a>";
+        }
+
+        $printresult .= "</div>
+        </form>";
 
         $printresult .= "<div id=\"fct_aquila\" class=\"formitem dialog factionblurb\" style=\"display: block;\">"
             ."<h2 class=\"center-xs\"><i class=\"far fa-lightbulb\"></i>&nbsp;Aquila</h2>"

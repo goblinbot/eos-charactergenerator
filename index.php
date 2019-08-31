@@ -129,6 +129,22 @@
 
            // "De Aquilaanse Republiek is een parlementaire democratie waar alle inwoners stemrecht moeten verdienen door dienstbaarheid, veelal in het leger. Hierdoor staan de Legioenen centraal in de maatschappij en zorgt voor een samenleving met plichtbesef, offergezindheid en grote politieke betrokkenheid. De keerzijde is het nodige misplaatste patriottisme en het neerkijken op zij die niet willen dienen, de Mulum. Als Aquilaan vind je spelmogelijkheden op alle lagen behalve misschien economie, vrijwel altijd met een militair tintje en een nadruk op teamwerk boven individueel gewin."
 
+      } else if(isset($_GET['activate']) && $_GET['activate'] != "") {
+
+        $sql = "UPDATE `ecc_characters`
+          SET `sheet_status` = 'inactive'
+          WHERE `accountID` = '".mysqli_real_escape_string($UPLINK,$jid)."'";
+        $res = $UPLINK->query($sql);
+
+        $sql = "UPDATE `ecc_characters`
+          SET `sheet_status` = 'active'
+          WHERE `characterID` = '".mysqli_real_escape_string($UPLINK,(int)$_GET['activate'])."'
+          AND `accountID` = '".mysqli_real_escape_string($UPLINK,$jid)."'";
+        $res = $UPLINK->query($sql);
+ 
+        header("location: ".$APP['header']."/index.php?u=1");
+        exit();
+
       } else if(isset($_GET['viewChar']) && $_GET['viewChar'] != "") {
 
         if(isset($_POST['updateEventsPlayed']) && $_POST['updateEventsPlayed']) {
@@ -341,51 +357,37 @@
 
             // set the header
             $printresult .= "<div class=\"character header\">"
-            . "<div class=\"block smflex hidden-xs\">&nbsp;</div>" // user icon
+            . "<div class=\"block smflex\" style=\"min-width: 12rem;\">&nbsp;</div>" // user icon
             . "<div class=\"block\">Full name</div>" // char name
             . "<div class=\"block\">Faction</div>" // faction
-            // . "<div class=\"block\">Status</div>" // status of character (active, design, deceased, etc)
-            . "<div class=\"block\">&nbsp;</div>" // edit
-
+            . "<div class=\"block\">&nbsp;</div>"
+            . "<div class=\"block\">&nbsp;</div>"
           . "</div>";
 
             // iterate through the characters
             foreach ($sheetArr['characters'] AS $character) {
 
-              $xCLASS = "";
-
-              // choose icon and style depending on the character's STATUS.
-              switch(strTolower(EMS_echo($character['status']))) {
-                case 'in design': default:
-                  $xICON = "<i class=\"fas fa-user\"></i>";
-                  break;
-                case 'deceased':
-                  $xICON = "<i class=\"fas fa-user-times mute\"></i>";
-                  $xCLASS = " text-muted";
-                  break;
-                case 'inactive':
-                  $xICON = "<i class=\"far fa-user mute\"></i>";
-                  $xCLASS = " text-muted";
-                  break;
-                case 'ready':
-                case 'sent':
-                  $xICON = "<i class=\"fas fa-check green\"></i>";
-                  $xCLASS = " active";
-                  break;
+              if ($character['sheet_status'] !== "active") {
+                $ACTIVATE = "<a href=\"".$APP['header']."/index.php?activate=".$character['characterID']."\">
+                  <button class=\"blue bar no-bg\" style=\"min-width: 12rem;\">activate/play</button>
+                </a>";
+              } else {
+                $ACTIVATE = "<button disabled class=\"green no-bg disabled\" style=\"min-width: 12rem;\">active</button>";
               }
 
               $printresult .=
-              "<div class=\"character".$xCLASS."\">"
-                . "<div class=\"block smflex hidden-xs\">".$xICON."</div>" // user icon
+              "<div class=\"character\">"
+              . "<div class=\"block smflex\" style=\"width: 10rem;\">".$ACTIVATE."</div>"
                 . "<div class=\"block\">" . ucfirst($character['character_name']) . "</div>" // char name
                 . "<div class=\"block\">" . ucfirst($character['faction']) . "</div>" // faction
-                // . "<div class=\"block\">" . $character['status'] . "</div>" // status of character (active, design, deceased, etc)
                 . "<div class=\"block\">"
                     ."<a href=\"".$APP['header']."/index.php?viewChar=".$character['characterID']."\">"
                       ."<button class=\"blue bar\"><i class=\"fas fa-folder-open\"></i>&nbsp;View</button>"
                     ."</a>"
-                  ."</div>" // edit
-              . "</div>";
+                  ."</div>";
+
+
+              $printresult .= "</div>";
 
             }
 

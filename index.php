@@ -44,7 +44,6 @@
 
   }
 
-
 ?>
 <div class="wsleft cell"></div>
 
@@ -94,10 +93,14 @@
 
         $printresult .=
           "<div class=\"formitem\">"
-            ."<input type=\"submit\" class=\"button blue\" value=\"Create character\"></input>"
-          ."</div>";
+            ."<input type=\"submit\" class=\"button blue\" value=\"Create character\"></input>";
 
-        $printresult .= "</form>";
+        if($sheetArr['characters'] && count($sheetArr['characters']) > 0) {
+          $printresult .= "&nbsp;<a class=\"button\" href=".$APP['header']."/index.php\">Back</a>";
+        }
+
+        $printresult .= "</div>
+        </form>";
 
         $printresult .= "<div id=\"fct_aquila\" class=\"formitem dialog factionblurb\" style=\"display: block;\">"
             ."<h2 class=\"center-xs\"><i class=\"far fa-lightbulb\"></i>&nbsp;Aquila</h2>"
@@ -126,37 +129,44 @@
 
            // "De Aquilaanse Republiek is een parlementaire democratie waar alle inwoners stemrecht moeten verdienen door dienstbaarheid, veelal in het leger. Hierdoor staan de Legioenen centraal in de maatschappij en zorgt voor een samenleving met plichtbesef, offergezindheid en grote politieke betrokkenheid. De keerzijde is het nodige misplaatste patriottisme en het neerkijken op zij die niet willen dienen, de Mulum. Als Aquilaan vind je spelmogelijkheden op alle lagen behalve misschien economie, vrijwel altijd met een militair tintje en een nadruk op teamwerk boven individueel gewin."
 
-      } else if(isset($_GET['delChar']) && $_GET['delChar'] != "") {
+      } else if(isset($_GET['activate']) && $_GET['activate'] != "") {
 
-        $printresult .= "<div class=\"dialog\">"
-        . "<h2>Are you sure you want to submit ".($sheetArr["characters"][$_GET['delChar']]['character_name'] != "" ? $sheetArr["characters"][$_GET['delChar']]['character_name'] : "Nameless Character" )." to the biomass processing queue?</h2>"
-        . "<p>Don't worry, it's okay. It wants to thank you for the time you've spent together.</p><br/>";
+        $sql = "UPDATE `ecc_characters`
+          SET `sheet_status` = 'inactive'
+          WHERE `accountID` = '".mysqli_real_escape_string($UPLINK,$jid)."'";
+        $res = $UPLINK->query($sql);
 
-        $printresult .= "<p><strong>Character deletion cannot be reversed.</strong></p><br/>";
-
-        $printresult .= "<a href=\"".$APP['header']."/?delChar=".$_GET['delChar']."&soylentGreenMe=true\" class=\"button blue\">I am sure. Please stop guilt tripping me.</a></div>";
-
-        if(isset($_GET['soylentGreenMe']) && $_GET['soylentGreenMe'] == "true") {
-
-          check4dead($_GET['delChar']);
-
-          if(isset($sheetArr["characters"][$_GET['delChar']]['accountID']) && EMS_echo($sheetArr["characters"][$_GET['delChar']]['accountID']) == $jid) {
-
-            $sql = "UPDATE `ecc_characters` SET `sheet_status` = '90', `status` = 'inactive' WHERE `characterID` = '".mysqli_real_escape_string($UPLINK,$_GET['delChar'])."' AND `accountID` = '".mysqli_real_escape_string($UPLINK,$jid)."' ";
-            $res = $UPLINK->query($sql);
-
-            header("location: ".$APP['header']."/index.php");
-            exit();
-
-          } else {
-            // JID no match, redirect.
-            header("location: ".$APP['header']."/index.php");
-            exit();
-          }
-
-        }
+        $sql = "UPDATE `ecc_characters`
+          SET `sheet_status` = 'active'
+          WHERE `characterID` = '".mysqli_real_escape_string($UPLINK,(int)$_GET['activate'])."'
+          AND `accountID` = '".mysqli_real_escape_string($UPLINK,$jid)."'";
+        $res = $UPLINK->query($sql);
+ 
+        header("location: ".$APP['header']."/index.php?u=1");
+        exit();
 
       } else if(isset($_GET['viewChar']) && $_GET['viewChar'] != "") {
+
+        if(isset($_POST['updateEventsPlayed']) && $_POST['updateEventsPlayed']) {
+          $xINPUT = EMS_echo($_POST['updateEventsPlayed']['value']);
+          $xINPUT = (int)$xINPUT;
+      
+          if($xINPUT > 50 || $xINPUT < 0) {
+            $xINPUT = 0;
+          }
+      
+          $sql = "UPDATE `ecc_characters`
+            SET `aantal_events` = '".mysqli_real_escape_string($UPLINK,(int)$xINPUT)."'
+            WHERE `characterID` = '".mysqli_real_escape_string($UPLINK,(int)$_GET['viewChar'])."'
+            AND `accountID` = '".mysqli_real_escape_string($UPLINK,$jid)."'";
+          $res = $UPLINK->query($sql);
+      
+          header("location: ".$APP['header']."/index.php?viewChar=".$_GET['viewChar']."&u=1");
+          exit();
+      
+          echo $sql;
+        }
+
 
         if(isset($_GET['u']) && $_GET['u'] == 1) {
           $printresult .= "<p class=\"dialog\"><i class=\"fas fa-check green\"></i>&nbsp;Updated succesfully.</p>";
@@ -172,18 +182,17 @@
               $character = $sheetArr["characters"][$_GET['viewChar']];
 
               if(EMS_echo($character['character_name']) != "") {
-                $printresult .= "<h1>".$character['character_name']." - ".$character['faction']."</h1>";
+                $printresult .= "<h1>{$character['character_name']} - {$character['faction']}</h1>";
               } else {
-                $printresult .= "<h1>[character name] - ".$character['faction']."</h1>";
+                $printresult .= "<h1>[character name] - {$character['faction']}</h1>";
               }
 
               if(isset($_GET['editInfo']) && $_GET['editInfo'] == true) {
 
-                $printresult .= "<img class=\"passphoto popout\" alt=\" \" src=\"".$APP['header']."/img/passphoto/".$character['characterID'].".jpg\" />";
-
-                $printresult .= "<style>.grid .main .content .row {width: auto;}</style>";
-                $printresult .= "<div class=\"row\">"
-                    ."<a href=\"".$APP['header']."/index.php?viewChar=".$character['characterID']."\"><button><i class=\"fas fa-arrow-left\"></i>&nbsp;Back</button></a>"
+                $printresult .= "<img class=\"passphoto popout\" alt=\" \" src=\"{$APP['header']}/img/passphoto/{$character['characterID']}.jpg\" />"
+                . "<style>.grid .main .content .row {width: auto;}</style>"
+                . "<div class=\"row\">"
+                    ."<a href=\"".$APP['header']."/index.php?viewChar={$character['characterID']}\"><button><i class=\"fas fa-arrow-left\"></i>&nbsp;Back</button></a>"
                   ."</div>"
                 ."<hr/>";
 
@@ -191,7 +200,7 @@
                 if(isset($_POST['editchar']) && $_POST['editchar'] != "") {
 
                   updateCharacterInfo($_POST['editchar'], $character['characterID']);
-                  header("location: ".$APP['header']."/index.php?viewChar=".$character['characterID']."&editInfo=true&u=1");
+                  header("location: {$APP['header']}/index.php?viewChar={$character['characterID']}&editInfo=true&u=1");
                   exit();
                 }
 
@@ -199,44 +208,40 @@
 
                 $printresult .= "<p>This is where you edit your character's basic information</p>"
                   ."<p>&nbsp;</p>"
-                  ."<form action=\"".$APP['header']."/index.php?viewChar=".$character['characterID']."&editInfo=true\" method=\"post\">";
+                  ."<form action=\"{$APP['header']}/index.php?viewChar=".$character['characterID']."&editInfo=true\" method=\"post\">";
 
                 $printresult .=
                   "<div class=\"formitem\">"
                     ."<h3><i class=\"fas fa-user\"></i>&nbsp;Character Name</h3>"
                     ."<input autocomplete=\"off\" type=\"text\" placeholder=\"Character Name\" maxlength=\"99\" name=\"editchar[character_name]\" value=\"".EMS_echo($character['character_name'])."\"></input>"
                   ."</div>";
-                  // ."<br/>";
 
                 $printresult .=
                   "<div class=\"formitem\">"
                     ."<h3><i class=\"fas fa-users\"></i>&nbsp;Faction</h3>"
                     ."<p class=\"text-muted\">".ucfirst(EMS_echo($character['faction']))."</p>"
                   ."</div>"
-                  // ."<br/>"
 
                   ."<div class=\"formitem\">"
                     ."<h3><i class=\"fas fa-key\"></i>&nbsp;ICC Number:</h3>"
                     ."<p class=\"text-muted\">".EMS_echo($character['ICC_number'])."</p>"
                   ."</div>"
-                  // ."<br/>"
 
                   ."<div class=\"formitem\">"
                     ."<h3><i class=\"far fa-calendar-alt\"></i>&nbsp;Birth date</h3>"
                     ."<input autocomplete=\"off\" type=\"text\" placeholder=\"..( current IC year: 240NT )\" maxlength=\"24\" name=\"editchar[ic_birthday]\" value=\"".EMS_echo($character['ic_birthday'])."\"></input>"
                   ."</div>";
-                  // ."<br/>";
 
                 $printresult .=
                   "<div class=\"formitem\">"
                     ."<h3><i class=\"fas fa-globe\"></i>&nbsp;Birth planet</h3>"
                     ."<input autocomplete=\"off\" type=\"text\" placeholder=\"...\" maxlength=\"99\" name=\"editchar[birthplanet]\" value=\"".EMS_echo($character['birthplanet'])."\"></input>"
-                  ."</div>"/*."<br/>"*/
+                  ."</div>"
+
                   ."<div class=\"formitem\">"
                     ."<h3><i class=\"fas fa-globe\"></i>&nbsp;Current/home planet</h3>"
                     ."<input autocomplete=\"off\" type=\"text\" placeholder=\"...\" maxlength=\"99\" name=\"editchar[homeplanet]\" value=\"".EMS_echo($character['homeplanet'])."\"></input>"
                   ."</div>";
-                  /*."<br/>"*/
 
                 $printresult .=
                   "<div class=\"formitem\">"
@@ -249,7 +254,7 @@
               } else {
 
                 $printresult .= "<div class=\"row\">"
-                    ."<a href=\"".$APP['header']."/index.php\"><button><i class=\"fas fa-arrow-left\"></i>&nbsp;Back</button></a>"
+                    ."<a href=\"{$APP['header']}/index.php\"><button><i class=\"fas fa-arrow-left\"></i>&nbsp;Back</button></a>"
                   ."</div>"
                 ."<hr/>";
 
@@ -257,52 +262,64 @@
                 $printresult .= "<div class=\"row\">";
 
                 $printresult .= "<div class=\"box33\">"
-                  ."<a href=\"".$APP['header']."/index.php?viewChar=".$character['characterID']."&editInfo=true\">"
+                  ."<a href=\"{$APP['header']}/index.php?viewChar=".$character['characterID']."&editInfo=true\">"
                     ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"far fa-id-card\"></i>&nbsp;Edit basic info</button>"
                   ."</a>"
                 ."</div>";
 
                 $printresult .= "<div class=\"box33\">"
-                  ."<a href=\"".$APP['header']."/stats/sheets.php?viewChar=".$character['characterID']."\">"
-                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fas fa-book\"></i>&nbsp;Character Sheets</button>"
+                  ."<a href=\"{$APP['header']}/stats/skillsV2.php?viewChar={$character['characterID']}\">"
+                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fas fa-book\"></i>&nbsp;Character Skills</button>"
                   ."</a>"
                 ."</div>";
 
                 $printresult .= "<div class=\"box33\">"
-                  ."<a href=\"https://www.eosfrontier.space/bgcheck\" target=\"_blank\">"
-                    ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"fas fa-list\"></i>&nbsp;Background-check details</button>"
+                  ."<a class=\"\" href=\"{$APP['header']}/stats/implantsV2.php?viewChar={$_GET['viewChar']}\">"
+                    ."<button type=\"button\" class=\"button bar blue\" name=\"button\"><i class=\"fas fa-microchip\"></i>&nbsp;Implants/Symbionts</button>"
                   ."</a>"
                 ."</div>";
 
                 // end first row, start second row
                 $printresult .= "</div><div class=\"row\">";
 
+
+                $printresult .= "<div class=\"box33\">"
+                  ."<a onclick=\"SH_editPlayedForm({$_GET['viewChar']})\">"
+                    ."<button type=\"button\" class=\"button blue no-bg bar\" name=\"button\"><i class=\"fas fa-sort-numeric-up\"></i>&nbsp;Events Played</button>"
+                  ."</a>"
+                ."</div>";
+
+                $printresult .= "<div class=\"box33\">"
+                ."<a href=\"https://www.eosfrontier.space/bgcheck\" target=\"_blank\">"
+                  ."<button type=\"button\" class=\"blue no-bg bar\" name=\"button\"><i class=\"fas fa-list\"></i>&nbsp;Background-check details</button>"
+                ."</a>"
+                ."</div>";
+
+
                 $printresult .= "<div class=\"box33\">";
 
-                  if($character['status'] != "deceased") {
-
-                    // if($character['sheet_status']['code'] == 0) {
-                    //
-                    //   $printresult .= "<a class=\"\" href=\"".$APP['header']."/index.php?delChar=".$character['characterID']."\">"
-                    //       ."<button type=\"button\" class=\"tomato bar\" name=\"button\"><i class=\"fas fa-user-times\"></i>&nbsp;Mark for delete</button>"
-                    //     ."</a>";
-                    //
-                    // } else if ($character['sheet_status']['code'] == 90) {
-                    //
-                    //   $printresult .= "<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fas fa-times\"></i>&nbsp;Marked for delete</button>";
-                    //
-                    // } else {
-
-                      // $printresult .= "<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fas fa-user-times\"></i>&nbsp(Delete disabled)</button>";
-                    //
-                    // }
-
-                  }
+                  // if($character['status'] != "deceased") {
+                  //
+                  //   if($character['sheet_status']['code'] == 0) {
+                  //
+                  //     $printresult .= "<a class=\"\" href=\"".$APP['header']."/index.php?delChar=".$character['characterID']."\">"
+                  //         ."<button type=\"button\" class=\"tomato bar\" name=\"button\"><i class=\"fas fa-user-times\"></i>&nbsp;Mark for delete</button>"
+                  //       ."</a>";
+                  //
+                  //   } else if ($character['sheet_status']['code'] == 90) {
+                  //
+                  //     $printresult .= "<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fas fa-times\"></i>&nbsp;Marked for delete</button>";
+                  //
+                  //   } else {
+                  //
+                  //     $printresult .= "<button type=\"button\" class=\"disabled bar\" name=\"button\"><i class=\"fas fa-user-times\"></i>&nbsp(Delete disabled)</button>";
+                  //
+                  //   }
+                  //
+                  // }
 
                 $printresult .= "</div>"; //sluit box33
 
-
-                $printresult .= "<div class=\"box33\"></div>";
 
                 $printresult .= "</div>";
                 // end second row
@@ -340,51 +357,37 @@
 
             // set the header
             $printresult .= "<div class=\"character header\">"
-            . "<div class=\"block smflex hidden-xs\">&nbsp;</div>" // user icon
+            . "<div class=\"block smflex\" style=\"min-width: 12rem;\">&nbsp;</div>" // user icon
             . "<div class=\"block\">Full name</div>" // char name
             . "<div class=\"block\">Faction</div>" // faction
-            // . "<div class=\"block\">Status</div>" // status of character (active, design, deceased, etc)
-            . "<div class=\"block\">&nbsp;</div>" // edit
-
+            . "<div class=\"block\">&nbsp;</div>"
+            . "<div class=\"block\">&nbsp;</div>"
           . "</div>";
 
             // iterate through the characters
             foreach ($sheetArr['characters'] AS $character) {
 
-              $xCLASS = "";
-
-              // choose icon and style depending on the character's STATUS.
-              switch(strTolower(EMS_echo($character['status']))) {
-                case 'in design': default:
-                  $xICON = "<i class=\"fas fa-user\"></i>";
-                  break;
-                case 'deceased':
-                  $xICON = "<i class=\"fas fa-user-times mute\"></i>";
-                  $xCLASS = " text-muted";
-                  break;
-                case 'inactive':
-                  $xICON = "<i class=\"far fa-user mute\"></i>";
-                  $xCLASS = " text-muted";
-                  break;
-                case 'ready':
-                case 'sent':
-                  $xICON = "<i class=\"fas fa-check green\"></i>";
-                  $xCLASS = " active";
-                  break;
+              if ($character['sheet_status'] !== "active") {
+                $ACTIVATE = "<a href=\"".$APP['header']."/index.php?activate=".$character['characterID']."\">
+                  <button class=\"blue bar no-bg\" style=\"min-width: 12rem;\">activate/play</button>
+                </a>";
+              } else {
+                $ACTIVATE = "<button disabled class=\"green no-bg disabled\" style=\"min-width: 12rem;\">active</button>";
               }
 
               $printresult .=
-              "<div class=\"character".$xCLASS."\">"
-                . "<div class=\"block smflex hidden-xs\">".$xICON."</div>" // user icon
+              "<div class=\"character\">"
+              . "<div class=\"block smflex\" style=\"width: 10rem;\">".$ACTIVATE."</div>"
                 . "<div class=\"block\">" . ucfirst($character['character_name']) . "</div>" // char name
                 . "<div class=\"block\">" . ucfirst($character['faction']) . "</div>" // faction
-                // . "<div class=\"block\">" . $character['status'] . "</div>" // status of character (active, design, deceased, etc)
                 . "<div class=\"block\">"
                     ."<a href=\"".$APP['header']."/index.php?viewChar=".$character['characterID']."\">"
                       ."<button class=\"blue bar\"><i class=\"fas fa-folder-open\"></i>&nbsp;View</button>"
                     ."</a>"
-                  ."</div>" // edit
-              . "</div>";
+                  ."</div>";
+
+
+              $printresult .= "</div>";
 
             }
 
@@ -392,29 +395,24 @@
             unset($xICON);
 
           }
-          $printresult .= "</div>";
-
-          $printresult .=
-            "<div class=\"row xs-horizontal\">"
-              ."<a href=\"".$APP['header']."/index.php?newChar\">"
-                ."<button type=\"button\" class=\"green no-bg\" name=\"button\"><i class=\"fas fa-user-plus\"></i>&nbsp;New character</button>"
-              ."</a>"
-            ."</div>";
+          $printresult .= "</div><div class=\"row xs-horizontal\">"
+            ."<a href=\"".$APP['header']."/index.php?newChar\">"
+              ."<button type=\"button\" class=\"green no-bg\" name=\"button\"><i class=\"fas fa-user-plus\"></i>&nbsp;New character</button>"
+            ."</a>"
+          ."</div>";
 
         }
 
       }
 
-      echo $printresult;
-      unset($printresult);
+      echo $printresult; unset($printresult);
 
     ?>
+    <div class="row">
+      <div id="customForm"></div>
+    </div>
 
   </div>
-
-  <!-- <div id="appendTarget" class="content">
-
-  </div> -->
 
 </div>
 

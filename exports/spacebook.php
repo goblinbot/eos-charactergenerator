@@ -32,8 +32,9 @@
 				from jml_eb_registrants r
 				join jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
 				join ecc_characters c1 on c1.characterID = SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1)
-				where r.event_id = $EVENTID and ((r.published = 1 AND r.payment_method = 'os_ideal') OR (r.published in (0,1) AND r.payment_method = 'os_offline')) AND `rank` LIKE '%conc%' OR `rank` like '%Governor of E%' ORDER by character_name;";
-      $res = $UPLINK->query($sql);
+				where r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline')) AND `rank` LIKE '%conc%' OR `rank` like '%Governor of E%' ORDER by character_name;";
+      $res = $UPLINK->query($sql); 
+      
 
       if($res) {
         if(mysqli_num_rows($res) > 0) {
@@ -75,7 +76,7 @@
 				from jml_eb_registrants r
 				join jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
 				join ecc_characters c1 on c1.characterID = SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1)
-				where (r.event_id = $EVENTID and ((r.published = 1 AND r.payment_method = 'os_ideal') OR (r.published in (0,1) AND r.payment_method = 'os_offline'))) 
+				where (r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' or r.payment_method = 'os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline'))) 
 				AND (c1.rank NOT LIKE '%Conclav%' AND c1.rank NOT LIKE '%Governor of%') ORDER by c1.faction, c1.character_name 	;";
       $res = $UPLINK->query($sql);
 

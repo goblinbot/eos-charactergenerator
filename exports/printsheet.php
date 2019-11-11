@@ -3,7 +3,7 @@
   include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
   include_once($APP["root"] . "/_includes/functions.global.php");
 
-  include_once('current-players.php');
+  include_once($APP["root"] . '/exports/current-players.php');
 
   (string)$_FACTION = (isset($_GET['faction']) && $_GET['faction'] != "" ? $_GET['faction'] : 'aquila' );
 ?>
@@ -23,7 +23,7 @@
       height: 100%;
       width: 100%;
       font-size: 10px;
-      background: #EEE;
+      background: #FFF;
     }
     body {
       font-family: arial;
@@ -48,7 +48,10 @@
       width: 100%;
     }
     th, td {
-      padding: 5px;
+      border-bottom: 1px solid #EEE;
+      color: #222;
+      margin-top: 1px;
+      padding: 2px 5px;
       text-align: left;
     }
   </style>
@@ -66,7 +69,7 @@
       $offset = 0;
       $perPage = 20;
 
-      if (isset($_GET['sheetID']) && (int)$_GET['sheetID'] != 0) {
+      if (isset($_GET['characterID']) && (int)$_GET['characterID'] != 0) {
 
         echo "<div style=\"padding: 15px 45px; 0 15px;\">";
 
@@ -74,96 +77,67 @@
         include_once($APP["root"] . "/_includes/functions.skills.php");
 
 
-        $sql = "SELECT characterID, charSheetID, aantal_events FROM `ecc_char_sheet` WHERE charSheetID = '".mysqli_real_escape_string($UPLINK,(int)$_GET['sheetID'])."'  LIMIT 1";
+        $sql = "SELECT characterID, faction, accountID, aantal_events, character_name
+         FROM `ecc_characters` 
+         WHERE characterID = '".mysqli_real_escape_string($UPLINK,(int)$_GET['characterID'])."' 
+         LIMIT 1";
         $res = $UPLINK->query($sql);
 
         if($res && mysqli_num_rows($res) == 1) {
 
           $row = mysqli_fetch_assoc($res);
 
-          $xSQL = "SELECT character_name, faction, accountID FROM `ecc_characters` WHERE characterID = '".(int)$row['characterID']."' LIMIT 1";
-          $xRES = $UPLINK->query($xSQL);
+            $jid = $row['accountID'];
 
-          if($xRES) {
+            $skillArr   	  = getCharacterSkills($row['characterID']);
+            $expUsed        = calcUsedExp(EMS_echo($skillArr), $row['faction']);
+            $expTotal       = calcTotalExp($row['aantal_events']);
+            $augmentations  = filterSkillAugs(getImplants($_GET['characterID']));
 
-
-            $xCHAR = mysqli_fetch_assoc($xRES);
-            $jid = $xCHAR['accountID'];
-
-            // echo "<p><span style=\"float: left;\">"
-            //   ."<a class=\"noprint\" href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."\">[ Character sheet ]</a></span>"
-            // ."</p>"
-            // ."<br/>";
-
-            echo "<p>&nbsp;</p>";
-
-            $characterSheet = getFullCharSheet($_GET['sheetID']);
-            $characterSheet['exp_used'] = calcUsedExp(EMS_echo($characterSheet['skills']), $xCHAR['faction']);
-            $characterSheet['exp_total'] = calcTotalExp($characterSheet['aantal_events']);
-
-            $augmentations = getImplants($_GET['sheetID']);
-            $characterSheet['augs'] = filterSkillAugs($augmentations);
-            unset($augmentations);
-
-            echo "<h1>".ucfirst($xCHAR['character_name'])."</h1>";
-            echo "<h3>Experience points spent: ".$characterSheet['exp_used']." / ".$characterSheet['exp_total']." "
-              ."<span style=\"float: right;\">".ucfirst($xCHAR['faction'])."</span>"
+            echo "<h1>".ucfirst($row['character_name'])."</h1>";
+            echo "<h3>Experience points spent: $expUsed / $expTotal "
+              ."<span style=\"color: #777; float: right;\">".ucfirst($row['faction'])."</span>"
             ."</h3>";
 
             echo "<hr/>";
 
             // SKILLS
-            echo "<div style=\"width: 55%; float: left;\">";
-
-            $skillArr = array();
-
+            echo "<div style=\"width: 65%; float: left;\">";
             echo "<style> body { font-size: 16px } </style>";
-
             echo "<h3>Your skills</h3>";
 
             // first, create a minimized skill sheet
-            foreach($characterSheet['skills'] AS $SKILL => $VALUES) {
 
-              $skillArr[$VALUES['parent']]['parent'] = $VALUES['parent'];
-              $skillArr[$VALUES['parent']]['level'] = $VALUES['level'];
+            $parentSkills = [];
 
+            $kSQL = "SELECT primaryskill_id, name FROM `ecc_skills_groups`";
+            $kRES = $UPLINK->query($kSQL);
+            while($kROW = mysqli_fetch_assoc($kRES)){
+              $parentSkills[$kROW['primaryskill_id']] = $kROW['name'];
             }
-
-            // second, add the proper skill names
-            foreach($skillArr AS $PARENTCODE => $VALUES) {
-
-              $ySQL = "SELECT name, siteindex, parents FROM `ecc_skills_groups` WHERE primaryskill_id = '".$VALUES['parent']."' LIMIT 1";
-              $yRES = $UPLINK->query($ySQL);
-              $yROW = mysqli_fetch_assoc($yRES);
-
-              $skillArr[$VALUES['parent']]['name'] = $yROW['name'];
-
-              if($yROW['parents'] == 'none') {
-                $skillArr[$VALUES['parent']]['specialty'] = 0;
-              } else {
-                $skillArr[$VALUES['parent']]['specialty'] = 1;
-              }
-
-              unset($ySQL);
-              unset($yRES);
-              unset($yROW);
-            }
-
             // and Third: It's time to print those skills!
 
             echo "<table style=\"border: 0; width: 90%;\">";
             echo "<tr style=\"background-color: #CCC;\">"
-              . "<th colspan=\"2\">Skill</th>"
+              . "<th colspan=\"3\">Skill</th>"
               . "<th style=\"width: 65px; text-align: center;\">Level</th>"
             .  "</tr>";
+            
+            $printableSkills = [];
+            
+            foreach($skillArr AS $SKILL => $VALUES) {
+              $printableSkills[$VALUES['parent']] = $VALUES;
+            }
 
             foreach($skillArr AS $SKILL => $VALUES) {
 
-              echo "<tr>"
-              . "<td colspan=\"2\">".$VALUES['name'].($VALUES['specialty'] == 1 ? "*" : "")."</td>"
-              . "<td style=\"text-align: center; padding: 10px 5px; width: 65px;\">".$VALUES['level']."</td>"
-              // . "<td>".($VALUES['specialty'] == 1 ? "*" : "")."</td>"
-              . "</tr>";
+              if (isset($VALUES['label']) && $VALUES['label'] !== '') {
+                echo "<tr>"
+                . "<td style=\"color: #888; font-size: 8px;\">".$parentSkills[$VALUES['parent']]."</td>"
+                . "<td colspan=\"2\">".$VALUES['label'].($VALUES['level'] > 5 ? "*" : "")."</td>"
+                . "<td style=\"text-align: center; padding: 2px 5px; width: 65px;\">".$VALUES['level']."</td>"
+                . "</tr>";
+              }
 
             }
 
@@ -172,14 +146,13 @@
 
             echo "</div>";
 
-            echo "<div style=\"width: 40%; float: left;\">";
+            echo "<div style=\"width: 30%; float: left;\">";
 
             echo "<h3>Augmentations</h3>";
 
-            if($characterSheet['augs'] != "") {
-              foreach($characterSheet['augs'] AS $aug) {
-               echo "<p><strong>".($aug['type'] == 'cybernetic' ? 'Bionic' : 'Symbiont') . ": " . $aug['name'] . ' level '. $aug['level'] . "</strong>";
-               echo "<br/>\"" .$aug['description']. "\"</p>";
+            if($augmentations != "") {
+              foreach($augmentations AS $aug) {
+               echo "<p><strong>".($aug['type'] == 'cybernetic' ? 'Bionic' : 'Symbiont') . ": " . $aug['name'] . ' level '. $aug['level'] . "</strong></p>";
               }
             }
 
@@ -187,107 +160,9 @@
 
             // AUGMENTATIONS
 
-
-          }
-
-
         }
 
         echo "</div>";
-
-      } else if (isset($_GET['characterID']) && (int)$_GET['characterID'] != 0) {
-
-        if(isset($_GET['print']) && $_GET['print'] == 'confirm') {
-          $sql = "UPDATE `ecc_characters` SET `sheet_status` = '90' WHERE `characterID` = '".(int)$_GET['characterID']."' LIMIT 1;";
-          $res = $UPLINK->query($sql);
-        }
-
-        echo "<div style=\"padding:15px;\">";
-
-          $sql = "SELECT characterID, character_name, faction, sheet_status FROM `ecc_characters` WHERE characterID = '".(int)$_GET['characterID']."' LIMIT 1";
-          $res = $UPLINK->query($sql);
-
-          if($res) {
-            if(mysqli_num_rows($res) == 1) {
-
-              // echo "<a href=\"".$APP['header']."/exports/printsheet.php\"><button>Close</button></a> <br/><br/>";
-              echo "<button onclick=\"window.close();\">Close Window</button>";
-
-              $row = mysqli_fetch_assoc($res);
-
-              if(!isset($row['character_name']) || $row['character_name'] == "") {
-                $row['character_name'] = "[no name]";
-              }
-
-              // $xCHAR = $row['characterID'];
-              $xTOPRINT = false;
-
-              if($row['sheet_status'] == 90) {
-                $xSTATUS = "<span style=\"color: green;\">Done</span>";
-              } else if ($row['sheet_status'] == 100) {
-                $xSTATUS = "<span style=\"color: gray;\">Nope</span>";
-              } else {
-                $xSTATUS = "<span style=\"color: tomato;\">unprinted</span>";
-
-                $xTOPRINT = true;
-              }
-
-              echo "<h1>".$row['character_name']. ", ".$row['faction']."</h1>"
-              ."<p>Sheet status: $xSTATUS </p><hr/><br/>";
-
-              if($xTOPRINT == true) {
-
-                echo "<p><a href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."&print=confirm\">"
-                 . "<button style=\"width: 100%;\">&#x2713; Confirm printstatus</button>"
-                 ."</a></p><br/>";
-
-              }
-
-              unset($xTOPRINT);
-
-              $sql = "SELECT charSheetID, nickname, aantal_events, status, versionNumber FROM `ecc_char_sheet` WHERE characterID = '".(int)$_GET['characterID']."' ORDER BY charSheetID, aantal_events DESC";
-              $res = $UPLINK->query($sql);
-
-              if($res) {
-                if(mysqli_num_rows($res) > 0) {
-
-                  echo "<table style=\"border: 0;\">"
-                  . "<tr>"
-                    ."<th>Nickname</th>"
-                    ."<th>Events played</th>"
-                    ."<th>Status</th>"
-                    ."<th>Version #</th>"
-                    ."<th>&nbsp;</th>"
-                  ."</tr>";
-
-                  while($row = mysqli_fetch_assoc($res)) {
-
-                    echo "<tr>"
-                    . "<td>".$row['nickname']."</td>"
-                    . "<td>".$row['aantal_events']."</td>"
-                    . "<td>".$row['status']."</td>"
-                    . "<td>".$row['versionNumber']."</td>"
-                    . "<td><a href=\"".$APP['header']."/exports/printsheet.php?sheetID=".$row['charSheetID']."\"><button>OPEN</button></a></td>"
-                    . "</tr>";
-                  }
-
-                  echo "</table>";
-
-                  // unset($xCHAR);
-
-                } else {
-                  echo "<p>No character sheets found.</p>";
-                }
-              } else {
-                  echo "<p>No character sheets found.</p>";
-              }
-
-
-
-            }
-          }
-
-          echo "</div>";
 
       } else {
 
@@ -369,7 +244,7 @@
               ."<td>#".$row['characterID']."</td>"
               ."<td>".$row['character_name']."</td><td>". $row['faction'] ."</td><td>". $xSTATUS ."</td>"
               // ."<td><a href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."\" target=\"_new\"><button>Sheets</button></a></td>"
-              ."<td><button onclick=\"window.open('{$APP["header"]}/exports/printsheet.php?characterID={$row['characterID']}','sheets','width=1280,height=768');\">View Sheet(s)</button></td>"
+              ."<td><button onclick=\"window.open('{$APP["header"]}/exports/printsheet.php?characterID={$row['characterID']}','sheets','width=1280,height=768');\">View Sheet</button></td>"
             ."</tr>";
             unset($xSTATUS);
           }
@@ -382,7 +257,6 @@
       }
 
       echo "</div>";
-
   ?>
 
 </body>

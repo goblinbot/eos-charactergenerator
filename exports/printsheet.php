@@ -170,7 +170,7 @@
         join jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
 	join jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 14)
 		join ecc_characters c1 on c1.characterID = SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1)
-        where v2.field_value = "Speler" AND r.event_id = $EVENTID  AND `faction` = '$_FACTION' and ((r.published = 1 AND (r.payment_method = 'os_ideal' or r.payment_method='os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline'));";
+        where v2.field_value = 'Speler' AND r.event_id = $EVENTID  AND `faction` = '$_FACTION' and ((r.published = 1 AND (r.payment_method = 'os_ideal' or r.payment_method='os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline'));";
 
         $res = $UPLINK->query($sql);
         $resCOUNT = mysqli_fetch_assoc($res)['totalchars'];
@@ -215,7 +215,7 @@
         join jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
 	join jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 14)
         join ecc_characters c1 on c1.characterID = SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1)
-        where v2.field_value = "Speler" AND r.event_id = $EVENTID  and characterID <> 257 AND `faction` = '$_FACTION' and ((r.published = 1 AND (r.payment_method = 'os_ideal' or r.payment_method = 'os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline'))
+        where v2.field_value = 'Speler' AND r.event_id = $EVENTID  and characterID <> 257 AND `faction` = '$_FACTION' and ((r.published = 1 AND (r.payment_method = 'os_ideal' or r.payment_method = 'os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline'))
           ORDER BY faction,character_name
           LIMIT ".(int)$limitFirst." , ".(int)$perPage." ";
         $res = $UPLINK->query($sql);

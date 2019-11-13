@@ -51,9 +51,9 @@ while($row = mysqli_fetch_array($res))
 {
     echo "<tr>";
     echo "<td>" . $row['faction'] . "</td>";
-    echo "<td>" . $row['character_name'] . "</td>";
+    echo '<td> <a href="/admin_sl/character-edit.php?id=' . $row['characterID'] . '">' . $row['character_name'] . "</a></td>";
     echo "<td>" . $row['ICC_number'] . "</td>";
-    echo "<td>" . $row['characterID'] . ".jpg</td>";
+    echo '<td><a href="../img/passphoto/' . $row['characterID'] . '.jpg">' . $row['characterID'] . '.jpg</a></td>';
     echo "</tr>";
 }
 echo "</table>";

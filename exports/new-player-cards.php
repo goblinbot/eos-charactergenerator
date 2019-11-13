@@ -1,9 +1,27 @@
 <?php
   // globals
-  include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
+   // config variable.
+$APP = array();
+
+// opens an array to be filled later with the CSS and JS, which will eventually be included by PHP.
+$APP["includes"] = array();
+
+// location of the application. for example: http://localhost/chargen/ == '/chargen'. If the application is in the ROOT, you can leave this blank.
+$APP["header"] = "/eoschargen";
+
+// define the root folder by adding the header (location) to the server root, defined by PHP.
+$APP["root"] = $_SERVER["DOCUMENT_ROOT"] . $APP["header"];
+
+// define the login page to redirect to if there is no $jid set/inherited.
+$APP["loginpage"] = "https://new.eosfrontier.space/component/users/?view=login";
+
+// $jid = 451;
+  include_once($_SERVER["DOCUMENT_ROOT"] .'/eoschargen/db.php');
   include_once($APP["root"] . "/_includes/functions.global.php");
 
   include_once($APP["root"] . '/exports/current-players.php');
+ 
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -26,9 +44,15 @@ tr:nth-child(even) {
 }
 </style>
 </head>
-<body>
+<?php
 
-<h2>New Card Needed</h2>
+$sql = "SELECT title FROM jml_eb_events where id = $EVENTID;";
+$res = $UPLINK->query($sql);
+$row = mysqli_fetch_array($res);
+
+echo '<h2>New Card Needed for ' . $row['title'] . '</h2>';
+?>
+<body>
 <?php
 
 $sql = "SELECT character_name, faction, ICC_number, card_id, characterID from ecc_characters WHERE characterID in 
@@ -51,9 +75,9 @@ while($row = mysqli_fetch_array($res))
 {
     echo "<tr>";
     echo "<td>" . $row['faction'] . "</td>";
-    echo '<td> <a href="/admin_sl/character-edit.php?id=' . $row['characterID'] . '">' . $row['character_name'] . "</a></td>";
+    echo '<td> <a href="/admin_sl/character-edit.php?id=' . $row['characterID'] . '" target="_blank">' . $row['character_name'] . "</a></td>";
     echo "<td>" . $row['ICC_number'] . "</td>";
-    echo '<td><a href="../img/passphoto/' . $row['characterID'] . '.jpg">' . $row['characterID'] . '.jpg</a></td>';
+    echo '<td><a href="../img/passphoto/' . $row['characterID'] . '.jpg " target="_blank">' . $row['characterID'] . '.jpg</a></td>';
     echo "</tr>";
 }
 echo "</table>";

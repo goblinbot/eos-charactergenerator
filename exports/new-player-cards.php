@@ -77,7 +77,7 @@ while($row = mysqli_fetch_array($res))
     echo "<td>" . $row['faction'] . "</td>";
     echo '<td> <a href="/admin_sl/character-edit.php?id=' . $row['characterID'] . '" target="_blank">' . $row['character_name'] . "</a></td>";
     echo "<td>" . $row['ICC_number'] . "</td>";
-    echo '<td><a href="../img/passphoto/' . $row['characterID'] . '.jpg " target="_blank">' . $row['characterID'] . '.jpg</a></td>';
+    echo '<td><a href="../img/passphoto/' . $row['characterID'] . '.jpg " target="_blank" download">' . $row['characterID'] . '.jpg</a></td>';
     echo "</tr>";
 }
 echo "</table>";

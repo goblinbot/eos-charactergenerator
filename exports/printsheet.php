@@ -37,7 +37,7 @@
       background: #FFF;
       background-image: url('../img/32033.png');
       background-position: top right;
-      background-position: 95% 15px;
+      background-position: 95% 85px;
       background-repeat: no-repeat;
     }
     button {
@@ -70,9 +70,6 @@
       $perPage = 20;
 
       if (isset($_GET['characterID']) && (int)$_GET['characterID'] != 0) {
-
-        echo "<div style=\"padding: 15px 45px; 0 15px;\">";
-
         include_once($APP["root"] . "/_includes/functions.sheet.php");
         include_once($APP["root"] . "/_includes/functions.skills.php");
 
@@ -82,6 +79,12 @@
          WHERE characterID = '".mysqli_real_escape_string($UPLINK,(int)$_GET['characterID'])."' 
          LIMIT 1";
         $res = $UPLINK->query($sql);
+
+        $sql2 = "SELECT title FROM jml_eb_events where id = $EVENTID;";
+        $res2 = $UPLINK->query($sql2);
+        $row2 = mysqli_fetch_array($res2);
+
+        
 
         if($res && mysqli_num_rows($res) == 1) {
 
@@ -93,18 +96,36 @@
             $expUsed        = calcUsedExp(EMS_echo($skillArr), $row['faction']);
             $expTotal       = calcTotalExp($row['aantal_events']);
             $augmentations  = filterSkillAugs(getImplants($_GET['characterID']));
-
-            echo "<h1>".ucfirst($row['character_name'])."</h1>";
-            echo "<h3>Experience points spent: $expUsed / $expTotal "
+            //MySQL Query to Check for Bonus research token skill
+            $sql3 = "SELECT charID FROM ecc_char_skills WHERE (skill_id = 31305 AND charID = " . $row['characterID'] . ");";
+            $res3 = $UPLINK->query($sql3);
+            $row3 = mysqli_fetch_array($res3);
+            
+            //Research token tear strips
+            echo "</br><table border='1'>"
+            . "<tr>";
+            if($res3 && mysqli_num_rows($res3) > 0) {
+              $y = 3;
+            } else {
+              $y = 2;
+            }
+            for ($x = 1; $x <= $y; $x++) {
+            echo "<td height='30'><strong>" . $row['character_name'] 
+            . "</strong></br>" . $row2['title'] ." - Research Token ". $x ."</td>";
+            };
+            echo "</table>";
+            echo "<div style='padding: 15px 45px; 0 15px;'>";
+            echo "<font size='6'><strong>".ucfirst($row['character_name'])."</strong></font></br>";
+            echo "<font size='5'><strong>" . $row2['title'] . "</br>Experience points spent: $expUsed / $expTotal "
               ."<span style=\"color: #777; float: right;\">".ucfirst($row['faction'])."</span>"
-            ."</h3>";
+            ."</strong></font></br>";
 
             echo "<hr/>";
 
             // SKILLS
             echo "<div style=\"width: 65%; float: left;\">";
             echo "<style> body { font-size: 16px } </style>";
-            echo "<h3>Your skills</h3>";
+            echo "<font size='4'><strong>Your skills</strong></font></br>";
 
             // first, create a minimized skill sheet
 
@@ -148,7 +169,7 @@
 
             echo "<div style=\"width: 30%; float: left;\">";
 
-            echo "<h3>Augmentations</h3>";
+            echo "<font size='4'><strong>Augmentations</strong></font></br>";
 
             if($augmentations != "") {
               foreach($augmentations AS $aug) {
@@ -263,3 +284,4 @@
 
 </body>
 </html>
+

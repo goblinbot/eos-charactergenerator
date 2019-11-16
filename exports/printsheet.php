@@ -27,7 +27,7 @@
     }
     body {
       font-family: arial;
-      font-size: 14px;
+      font-size: 12px;
       height:297mm;
       width:210mm;
       margin-left:auto;
@@ -44,16 +44,27 @@
       cursor: pointer;
       padding: 8px;
     }
-    table {
-      width: 100%;
-    }
-    th, td {
-      border-bottom: 1px solid #EEE;
-      color: #222;
-      margin-top: 1px;
-      padding: 2px 5px;
-      text-align: left;
-    }
+  table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  font-size: 12px;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 2px 5px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+@media print {
+  #printPageButton {
+    display: none;
+  }
+}
   </style>
 
   <style type="text/css" media="print">
@@ -72,6 +83,11 @@
       if (isset($_GET['characterID']) && (int)$_GET['characterID'] != 0) {
         include_once($APP["root"] . "/_includes/functions.sheet.php");
         include_once($APP["root"] . "/_includes/functions.skills.php");
+        
+        if(isset($_GET['print']) && $_GET['print'] == 'confirm') {
+          $sql = "UPDATE `ecc_characters` SET `print_status` = $EVENTID WHERE `characterID` = '".(int)$_GET['characterID']."' LIMIT 1;";
+          $res = $UPLINK->query($sql);
+        }
 
 
         $sql = "SELECT characterID, faction, accountID, aantal_events, character_name
@@ -83,8 +99,6 @@
         $sql2 = "SELECT title FROM jml_eb_events where id = $EVENTID;";
         $res2 = $UPLINK->query($sql2);
         $row2 = mysqli_fetch_array($res2);
-
-        
 
         if($res && mysqli_num_rows($res) == 1) {
 
@@ -164,6 +178,8 @@
 
             echo "</table>";
             echo "<p style=\"font-size: 13px;\"><i>* specialty skills</i></p>";
+            
+            
 
             echo "</div>";
 
@@ -180,8 +196,18 @@
             echo "</div>";
 
             // AUGMENTATIONS
-
-        }
+            //Print and Close Button
+            if(isset($_GET['print']) && $_GET['print'] == 'confirm'){  
+              echo "<p><a href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."&print=confirm\">"
+              . "<button id=\"printPageButton\" style=\"width: 100%;\" onClick=\"window.print();\">&#x2713;Print</button></td></tr>";
+              echo "<tr><td>";
+              echo "<p><button id=\"printPageButton\" style=\"width: 100%;\" onclick=\"window.open('', '_self', ''); window.close();\">Close Window</button></td></tr>";
+              }else{
+                //Print Button by itself
+            echo "<p><a href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."&print=confirm\">"
+            . "<button id=\"printPageButton\" style=\"width: 100%;\" onClick=\"window.print();\">Print</button></td>";
+              }
+          }
 
         echo "</div>";
 
@@ -200,13 +226,17 @@
                   style=\"padding: 5px; border-radius: 2px; margin-bottom: 1rem;\"
                   onchange=\"location.href = '{$APP['header']}/exports/printsheet.php?offset=0&faction=' + this.value; \">
                 <option value=\"\">Select faction</option>
-                <option value=\"aquila\">Aquila</option>
-                <option value=\"dugo\">Dugo</option>
-                <option value=\"ekanesh\">Ekanesh</option>
-                <option value=\"pendzal\">Pendzal</option>
-                <option value=\"sona\">Sona</option>
+                <option value=\"Aquila\">Aquila</option>
+                <option value=\"Dugo\">Dugo</option>
+                <option value=\"Ekanesh\">Ekanesh</option>
+                <option value=\"Pendzal\">Pendzal</option>
+                <option value=\"Sona\">Sona</option>
               </select>";
-        echo "<div style=\"padding: 15px;\">$_FACTION CHARACTERS : $resCOUNT<br/><br/>";
+              $sql2 = "SELECT title FROM jml_eb_events where id = $EVENTID;";
+              $res2 = $UPLINK->query($sql2);
+              $row2 = mysqli_fetch_array($res2);
+      
+        echo "<div style=\"padding: 15px;\"><h1>" . $row2['title'] . "<br>Number of $_FACTION Characters: $resCOUNT</h1><br/><br/>";
 
         $printresult = "";
 
@@ -218,12 +248,13 @@
 
 
         $pageNumber = 1;
+        echo "Page ";
         for($x = 0; $x < $resCOUNT; $x = ($x+$perPage)) {
-
+          
           if(($pageNumber-1) == $offset) {
-            echo "<span style=\"padding:8px 4px; color: red;\"><strong>[$pageNumber]&nbsp;</strong></span>";
+            echo "<span style=\"padding:8px 4px; color: red;\"><button type='disabled'><strong><font size=4>$pageNumber</font></strong></button></span>";
           } else {
-            echo "<a style=\"padding:8px 4px;\" href=\"".$APP['header']."/exports/printsheet.php?offset=".($pageNumber-1)."&faction=$_FACTION\">[$pageNumber]&nbsp;</a>";
+            echo "<a style=\"padding:8px 4px;\" href=\"".$APP['header']."/exports/printsheet.php?offset=".($pageNumber-1)."&faction=$_FACTION\"><button>$pageNumber</button></a>";
           }
 
           $pageNumber++;
@@ -232,7 +263,7 @@
         echo "<br/><br/>";
 
 
-        $sql = "SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1) as characterID, c1.character_name, c1.faction, c1.sheet_status from jml_eb_registrants r
+        $sql = "SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1) as characterID, c1.character_name, c1.faction, c1.sheet_status, c1.print_status from jml_eb_registrants r
         join jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
 	join jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 14)
         join ecc_characters c1 on c1.characterID = SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1)
@@ -243,36 +274,59 @@
 
         if($res) {
 
-          echo "<table style=\"border: 0; width: 100%;\">";
-
+          echo "<table style=\"border: 0; width: 100%;\">"
+          . "<th>ID</th><th>Name</th><th>Faction</th><th>Print Status</th><th>Open Sheet</th>";
           while($row = mysqli_fetch_assoc($res)) {
+             // $xCHAR = $row['characterID'];
+             $xTOPRINT = false;
 
-            if($row['sheet_status'] == 90) {
+            if($row['print_status'] == $EVENTID) {
 
               $xSTATUS = "<span style=\"color: green;\">Done</span>";
+              $xTOPRINT = false;
 
-            } else if ($row['sheet_status'] == 100) {
-
-              $xSTATUS = "<span style=\"color: gray;\">Nope</span>";
-
-            } else {
-              $xSTATUS = "<span style=\"color: tomato;\">unprinted</span>";
+            }  else {
+              $xSTATUS = "<span style=\"color: tomato;\">Unprinted</span>";
+              $xTOPRINT = true;
             }
 
             if($row['character_name'] == "" || $row['character_name'] == null) {
               $row['character_name'] = '<span style="color: tomato;">no name</span>';
             }
+             
+
 
             echo "<tr>"
               ."<td>#".$row['characterID']."</td>"
               ."<td>".$row['character_name']."</td><td>". $row['faction'] ."</td><td>". $xSTATUS ."</td>"
               // ."<td><a href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."\" target=\"_new\"><button>Sheets</button></a></td>"
-              ."<td><button onclick=\"window.open('{$APP["header"]}/exports/printsheet.php?characterID={$row['characterID']}','sheets','width=1280,height=768');\">View Sheet</button></td>"
-            ."</tr>";
+              ."<td><button onclick=\"window.open('{$APP["header"]}/exports/printsheet.php?characterID={$row['characterID']}','sheets','width=1280,height=768');\">View Sheet</button></td></tr>";
             unset($xSTATUS);
           }
 
           echo "</table>";
+          if(isset($_GET['offset']) && (int)$_GET['offset'] > 0) {
+            $offset = (int)$_GET['offset'];
+          }
+  
+          $limitFirst = $offset*$perPage;
+  
+  
+          $pageNumber = 1;
+        echo "Page ";
+        for($x = 0; $x < $resCOUNT; $x = ($x+$perPage)) {
+          
+          if(($pageNumber-1) == $offset) {
+            echo "<span style=\"padding:8px 4px; color: red;\"><button type='disabled'><strong><font size=4>$pageNumber</font></strong></button></span>";
+          } else {
+            echo "<a style=\"padding:8px 4px;\" href=\"".$APP['header']."/exports/printsheet.php?offset=".($pageNumber-1)."&faction=$_FACTION\"><button>$pageNumber</button></a>";
+          }
+
+          $pageNumber++;
+        }
+
+        echo "<br/><br/>";
+
 
         }
 
@@ -284,4 +338,3 @@
 
 </body>
 </html>
-

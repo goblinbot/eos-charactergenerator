@@ -60,6 +60,11 @@ td, th {
 tr:nth-child(even) {
   background-color: #dddddd;
 }
+@media print {
+  #printPageButton {
+    display: none;
+  }
+}
   </style>
 
   <style type="text/css" media="print">
@@ -80,9 +85,8 @@ tr:nth-child(even) {
         include_once($APP["root"] . "/_includes/functions.skills.php");
         
         if(isset($_GET['print']) && $_GET['print'] == 'confirm') {
-          $sql = "UPDATE `ecc_characters` SET `print_status` = $EVENTID WHERE `characterID` = '".(int)$_GET['printID']."' LIMIT 1;";
+          $sql = "UPDATE `ecc_characters` SET `print_status` = $EVENTID WHERE `characterID` = '".(int)$_GET['characterID']."' LIMIT 1;";
           $res = $UPLINK->query($sql);
-          window.open("./printsheet.php","_self");
         }
 
 
@@ -174,6 +178,8 @@ tr:nth-child(even) {
 
             echo "</table>";
             echo "<p style=\"font-size: 13px;\"><i>* specialty skills</i></p>";
+            
+            
 
             echo "</div>";
 
@@ -190,8 +196,18 @@ tr:nth-child(even) {
             echo "</div>";
 
             // AUGMENTATIONS
-
-        }
+            //Print and Close Button
+            if(isset($_GET['print']) && $_GET['print'] == 'confirm'){  
+              echo "<p><a href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."&print=confirm\">"
+              . "<button id=\"printPageButton\" style=\"width: 100%;\" onClick=\"window.print();\">&#x2713;Print</button></td></tr>";
+              echo "<tr><td>";
+              echo "<p><button id=\"printPageButton\" style=\"width: 100%;\" onclick=\"window.open('', '_self', ''); window.close();\">Close Window</button></td></tr>";
+              }else{
+                //Print Button by itself
+            echo "<p><a href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."&print=confirm\">"
+            . "<button id=\"printPageButton\" style=\"width: 100%;\" onClick=\"window.print();\">Print</button></td>";
+              }
+          }
 
         echo "</div>";
 
@@ -259,7 +275,7 @@ tr:nth-child(even) {
         if($res) {
 
           echo "<table style=\"border: 0; width: 100%;\">"
-          . "<th>ID</th><th>Name</th><th>Faction</th><th>Print Status</th><th>Open Sheet</th><th>Confirm Print Status</th>";
+          . "<th>ID</th><th>Name</th><th>Faction</th><th>Print Status</th><th>Open Sheet</th>";
           while($row = mysqli_fetch_assoc($res)) {
              // $xCHAR = $row['characterID'];
              $xTOPRINT = false;
@@ -267,6 +283,7 @@ tr:nth-child(even) {
             if($row['print_status'] == $EVENTID) {
 
               $xSTATUS = "<span style=\"color: green;\">Done</span>";
+              $xTOPRINT = false;
 
             }  else {
               $xSTATUS = "<span style=\"color: tomato;\">Unprinted</span>";
@@ -283,12 +300,7 @@ tr:nth-child(even) {
               ."<td>#".$row['characterID']."</td>"
               ."<td>".$row['character_name']."</td><td>". $row['faction'] ."</td><td>". $xSTATUS ."</td>"
               // ."<td><a href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."\" target=\"_new\"><button>Sheets</button></a></td>"
-              ."<td><button onclick=\"window.open('{$APP["header"]}/exports/printsheet.php?characterID={$row['characterID']}','sheets','width=1280,height=768');\">View Sheet</button></td><td>";
-              if($xTOPRINT == true) {
-                echo "<p><a href=\"".$APP['header']."/exports/printsheet.php?printID=".$row['characterID']."&print=confirm&offset=".($pageNumber)."&faction=$_FACTION\">"
-                . "<button style=\"width: 100%;\">&#x2713;Mark as Printed</button></td>";
-              }
-            echo "</tr>";
+              ."<td><button onclick=\"window.open('{$APP["header"]}/exports/printsheet.php?characterID={$row['characterID']}','sheets','width=1280,height=768');\">View Sheet</button></td></tr>";
             unset($xSTATUS);
           }
 

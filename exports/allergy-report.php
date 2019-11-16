@@ -96,27 +96,48 @@ foreach ($allergy_counts as $key => $val) {
 echo "</font></table>";
 
 echo "<font size=5>Detail</font>";
-echo "<table width='100'>";
-echo "<th>Name</th><th>Allergies/Diet</th><th>Other Allergies</th>";
+echo "<table>";
+echo "<th>Name</th><th>Allergie</th><th>Dieet</th><th>Other Allergies</th>";
 $sql = "select replace(replace(v2.field_value,'[',''),']',',') as diet, concat(r.first_name,' ',r.last_name) as name, v3.field_value as other from joomla.jml_eb_registrants r
 join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 56)
 left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 57)
 WHERE r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR 
-(r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER BY diet;";
+(r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER BY diet desc;";
 $res = $UPLINK->query($sql);
-while($row = mysqli_fetch_array($res))
-{
-    echo "<tr><td>" . $row['name'] . "</td><td>" 
-    . rtrim(str_replace("Allergie:","<strong>Allergie:</strong>",
-    str_replace(", ","</br>",
-    str_replace("Dieet:","<strong>Dieet:</strong>",
-    str_replace("\\/","/",
-    str_replace("\"","",
-    str_replace("\",\"",",  ",
-    str_replace("\\u00eb","e", 
-    str_replace("\\u00cb","E",$row['diet'])))))))),",") . "</td>
-    <td>". $row['other'] ."</td></tr>";
+while($row = mysqli_fetch_array($res)){
+  echo "<tr><td>" . $row['name'] . "</td>";
+  //Store the item in an array for
+  $item = rtrim(str_replace("Allium(ui,prei,knoflook,bieslook,etc)","Allium(ui;prei;knoflook;bieslook;etc)",str_replace("\\/","/",
+  str_replace("\"","",
+  str_replace("\",\"",",  ",
+  str_replace("\\u00eb","e", 
+  str_replace("\\u00cb","E",$row['diet'])))))),","); 
+  $row_things = explode(",",$item);
+  echo "<td>" ;
+    for ($x = 0; $x < count($row_things); $x++) {
+      if (preg_match("/Allergie.*$/i", $row_things[$x]) == 1){ 
+      echo str_replace("Allergie: ",'',$row_things[$x]) . ",";
+      }
+    };
+    echo "</td><td>";
+    for ($x = 0; $x < count($row_things); $x++) {
+      if (preg_match("/Dieet:.*$/i", $row_things[$x]) == 1){
+      echo str_replace("Dieet: ",'',$row_things[$x]) . ",";
+      }
+        };
+      //echo $x . " " . $row_things[$x];
+  
+  //for ($x = 0; $x < count($row_things); $x++) {
+  //   echo $x . " " . $row_things[$x] . " " . preg_match('/Dieet:.*$/i', $row_things[$x]) . "<br>";
+  //   if (preg_match('/Dieet:.*$/i', $row_things[$x]) === 1){
+  //     echo str_replace('Dieet: ','',$row_things[$x]) . ",";
+  //};
+   
+  // echo "</td>";
+  echo "<td>". $row['other'] ."</td></tr>";  
 };
+
+
 echo "</table>";
 ?>
 </body>

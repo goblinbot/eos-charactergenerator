@@ -55,14 +55,18 @@ echo '<h2>New Card Needed for ' . $row['title'] . '</h2>';
 <body>
 <?php
 
-$sql = "SELECT character_name, faction, ICC_number, card_id, characterID from ecc_characters WHERE characterID in 
-
+$sqlpart1 = "SELECT character_name, faction, ICC_number, card_id, characterID from ecc_characters WHERE characterID in
 (SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1) as id from jml_eb_registrants r
     join jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
     join jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 14)
-    where v2.field_value = 'Speler' AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' or r.payment_method = 'os_paypal')) OR 
-    (r.published in (0,1) AND r.payment_method = 'os_offline'))) AND card_id is NULL
-    ORDER BY faction, character_name";
+    where v2.field_value = 'Speler' AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' or r.payment_method = 'os_paypal')) OR
+    (r.published in (0,1) AND r.payment_method = 'os_offline'))) AND card_id is NULL";
+ if (isset($NPCCards)) 
+ $sqlpart2 = " UNION SELECT character_name, faction, ICC_number, card_id, characterID from ecc_characters WHERE (characterID in ($NPCCards) AND card_id is NULL)";
+ else $sqlpart2 = ' ';
+$sqlpart3 = " ORDER BY faction, character_name";
+
+$sql = $sqlpart1 . $sqlpart2 . $sqlpart3;
 $res = $UPLINK->query($sql);
 echo "<table>";
 echo "<th>Faction</th>";
@@ -75,7 +79,7 @@ while($row = mysqli_fetch_array($res))
 {
     echo "<tr>";
     echo "<td>" . $row['faction'] . "</td>";
-    echo '<td> <a href="/admin_sl/character-edit.php?id=' . $row['characterID'] . '" target="_blank">' . $row['character_name'] . "</a></td>";
+    echo '<td> <a href="/admin_sl/character-edit.php?id=' . $row['characterID'] . '">' . $row['character_name'] . "</a></td>";
     echo "<td>" . $row['ICC_number'] . "</td>";
     echo '<td><img src="../img/passphoto/' . $row['characterID'] . '.jpg " alt="Character photo" width="42"></br><a href="../img/passphoto/' . $row['characterID'] . '.jpg " target="_blank" download">' . $row['characterID'] . '.jpg</a></td>';
     echo "</tr>";
@@ -84,3 +88,4 @@ echo "</table>";
 ?>
 </body>
 </html>
+

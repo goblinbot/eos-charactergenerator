@@ -85,18 +85,18 @@ $res2 = $UPLINK->query($sql2);
 $row2 = mysqli_fetch_array($res2);
 $sql = "select r.id, v2.field_value as building, r.first_name as oc_fn, v3.field_value as oc_tv, r.last_name as oc_ln, substring_index(v1.field_value,' - ',1) as ic_name 
 from joomla.jml_eb_registrants r
-join joomla.jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
-join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 58)
+left join joomla.jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
+left join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 58)
 left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 16)
 where v2.field_value = 'Zonnedauw' AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR
 (r.published in (0,1) AND r.payment_method = 'os_offline'))
 UNION
 select r.id, v2.field_value as building, r.first_name as oc_fn, v3.field_value as oc_tv, r.last_name as oc_ln, substring_index(v1.field_value,' - ',1) as ic_name 
 from joomla.jml_eb_registrants r
-join joomla.jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
+left join joomla.jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
 left join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 58)
 left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 16)
-where (v2.field_value !='Bastion' or v2.field_value !='Zonnedauw') AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR
+where (v2.field_value is NULL) AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR
 (r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER BY oc_fn;";
 $res = $UPLINK->query($sql);
 $row_count = mysqli_num_rows( $res );

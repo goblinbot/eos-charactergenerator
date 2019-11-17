@@ -1,0 +1,51 @@
+    html{
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      font-size: 10px;
+      background: #FFF;
+    }
+    body {
+      font-family: arial;
+      font-size: 12px;
+      height:297mm;
+      width:210mm;
+      margin-left:auto;
+      margin-right:auto;
+      margin-top: 0;
+      margin-bottom: 0;
+      background: #FFF;
+      background-image: url('/eoschargen/img/RoomSign.png');
+      background-position: top left;
+      background-position: 95% 0px;
+      background-repeat: no-repeat;
+    }
+    button {
+      cursor: pointer;
+      padding: 8px;
+    }
+  table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  font-size: 12px;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 2px 5px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+@media print {
+  #printPageButton {
+    display: none;
+  }
+}
+  .single_record{
+    page-break-after: always;
+   }

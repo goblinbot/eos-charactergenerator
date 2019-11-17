@@ -96,8 +96,8 @@ from joomla.jml_eb_registrants r
 left join joomla.jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
 left join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 58)
 left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 16)
-where (v2.field_value is NULL) AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR
-(r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER BY oc_fn;";
+where (r.is_group_billing != 1 AND v2.field_value is NULL) AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR
+(r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER by oc_fn;";
 $res = $UPLINK->query($sql);
 $row_count = mysqli_num_rows( $res );
 echo '<font size="5">Eating Locations for ' . $row2['title'] . '</font> - '
@@ -118,6 +118,7 @@ echo "</table></p>";
 ?>
 </body>
 </html>
+
 
 
 

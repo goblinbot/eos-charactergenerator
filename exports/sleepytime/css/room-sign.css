@@ -58,6 +58,14 @@ tr:nth-child(even) {
       width: 210mm;
       height: 297mm;
   }
+  table {
+    font-family: orbitron;
+    border-collapse: collapse;
+    font-size: 18px;
+    width: 70%;
+    margin-left:auto; 
+    margin-right:auto;
+  }
 }
 .single_record{
   page-break-after: always;

@@ -1,12 +1,13 @@
-    html{
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      font-size: 10px;
-      background: #FFF;
-    }
-    body {
+/* html { 
+  /* background: url(/eoschargen/img/RoomSign.png) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-repeat:repeat-y;
+  background-attachment:fixed; */
+/* } */
+     body {
       font-family: arial;
       font-size: 12px;
       height:297mm;
@@ -15,21 +16,20 @@
       margin-right:auto;
       margin-top: 0;
       margin-bottom: 0;
-      background: #FFF;
+      /* background: #FFF; */
       background-image: url('/eoschargen/img/RoomSign.png');
-      background-position: top left;
-      background-position: 95% 0px;
-      background-repeat: no-repeat;
+      /* background-position: top left; */
+      background-position: center center;  
+      background-repeat: repeat-y; 
+      background-size: cover; 
     }
-    button {
-      cursor: pointer;
-      padding: 8px;
-    }
-  table {
-  font-family: arial, sans-serif;
+
+
+table {
+  font-family: orbitron;
   border-collapse: collapse;
   font-size: 12px;
-  width: 100%;
+  width: 100%; 
 }
 
 td, th {
@@ -45,7 +45,8 @@ tr:nth-child(even) {
   #printPageButton {
     display: none;
   }
-}
-  .single_record{
+  * {-webkit-print-color-adjust:exact;}
+  
+} .single_record{
     page-break-after: always;
    }

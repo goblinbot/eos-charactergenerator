@@ -60,9 +60,9 @@ while($room_row = mysqli_fetch_assoc($room_res)){
     (r.published in (0,1) AND r.payment_method = 'os_offline'))AND v2.field_value NOT LIKE 'medische%' ORDER by building, room;";
     $res = $UPLINK->query($sql);
     echo "<div id='roomsign' style='padding: 15px 45px; 0 15px;'>";
-    echo "<center><font face='Orbitron' size=15><br><br><br>" . str_replace('tweede gebouw','FOB',$building) . "<br>$room<br><br></font></center>";
+    echo "<center><font face='Orbitron' size=15><br><br>" . str_replace('tweede gebouw','FOB',$building) . "<br>$room<br><br></font></center>";
     echo "<table>";
-    echo "<th>Name</th><th>Eating Location</th>";
+    echo "<th><center>Name</center></th><th><center>Eating Location</center></th>";
     while($row = mysqli_fetch_array($res))
     {
         $foodlocation = $row['foodlocation'];
@@ -70,7 +70,7 @@ while($room_row = mysqli_fetch_assoc($room_res)){
         $foodlocation = "FOB";}
         else {$foodlocation = $row['foodlocation'];}
         echo "<tr><td>" . $row['name'] . "</td>";
-        echo "<td>" . $foodlocation . "</td></tr>";
+        echo "<td><center>" . $foodlocation . "</center></td></tr>";
     }
     echo "</table>";
     echo '</body>';

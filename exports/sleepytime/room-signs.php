@@ -39,36 +39,44 @@ while($bldg_row = mysqli_fetch_assoc($bldg_res))
 while($room_row = mysqli_fetch_assoc($room_res)){
     echo '<body background="/eoschargen/img/RoomSign.png">';
     $room = $room_row['room'];
-    $sql = "select r.id, SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',1),' - ',-1) as name, v2.field_value as building, CONCAT(coalesce(v3.field_value,''),coalesce(v4.field_value,'')) as room from joomla.jml_eb_registrants r
+    $sql = "select r.id, v6.field_value as foodlocation, SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',1),' - ',-1) as name, v2.field_value as building, CONCAT(coalesce(v3.field_value,''),coalesce(v4.field_value,'')) as room from joomla.jml_eb_registrants r
     left join joomla.jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
     left join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 36)
     left join jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 14)
     left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 37)
     left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 38)
+    left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 58)
     where CONCAT(coalesce(v3.field_value,''),coalesce(v4.field_value,'')) = '$room' AND v2.field_value = '$building' AND v5.field_value = 'Speler' AND r.event_id = 8 and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR
     (r.published in (0,1) AND r.payment_method = 'os_offline'))AND v2.field_value NOT LIKE 'medische%'
     UNION
-    select r.id, CONCAT(v5.field_value,' ',r.first_name, ' ', SUBSTRING(r.last_name,1,1),'.') as name, v2.field_value as building, CONCAT(coalesce(v3.field_value,''),coalesce(v4.field_value,'')) as room from joomla.jml_eb_registrants r
+    select r.id, v6.field_value as foodlocation, CONCAT(v5.field_value,' ',r.first_name, ' ', SUBSTRING(r.last_name,1,1),'.') as name, v2.field_value as building, CONCAT(coalesce(v3.field_value,''),coalesce(v4.field_value,'')) as room from joomla.jml_eb_registrants r
     left join joomla.jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
     left join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 36)
     left join jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 14)
     left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 37)
     left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 38)
+    left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 58)
     where CONCAT(coalesce(v3.field_value,''),coalesce(v4.field_value,'')) = '$room' AND v2.field_value = '$building' AND v5.field_value != 'Speler' AND r.event_id = 8 and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR
     (r.published in (0,1) AND r.payment_method = 'os_offline'))AND v2.field_value NOT LIKE 'medische%' ORDER by building, room;";
     $res = $UPLINK->query($sql);
-    echo "<div id='heading'>";
-    echo "<h1>" . str_replace('tweede gebouw','FOB',$building) . " - $room</h1>";
-    echo "</div>";
+    echo "<div id='roomsign' style='padding: 15px 45px; 0 15px;'>";
+    echo "<center><font face='Orbitron' size=15><br><br><br>" . str_replace('tweede gebouw','FOB',$building) . "<br>$room<br><br></font></center>";
     echo "<table>";
+    echo "<th>Name</th><th>Eating Location</th>";
     while($row = mysqli_fetch_array($res))
     {
-        echo "<tr><td>" . $row['name'] . "</td></tr>";
+        $foodlocation = $row['foodlocation'];
+        if(($foodlocation == '') or ($foodlocation == "Zonnedauw")){
+        $foodlocation = "FOB";}
+        else {$foodlocation = $row['foodlocation'];}
+        echo "<tr><td>" . $row['name'] . "</td>";
+        echo "<td>" . $foodlocation . "</td></tr>";
     }
     echo "</table>";
     echo '</body>';
-    echo '<p class="single_record"></p>
-    <body background="/eoschargen/img/RoomSign.png">';
+    echo "</div>";
+    echo '<p class="single_record"></p>';
+
 }
 }
 ?>

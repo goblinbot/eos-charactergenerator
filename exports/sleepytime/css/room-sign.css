@@ -1,52 +1,65 @@
-/* html { 
-  /* background: url(/eoschargen/img/RoomSign.png) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
+html{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-size: 10px;
+  background: #FFF;
+}
+body {
+  font-family: arial;
+  font-size: 12px;
+  height:297mm;
+  width:210mm;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  background: #FFF;
+  /* background-image: url('/eoschargen/img/RoomSign.png');
+  background-position: center center;
+  background-repeat: no-repeat;
   background-size: cover;
-  background-repeat:repeat-y;
-  background-attachment:fixed; */
-/* } */
-     body {
-      font-family: arial;
-      font-size: 12px;
-      height:297mm;
-      width:210mm;
-      margin-left:auto;
-      margin-right:auto;
-      margin-top: 0;
-      margin-bottom: 0;
-      /* background: #FFF; */
-      background-image: url('/eoschargen/img/RoomSign.png');
-      /* background-position: top left; */
-      background-position: center center;  
-      background-repeat: repeat-y; 
-      background-size: cover; 
-    }
-
-
+  */
+}
 table {
   font-family: orbitron;
   border-collapse: collapse;
-  font-size: 12px;
-  width: 100%; 
+  font-size: 18px;
+  width: 100%;
 }
-
 td, th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 2px 5px;
 }
-
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #32c5f4;
+  color: white;
+}
 tr:nth-child(even) {
   background-color: #dddddd;
 }
+@page {
+  size: auto;
+  margin: 0;
+}
 @media print {
   #printPageButton {
-    display: none;
+      display: none;
   }
-  * {-webkit-print-color-adjust:exact;}
-  
-} .single_record{
-    page-break-after: always;
-   }
+  * {
+      -webkit-print-color-adjust:exact;
+  }
+  html, body {
+      width: 210mm;
+      height: 297mm;
+  }
+}
+.single_record{
+  page-break-after: always;
+}
+​

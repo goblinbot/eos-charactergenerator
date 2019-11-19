@@ -27,21 +27,38 @@ $APP["loginpage"] = "https://new.eosfrontier.space/component/users/?view=login";
 <html>
 <head>
 <style>
+body{
+    background:#000;
+    color:#fff;
+    font-family: 'Orbitron', sans-serif;
+    /*padding-top:20px;*/
+}
+
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
 }
+a {
+color:  lightblue;
+}
 
-td, th {
+/*td, th {
   border: 1px solid #dddddd;
   text-align: left;
-  padding: 8px;
+  padding: 8px; 
 }
 
 tr:nth-child(even) {
   background-color: #dddddd;
-}
+} */
+thead{
+        color:#41bee8;
+    }
+    tr:nth-child(even) {
+    background-color: #262e3e;
+        /* color:#000; */
+      }
 </style>
 </head>
 <?php
@@ -78,11 +95,11 @@ echo "</tr>";
 while($row = mysqli_fetch_array($res))
 {
     echo "<tr>";
-    echo "<td>" . $row['faction'] . "</td>";
-    echo '<td> <a href="/admin_sl/character-edit.php?id=' . $row['characterID'] . '">' . $row['character_name'] . "</a></td>";
-    echo "<td>" . $row['ICC_number'] . "</td>";
-    echo '<td><img src="../img/passphoto/' . $row['characterID'] . '.jpg " alt="Character photo" width="42"></br><a href="../img/passphoto/' . $row['characterID'] . '.jpg " target="_blank" download">' . $row['characterID'] . '.jpg</a></td>';
-    echo "</tr>";
+    echo "<td><center>" . $row['faction'] . "</center></td>";
+    echo '<td><center> <a href="/admin_sl/character-edit.php?id=' . $row['characterID'] . '">' . $row['character_name'] . "</a></center></td>";
+    echo "<td><center>" . $row['ICC_number'] . "</center></td>";
+    echo '<td><center><img src="../img/passphoto/' . $row['characterID'] . '.jpg " alt="Character photo" width="42"><a href="../img/passphoto/' . $row['characterID'] . '.jpg " target="_blank" download">' . $row['characterID'] . '.jpg</a></center></td>';
+    echo "</tr></center>";
 }
 echo "</table>";
 ?>

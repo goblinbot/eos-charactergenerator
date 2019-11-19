@@ -27,22 +27,62 @@ $APP["loginpage"] = "https://new.eosfrontier.space/component/users/?view=login";
 <html>
 <head>
 <style>
+body {
+color: white;
+}
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
+  color: white;
 }
 
 td, th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 2px 4px;
-  font-size: 10px;
+  font-size: 16px;
 }
 
 tr:nth-child(even) {
   background-color: #dddddd;
+  color: black;
 }
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+@media print {
+  #printPageButton {
+      display: none;
+  }
+  * {
+      -webkit-print-color-adjust:exact;
+  }
+  table {
+    color: #000;    
+border-collapse: collapse;
+    font-size: 18px;
+    width: 85%;
+    margin-left:auto;
+    margin-right:auto;
+  }
+body {
+color: #000;
+}
+
+}
+
+
 .single_record{
  page-break-after: always;
 }
@@ -62,6 +102,7 @@ where v2.field_value = 'Bastion' AND r.event_id = $EVENTID and ((r.published = 1
 (r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER BY oc_fn";
 $res = $UPLINK->query($sql);
 $row_count = mysqli_num_rows( $res );
+echo '<p><button class="button" id="printPageButton" style="width: 100px;" onClick="window.print();">Print</button></p>';
 echo '<font size="5">Eating Locations for ' . $row2['title'] . '</font> - '
 . "<font size='4'>Bastion ($row_count)</font>";
 echo "<table>";

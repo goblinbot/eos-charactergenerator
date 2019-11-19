@@ -57,6 +57,31 @@ body {
       background-position: 65% 0px;
       background-repeat: no-repeat;
     }
+ .single_record{
+  page-break-after: always;
+ }
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+@media print {
+  #printPageButton {
+      display: none;
+  }
+  * {
+      -webkit-print-color-adjust:exact;
+  }
+}
+
 </style>
 </head>
 <?php
@@ -87,6 +112,8 @@ $allergy_array = explode("\",\"",rtrim(ltrim($all_allergies,"\""),"\","));
 
 $allergy_counts = array_count_values($allergy_array);
 arsort($allergy_counts);
+echo '<p><button class="button" id="printPageButton" style="width: 100px;" onClick="window.print();">Print</button></p>';
+
 echo "<font size=5>Summary</font>";
 echo "<table><font size=3>";
 foreach ($allergy_counts as $key => $val) {
@@ -94,7 +121,7 @@ foreach ($allergy_counts as $key => $val) {
   echo "<td>" . $key . "</td><td>" . $val . "</td></tr>";
 }
 echo "</font></table>";
-
+echo '<p class="single_record"></p>';
 echo "<font size=5>Detail</font>";
 echo "<table>";
 echo "<th>Name</th><th>Allergie</th><th>Dieet</th><th>Other Allergies</th>";

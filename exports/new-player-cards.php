@@ -42,16 +42,31 @@ table {
 a {
 color:  lightblue;
 }
-
-/*td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px; 
+@page {
+  size: auto;
+  margin: 0;
+}
+@media print {
+  #printPageButton {
+      display: none;
+  }
+  * {
+      -webkit-print-color-adjust:exact;
+  }
+  body {
+    background:#fff;
+    color:#000;
+  }
+  table {
+    font-family: orbitron;
+    border-collapse: collapse;
+    font-size: 18px;
+    width: 70%;
+    margin-left:auto; 
+    margin-right:auto;
+  }
 }
 
-tr:nth-child(even) {
-  background-color: #dddddd;
-} */
 thead{
         color:#41bee8;
     }

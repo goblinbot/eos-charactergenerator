@@ -9,13 +9,10 @@ html{
 body {
   font-family: arial;
   font-size: 12px;
-  height:297mm;
-  width:210mm;
-  margin-left:auto;
-  margin-right:auto;
-  margin-top: 0;
-  margin-bottom: 0;
+  margin:0px;
+  padding:0px;
   background: #FFF;
+
   /* background-image: url('/eoschargen/img/RoomSign.png');
   background-position: center center;
   background-repeat: no-repeat;
@@ -31,7 +28,7 @@ table {
 td, th {
   border: 1px solid #dddddd;
   text-align: left;
-  padding: 2px 5px;
+  padding: 4px 5px;
 }
 th {
   padding-top: 12px;
@@ -54,10 +51,6 @@ tr:nth-child(even) {
   * {
       -webkit-print-color-adjust:exact;
   }
-  html, body {
-      width: 210mm;
-      height: 297mm;
-  }
   table {
     font-family: orbitron;
     border-collapse: collapse;
@@ -70,4 +63,22 @@ tr:nth-child(even) {
 .single_record{
   page-break-after: always;
 }
-​
+
+
+    .roomsign{
+		width: 19cm;
+		height: 27cm;
+		background:url(../images/RoomSign.png) no-repeat;
+		background-size:100% 100%;
+		clear:both;
+		page-break-before:always;
+		margin:15px auto 0;
+   } 
+   
+   .roomsign .center{
+	   margin-top:40px;
+	   margin-bottom:50px;
+	   display:block;
+	   width:100%;
+	   float:left;
+   }

@@ -86,7 +86,7 @@ tr:nth-child(even) {
   td, th {
   border: 1px solid #dddddd;
   text-align: left;
-  padding: 2px 4px;
+  padding: 0px 0px;
   font-size: 10px;
 }
   .single_record{
@@ -112,7 +112,7 @@ where v2.field_value = 'Bastion' AND r.event_id = $EVENTID and ((r.published = 1
 (r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER BY oc_fn";
 $res = $UPLINK->query($sql);
 $row_count = mysqli_num_rows( $res );
-echo '<p><button class="button" id="printPageButton" style="width: 100px;" onClick="window.print();">Print</button></p>';
+echo '<button class="button" id="printPageButton" style="width: 100px;" onClick="window.print();">Print</button>';
 echo '<font size="5">Eating Locations for ' . $row2['title'] . '</font> - '
 . "<font size='4'>Bastion ($row_count)</font>";
 echo "<table>";

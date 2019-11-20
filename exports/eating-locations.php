@@ -28,6 +28,7 @@ $APP["loginpage"] = "https://new.eosfrontier.space/component/users/?view=login";
 <head>
 <style>
 body {
+background: #262e3e;
 color: white;
 }
 table {
@@ -68,24 +69,33 @@ tr:nth-child(even) {
   * {
       -webkit-print-color-adjust:exact;
   }
+  body {
+    background-color: #fff;
+    color: #000;
+    font-size: 10px;
+  } 
   table {
     color: #000;    
-border-collapse: collapse;
-    font-size: 18px;
-    width: 85%;
+    border-collapse: collapse;
+    padding: 1px 5px;
+    font-size: 8px;
+    width: 95%;
     margin-left:auto;
     margin-right:auto;
   }
-body {
-color: #000;
+  td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 2px 4px;
+  font-size: 10px;
 }
+  .single_record{
+   page-break-after: always;
+  }
+  }
 
-}
 
 
-.single_record{
- page-break-after: always;
-}
 </style>
 </head>
 <body>

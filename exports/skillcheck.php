@@ -118,7 +118,7 @@ while($skill_index_row = mysqli_fetch_assoc($skill_index_res)){
     
 if (isset($_POST['skill_index'])) {
 $skillindex = $_POST['skill_index'];
-$skillsql = "SELECT skill_id, concat(skill_index,'>',label) as SkillName, label FROM joomla.ecc_skills_allskills WHERE skill_index LIKE '$skillindex%' ORDER by skill_index+0, label+0;";
+$skillsql = "SELECT skill_id, concat(skill_index,'>',label) as SkillName, label, substring_index(skill_index,'_',2) as level FROM joomla.ecc_skills_allskills WHERE skill_index LIKE '$skillindex%' ORDER by skill_index+0, label+0;";
 $skillres = $UPLINK->query($skillsql);
  echo  '<select name="skillID" id="sname" onchange="this.form.submit();">';
  echo '<option value="">Choose a Skill</option>';
@@ -126,7 +126,7 @@ while($skillrow = mysqli_fetch_assoc($skillres)){
     
     echo '<option value="' . $skillrow['skill_id'] . '"';
     if(isset($_POST['skillID']) && $_POST['skillID']==$skillrow['skill_id']) echo "selected";
-    echo '>' . $skillrow['label'] . '</option>';
+    echo '>' . '(' . $skillrow['level'] . ')' . $skillrow['label'] . '</option>';
 };
  echo '</select>
     </form></p>';

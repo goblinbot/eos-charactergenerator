@@ -103,21 +103,39 @@ tr:nth-child(even) {
 <body>
 <?php
 
-$skillID = '';
-$skillsql = "SELECT skill_id, concat(skill_index,'>',label) as SkillName, label FROM joomla.ecc_skills_allskills ORDER by skill_index+0, label+0;";
+$skill_index_sql = "SELECT substring_index(skill_index,'_',1) as category FROM joomla.ecc_skills_allskills GROUP by category;";
+$skill_index_res = $UPLINK->query($skill_index_sql);
+echo '<p><form action="" method="post">
+ <select name="skill_index" id="cname" onchange="this.form.submit();">';
+ echo '<option value="">Choose a Category</option>';
+while($skill_index_row = mysqli_fetch_assoc($skill_index_res)){
+        echo '<option value="' . $skill_index_row['category'] . '"';
+    if(isset($_POST['skill_index']) && $_POST['skill_index']==$skill_index_row['category']) echo "selected";
+    echo '>' . $skill_index_row['category'] . '</option>';
+};
+ echo '</select>
+    &nbsp;&nbsp;';
+    
+if (isset($_POST['skill_index'])) {
+$skillindex = $_POST['skill_index'];
+$skillsql = "SELECT skill_id, concat(skill_index,'>',label) as SkillName, label FROM joomla.ecc_skills_allskills WHERE skill_index LIKE '$skillindex%' ORDER by skill_index+0, label+0;";
 $skillres = $UPLINK->query($skillsql);
- echo '<p><form action="" method="post">
- <select name="skillID" id="nname" onchange="this.form.submit();">';
+ echo  '<select name="skillID" id="sname" onchange="this.form.submit();">';
+ echo '<option value="">Choose a Skill</option>';
 while($skillrow = mysqli_fetch_assoc($skillres)){
     
-    echo '<option value="' . $skillrow['skill_id'] . '">' . $skillrow['SkillName'] . '</option>';
+    echo '<option value="' . $skillrow['skill_id'] . '"';
+    if(isset($_POST['skillID']) && $_POST['skillID']==$skillrow['skill_id']) echo "selected";
+    echo '>' . $skillrow['label'] . '</option>';
 };
  echo '</select>
     </form></p>';
+}
 
 if (isset($_POST['skillID'])) {
     $skillID = $_POST['skillID'];
-$selskillsql = "SELECT skill_id, concat(skill_index,'>',label) as SkillName, label FROM joomla.ecc_skills_allskills WHERE skill_id = $skillID ORDER by SkillName+0;";
+    
+$selskillsql = "SELECT skill_id, concat(skill_index,'>',label) as SkillName, label FROM joomla.ecc_skills_allskills WHERE skill_id = $skillID  ORDER by SkillName+0;";
 $selskillres = $UPLINK->query($selskillsql);
 $row = mysqli_fetch_array($selskillres);
 

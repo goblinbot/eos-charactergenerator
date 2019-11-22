@@ -135,11 +135,12 @@ while($skillrow = mysqli_fetch_assoc($skillres)){
 if (isset($_POST['skillID'])) {
     $skillID = $_POST['skillID'];
     
-$selskillsql = "SELECT skill_id, concat(skill_index,'>',label) as SkillName, label FROM joomla.ecc_skills_allskills WHERE skill_id = $skillID  ORDER by SkillName+0;";
+$selskillsql = "SELECT skill_id, concat(skill_index,'>',label) as SkillName, label, description FROM joomla.ecc_skills_allskills WHERE skill_id = $skillID  ORDER by SkillName+0;";
 $selskillres = $UPLINK->query($selskillsql);
 $row = mysqli_fetch_array($selskillres);
 
     echo '<h1> Characters with Skill: ' . $row['label'] . '</h1>';
+    echo '<h3>Description: ' . $row['description'] . '</h3>';
     echo '<button class="button" id="printPageButton" style="width: 100px;" onClick="window.print();">Print</button>';
 $sql = "SELECT characterID, character_name, faction, label FROM ecc_characters c
 join ecc_char_skills s1 on (c.characterid = s1.charID)

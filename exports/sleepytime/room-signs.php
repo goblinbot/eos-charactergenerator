@@ -24,6 +24,7 @@ while($bldg_row = mysqli_fetch_assoc($bldg_res))
     left join jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 14)
     left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 37)
     left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 38)
+    
     where v2.field_value ='$building' AND v5.field_value = 'Speler' AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR
     (r.published in (0,1) AND r.payment_method = 'os_offline'))AND v2.field_value NOT LIKE 'medische%'
     UNION
@@ -33,7 +34,17 @@ while($bldg_row = mysqli_fetch_assoc($bldg_res))
     left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 37)
     left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 38)
     where v2.field_value ='$building' AND v5.field_value != 'Speler' AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR
-    (r.published in (0,1) AND r.payment_method = 'os_offline'))AND v2.field_value NOT LIKE 'medische%' GROUP by room ORDER by room;";
+    (r.published in (0,1) AND r.payment_method = 'os_offline'))AND v2.field_value NOT LIKE 'medische%'
+    UNION 
+    select substring_index(LEFT(v6.field_value,LOCATE(' - ',v6.field_value) - 1),',',-1) as room from joomla.jml_eb_registrants r
+    join joomla.jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
+    left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 37)
+    left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 38)
+    left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 71)
+    where LEFT(v6.field_value,LOCATE(',',v6.field_value) - 1) = '$building' AND r.event_id = $EVENTID
+    and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR
+    (r.published in (0,1) AND r.payment_method = 'os_offline'))
+    GROUP by room ORDER by room;";
     $room_res = $UPLINK->query($room_sql);
 
 while($room_row = mysqli_fetch_assoc($room_res)){
@@ -56,7 +67,20 @@ while($room_row = mysqli_fetch_assoc($room_res)){
     left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 38)
     left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 58)
     where CONCAT(coalesce(v3.field_value,''),coalesce(v4.field_value,'')) = '$room' AND v2.field_value = '$building' AND v5.field_value != 'Speler' AND r.event_id = 8 and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR
-    (r.published in (0,1) AND r.payment_method = 'os_offline'))AND v2.field_value NOT LIKE 'medische%' ORDER by building, room, name;";
+    (r.published in (0,1) AND r.payment_method = 'os_offline'))AND v2.field_value NOT LIKE 'medische%' 
+    UNION 
+    select r.id, v7.field_value as foodlocation, SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',1),' - ',-1) as name,
+    LEFT(v6.field_value,LOCATE(',',v6.field_value) - 1) as building, substring_index(LEFT(v6.field_value,LOCATE(' - ',v6.field_value) - 1),',',-1) as room 
+    from joomla.jml_eb_registrants r
+    left join joomla.jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
+    left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 37)
+    left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 38)
+    left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 71)
+    left join joomla.jml_eb_field_values v7 on (v7.registrant_id = r.id and v7.field_id = 58)
+    where LEFT(v6.field_value,LOCATE(',',v6.field_value) - 1) = '$building' AND substring_index(LEFT(v6.field_value,LOCATE(' - ',v6.field_value) - 1),',',-1) = '$room' AND r.event_id = $EVENTID
+    and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR
+    (r.published in (0,1) AND r.payment_method = 'os_offline'))
+    ORDER by building, room, name;";
     $res = $UPLINK->query($sql);
     echo "<div class='roomsign' style=''>";
     echo '<p><button class="button" id="printPageButton" style="width: 100%;" onClick="window.print();">Print</button></p>';

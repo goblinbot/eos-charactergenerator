@@ -25,7 +25,28 @@ left join jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 1
 left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 37)
 left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 38)
 where v5.field_value != 'Speler' AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR 
-(r.published in (0,1) AND r.payment_method = 'os_offline'))AND v2.field_value NOT LIKE 'medische%'");
+(r.published in (0,1) AND r.payment_method = 'os_offline'))AND v2.field_value NOT LIKE 'medische%'
+UNION
+select r.id, v1.field_value as name, LEFT(v6.field_value,LOCATE(',',v6.field_value) - 1) as building, 
+substring_index(LEFT(v6.field_value,LOCATE(' - ',v6.field_value) - 1),',',-1) as bastion_room, 
+v4.field_value as tweede_room from joomla.jml_eb_registrants r
+join joomla.jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
+left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 37)
+left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 38)
+left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 71)
+where LEFT(v6.field_value,LOCATE(',',v6.field_value) - 1) = 'Bastion' AND r.event_id = $EVENTID 
+and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR
+(r.published in (0,1) AND r.payment_method = 'os_offline'))
+UNION
+select r.id, v1.field_value as name, LEFT(v6.field_value,LOCATE(',',v6.field_value) - 1) as building, v3.field_value as bastion_room,
+substring_index(LEFT(v6.field_value,LOCATE(' - ',v6.field_value) - 1),',',-1) as tweede_room from joomla.jml_eb_registrants r
+join joomla.jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
+left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 37)
+left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 38)
+left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 71)
+where LEFT(v6.field_value,LOCATE(',',v6.field_value) - 1) = 'tweede gebouw' AND r.event_id = $EVENTID
+and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR
+(r.published in (0,1) AND r.payment_method = 'os_offline'))");
 $res = $stmt->execute($id);
 $aSleepers = $stmt->fetchAll();
 

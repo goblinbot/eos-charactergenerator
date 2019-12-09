@@ -19,12 +19,12 @@ where v5.field_value = 'Speler' AND r.event_id = $EVENTID and ((r.published = 1 
 (r.published in (0,1) AND r.payment_method = 'os_offline'))AND v2.field_value NOT LIKE 'medische%'
 UNION
 select r.id, CONCAT(v5.field_value,' ',r.first_name, ' ', COALESCE(v6.field_value,''),' ', SUBSTRING(r.last_name,1,1),'.') as name, 'tweede gebouw' as building, 
-CONCAT(COALESCE(v4.field_value,''),COALESCE(v3.field_value,'')) as tweede_room from joomla.jml_eb_registrants r
+NULL as bastion_room, CONCAT(COALESCE(v4.field_value,''),COALESCE(v3.field_value,'')) as tweede_room from joomla.jml_eb_registrants r
 left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 73)
 left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 72)
 left join joomla.jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 14)
 left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 16)
-where v5.field_value != 'Speler' AND r.event_id = 15 and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR 
+where v5.field_value != 'Speler' AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR 
 (r.published in (0,1) AND r.payment_method = 'os_offline'))
 UNION
 select r.id, v1.field_value as name, LEFT(v6.field_value,LOCATE(',',v6.field_value) - 1) as building, 

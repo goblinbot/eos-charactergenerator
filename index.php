@@ -25,11 +25,10 @@
 
       $ICCID = generateICCID($_POST['newchar']);
 
-      $sql = "INSERT INTO `ecc_characters` (`accountID`, `faction`, `status`, `psychic`, `ICC_number`)
+      $sql = "INSERT INTO `ecc_characters` (`accountID`, `faction`, `psychic`, `ICC_number`)
         VALUES (
           '".(int)$jid."',
           '".mysqli_real_escape_string($UPLINK,$_POST['newchar'])."',
-          'in design',
           '".mysqli_real_escape_string($UPLINK,$psyCharacter)."',
           '".mysqli_real_escape_string($UPLINK,$ICCID)."'
         );";
@@ -96,7 +95,7 @@
             ."<input type=\"submit\" class=\"button blue\" value=\"Create character\"></input>";
 
         if($sheetArr['characters'] && count($sheetArr['characters']) > 0) {
-          $printresult .= "&nbsp;<a class=\"button\" href=".$APP['header']."/index.php\">Back</a>";
+          $printresult .= '&nbsp;<a class="button" href='.$APP['header'].'/index.php>Back</a>';
         }
 
         $printresult .= "</div>

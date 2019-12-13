@@ -1,0 +1,27 @@
+*{
+    padding:0px;
+    margin:0px;
+}
+
+body{
+    background:#000;
+    color:#fff;
+    font-family: 'Orbitron', sans-serif;
+    padding-top:20px;
+}
+
+    thead{
+        color:#41bee8;
+    }
+
+    td:first-child{
+        padding-left:20px;
+    }
+
+    td{
+        padding-right:20px;
+    }
+    tr:nth-child(even) {
+        background-color: #262e3e;
+        /* color:#000; */
+      }

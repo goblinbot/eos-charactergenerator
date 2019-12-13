@@ -1,4 +1,6 @@
 <?php
+mysqli_set_charset($UPLINK, 'utf8');
+
 // show errorpage function
 function showErrorPage($message = '451') {
   echo "<html style=\"background:#222; color: #EEE;\"><h1 style=\"color: #EEE;\">".$message."</h1></html>";

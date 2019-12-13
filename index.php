@@ -2,14 +2,11 @@
   // globals
   include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
   include_once($APP["root"] . "/_includes/functions.global.php");
-
-
   include_once($APP["root"] . "/header.php");
 
   if(!isset($_SESSION)) {
     session_start();
   }
-
 
   if(isset($_POST['newchar']) && $_POST['newchar'] != "") {
 
@@ -35,15 +32,21 @@
         );";
       $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
 
-      header("location: ".$APP['header']."/index.php");
-      exit();
+      // after creating a character, check if this is the only character bound to this account.
+      $sql2 = "SELECT `characterID` FROM `ecc_characters` WHERE `accountID` = $jid";
+      $res2 = $UPLINK->query($sql2) or trigger_error(mysqli_error($UPLINK));
+      // redirect to SET_ACTIVE if 1 character exists.
+      if (mysqli_num_rows($res2) == 1) {
+        $character = mysqli_fetch_assoc($res2);
+        header("location: {$APP['header']}/index.php?activate={$character['characterID']}&firstCharacter=true");
+        exit();
+      }
 
-    } else {
-      // invalid
+      header("location: {$APP['header']}/index.php");
+      exit();
     }
 
   }
-
 ?>
 <div class="wsleft cell"></div>
 
@@ -141,6 +144,11 @@
           WHERE `characterID` = '".mysqli_real_escape_string($UPLINK,(int)$_GET['activate'])."'
           AND `accountID` = '".mysqli_real_escape_string($UPLINK,$jid)."'";
         $res = $UPLINK->query($sql);
+
+        if(isset($_GET['firstCharacter']) && $_GET['firstCharacter'] != "") {
+          header("location: ".$APP['header']."/index.php?viewChar={$_GET['activate']}&editInfo=true");
+          exit();
+        }
  
         header("location: ".$APP['header']."/index.php?u=1");
         exit();
@@ -192,7 +200,7 @@
                 $printresult .= "<img class=\"passphoto popout\" alt=\" \" src=\"{$APP['header']}/img/passphoto/{$character['characterID']}.jpg\" />"
                 . "<style>.grid .main .content .row {width: auto;}</style>"
                 . "<div class=\"row\">"
-                    ."<a href=\"".$APP['header']."/index.php?viewChar={$character['characterID']}\"><button><i class=\"fas fa-arrow-left\"></i>&nbsp;Back</button></a>"
+                    ."<a href=\"{$APP['header']}/index.php?viewChar={$character['characterID']}\"><button><i class=\"fas fa-arrow-left\"></i>&nbsp;Back to character options</button></a>"
                   ."</div>"
                 ."<hr/>";
 
@@ -206,7 +214,11 @@
 
                 $printresult .= "<div class=\"row flexcolumn\">";
 
-                $printresult .= "<p>This is where you edit your character's basic information</p>"
+                $printresult .= 
+                  "<p>&nbsp;</p>"
+                  ."<p>This is where you edit your character's basic information.</p>"
+                  ."<p>&nbsp;</p>"
+                  ."<p>Don't worry about knowing or entering all the details right now, you can revisit this page any time.</p>"
                   ."<p>&nbsp;</p>"
                   ."<form action=\"{$APP['header']}/index.php?viewChar=".$character['characterID']."&editInfo=true\" method=\"post\">";
 
@@ -262,7 +274,7 @@
                 $printresult .= "<div class=\"row\">";
 
                 $printresult .= "<div class=\"box33\">"
-                  ."<a href=\"{$APP['header']}/index.php?viewChar=".$character['characterID']."&editInfo=true\">"
+                  ."<a href=\"{$APP['header']}/index.php?viewChar={$character['characterID']}&editInfo=true\">"
                     ."<button type=\"button\" class=\"blue bar\" name=\"button\"><i class=\"far fa-id-card\"></i>&nbsp;Edit basic info</button>"
                   ."</a>"
                 ."</div>";
@@ -368,7 +380,7 @@
             foreach ($sheetArr['characters'] AS $character) {
 
               if ($character['sheet_status'] !== "active") {
-                $ACTIVATE = "<a href=\"".$APP['header']."/index.php?activate=".$character['characterID']."\">
+                $ACTIVATE = "<a href=\"{$APP['header']}/index.php?activate={$character['characterID']}\">
                   <button class=\"blue bar no-bg\" style=\"min-width: 12rem;\">activate/play</button>
                 </a>";
               } else {

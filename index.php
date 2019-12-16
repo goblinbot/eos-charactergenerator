@@ -99,7 +99,7 @@
             ."<input type=\"submit\" class=\"button blue\" value=\"Create character\"></input>";
 
         if($sheetArr['characters'] && count($sheetArr['characters']) > 0) {
-          $printresult .= "&nbsp;<a class="button" href='.$APP['header'].'/index.php>Back</a>";
+          $printresult .= "&nbsp;<a class='button' href={$APP['header']}/index.php>Back</a>";
         }
 
         $printresult .= "</div>

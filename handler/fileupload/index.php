@@ -2,21 +2,43 @@
   // globals
   include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
   include_once($APP["root"] . "/_includes/functions.global.php");
-  include_once($APP["root"] . "/header.php");
 
   if(!isset($_SESSION)) {
     session_start();
   }
 ?>
-<html>  
-    <head>  
+<!DOCTYPE html>
+<html lang="en" style="background-color:#262e3e;">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#262e3e">
+
+  <noscript>
+    <style>div { display:none!important; }</style>
+  </noscript>
+
+  <title>CHARGEN</title>
+
+  <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/reset.css" />
+  <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/style.css" />
 		<script src="jquery.min.js"></script>  
 		<script src="bootstrap.min.js"></script>
 		<script src="croppie.js"></script>
 		<link rel="stylesheet" href="croppie.css" />
     </head>  
-    <body>  
-        <div class="container">
+<body class="notransition" onload="">
+
+  <noscript>
+    <p style="font-size:24px;padding:30px 15px;text-align:center;">This application needs JavaScript to work. Please enable JavaScript.</p>
+    <p style="text-align:center;">:(</p>
+  </noscript>
+
+
+      <img src="../../img/outpost-icc-pm.png" alt="logo" title="ICC logo" height='64'/>
+        <div class="container" style="text-align:center">
           <br />
           <br />
           <br />

@@ -196,7 +196,6 @@
               }
 
               if(isset($_GET['editInfo']) && $_GET['editInfo'] == true) {
-
                 $printresult .= "<a href='./handler/fileupload/index.php?viewChar={$character['characterID']}'><img class=\"passphoto popout\" alt=\"Upload File \" onerror=\"this.src='./img/passphoto/default.png';\"  src=\"{$APP['header']}/img/passphoto/{$character['characterID']}.jpg\"/></a>"
 		. "<style>.grid .main .content .row {width: auto;}</style>"
                 . "<div class=\"row\">"

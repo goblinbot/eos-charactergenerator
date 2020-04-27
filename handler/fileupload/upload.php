@@ -22,7 +22,7 @@ if(isset($_POST["image"]))
 	echo 'data size:'.strlen($data)."\n";
 
 	$rootpath = '/var/www/html.dev2';
-	$imageName = '/eoschargen/img/tmp/' . time() . '.png';
+	$imageName = '/eoschargen/img/tmp/' . time() . '.jpg';
 	echo 'file location:'.$rootpath.$imageName."\n";
 
 	echo 'Current php user:'.get_current_user()."\n";

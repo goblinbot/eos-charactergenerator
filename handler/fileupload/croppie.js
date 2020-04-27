@@ -1343,7 +1343,7 @@
 
     var RESULT_DEFAULTS = {
             type: 'canvas',
-            format: 'png',
+            format: 'jpeg',
             quality: 1
         },
         RESULT_FORMATS = ['jpeg', 'webp', 'png'];

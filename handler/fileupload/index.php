@@ -10,7 +10,6 @@
 ?>
 <html>  
     <head>  
-		<script src="./_includes/css/style.css"
 		<script src="jquery.min.js"></script>  
 		<script src="bootstrap.min.js"></script>
 		<script src="croppie.js"></script>
@@ -18,6 +17,11 @@
     </head>  
     <body>  
         <div class="container">
+          <br />
+          <br />
+          <br />
+      <br />
+      <br />
 			<div class="panel panel-default">
   				<div class="panel-heading">Select Profile Image</div>
   				<div class="panel-body" align="center">

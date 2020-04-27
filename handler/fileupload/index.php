@@ -1,19 +1,15 @@
+<?php
+?>
 <html>  
     <head>  
-        <title>Make Price Range Slider using JQuery with PHP Ajax</title>  
 		
 		<script src="jquery.min.js"></script>  
 		<script src="bootstrap.min.js"></script>
 		<script src="croppie.js"></script>
-		<link rel="stylesheet" href="bootstrap.min.css" />
 		<link rel="stylesheet" href="croppie.css" />
     </head>  
     <body>  
         <div class="container">
-          <br />
-      <h3 align="center">Image Crop & Upload using JQuery with PHP Ajax</h3>
-      <br />
-      <br />
 			<div class="panel panel-default">
   				<div class="panel-heading">Select Profile Image</div>
   				<div class="panel-body" align="center">

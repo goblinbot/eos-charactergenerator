@@ -1344,7 +1344,11 @@
     var RESULT_DEFAULTS = {
             type: 'canvas',
             format: 'jpeg',
+<<<<<<< HEAD
+            quality: 0.95
+=======
             quality: 1
+>>>>>>> 2b8288c747d58e087ba161f38dcb337db7498217
         },
         RESULT_FORMATS = ['jpeg', 'webp', 'png'];
 

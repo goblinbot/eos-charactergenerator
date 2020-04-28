@@ -357,7 +357,11 @@
 
 
       } else {
-
+	if (in_array("30",$jgroups) || in_array("8",$jgroups)) {
+		 echo "<a href=\"{$APP['header']}/npcmenu/index.php\">"
+               .  "<button class=\"blue bar no-bg\" style=\"min-width: 12rem;\">Go To SL NPC Menu</button>"
+               . " </a>";
+	}
         $printresult = "<h1>Your character(s)</h1><hr/>";
 
         // validate if characters has been set by the getsheets function

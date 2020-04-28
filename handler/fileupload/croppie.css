@@ -719,10 +719,6 @@ background: #ccc;
   .panel-default > .panel-heading + .panel-collapse > .panel-body {
     border-top-color: #ddd;
   }
-  .panel-default > .panel-heading .badge {
-    /* color: #f5f5f5;
-    background-color: #333333; */
-  }
   .panel-default > .panel-footer + .panel-collapse > .panel-body {
     border-bottom-color: #ddd;
   }
@@ -736,10 +732,6 @@ background: #ccc;
   }
   .panel-primary > .panel-heading + .panel-collapse > .panel-body {
     border-top-color: #337ab7;
-  }
-  .panel-primary > .panel-heading .badge {
-    /* color: #337ab7;
-    background-color: #fff; */
   }
   .panel-primary > .panel-footer + .panel-collapse > .panel-body {
     border-bottom-color: #337ab7;

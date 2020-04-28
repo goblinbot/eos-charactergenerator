@@ -17,6 +17,6 @@ $APP["header"] = "/eoschargen";
 $APP["root"] = $_SERVER["DOCUMENT_ROOT"] . $APP["header"];
 
 // define the login page to redirect to if there is no $jid set/inherited.
-$APP["loginpage"] = "https://new.eosfrontier.space/component/users/?view=login";
+$APP["loginpage"] = "/component/users/?view=login";
 
 // $jid = 451;

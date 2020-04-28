@@ -196,9 +196,10 @@
               }
 
               if(isset($_GET['editInfo']) && $_GET['editInfo'] == true) {
-
-                $printresult .= "<img class=\"passphoto popout\" alt=\" \" src=\"{$APP['header']}/img/passphoto/{$character['characterID']}.jpg\" />"
-                . "<style>.grid .main .content .row {width: auto;}</style>"
+                $printresult .= "<a href='./handler/fileupload/index.php?viewChar={$character['characterID']}'>"
+                . "<img class=\"passphoto popout\" alt=\"Upload File \" onerror=\"this.src='./img/default.png';\""
+                . "  src=\"{$APP['header']}/img/passphoto/{$character['characterID']}.jpg?".time()."\"/></a>"
+		. "<style>.grid .main .content .row {width: auto;}</style>"
                 . "<div class=\"row\">"
                     ."<a href=\"{$APP['header']}/index.php?viewChar={$character['characterID']}\"><button><i class=\"fas fa-arrow-left\"></i>&nbsp;Back to character options</button></a>"
                   ."</div>"
@@ -356,7 +357,11 @@
 
 
       } else {
-
+	if (in_array("30",$jgroups) || in_array("8",$jgroups)) {
+		 echo "<a href=\"{$APP['header']}/npcmenu/index.php\">"
+               .  "<button class=\"blue bar no-bg\" style=\"min-width: 12rem;\">Go To SL NPC Menu</button>"
+               . " </a>";
+	}
         $printresult = "<h1>Your character(s)</h1><hr/>";
 
         // validate if characters has been set by the getsheets function

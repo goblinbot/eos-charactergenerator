@@ -18,10 +18,12 @@
   <div class="content">
 
     <?php
-    if($jid == 451 || $jid == 740 || $jid == 746) {
+
+    if (in_array("30",$jgroups) || in_array("8",$jgroups)) { //Checking to make sure you're an SL or SuperUser
 
     } else {
-      exit();
+	header("Location: ../index.php"); //Cheeky monkey! Get back to the homescreen! YOU SHALL NOT PASS!
+	exit();
     }
 
 

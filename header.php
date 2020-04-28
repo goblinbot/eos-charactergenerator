@@ -38,9 +38,10 @@
 
   <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/reset.css" />
   <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/style.css" />
-</head>
-<body class="notransition" onload="">
-
+  <head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <body class="notransition" onload="">
+  
   <noscript>
     <p style="font-size:24px;padding:30px 15px;text-align:center;">This application needs JavaScript to work. Please enable JavaScript.</p>
     <p style="text-align:center;">:(</p>

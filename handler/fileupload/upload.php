@@ -23,7 +23,7 @@ if(isset($_POST["image"]))
 	$data = base64_decode($image_array_2[1]);
 	echo 'data size:'.strlen($data)."\n";
 
-	$rootpath = '/var/www/html.dev2';
+	$rootpath = $_SERVER["DOCUMENT_ROOT"] ;
 	$imageName = '/eoschargen/img/tmp/' . time() . '.jpg';
 	echo 'file location:'.$rootpath.$imageName."\n";
 	echo '<head><link rel="stylesheet" href="croppie.css" /></head>';

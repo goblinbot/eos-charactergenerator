@@ -45,32 +45,6 @@ if (!isset($APP)) die('No direct access allowed');
 
   <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/reset.css" />
   <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/style.css" />
-</head>
-<body class="notransition" onload="">
-
-  <noscript>
-    <p style="font-size:24px;padding:30px 15px;text-align:center;">This application needs JavaScript to work. Please enable JavaScript.</p>
-    <p style="text-align:center;">:(</p>
-  </noscript>
-
-
-<!DOCTYPE html>
-<html lang="en" style="background-color:#262e3e;">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="theme-color" content="#262e3e">
-
-  <noscript>
-    <style>div { display:none!important; }</style>
-  </noscript>
-
-  <title>CHARGEN</title>
-
-  <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/reset.css" />
-  <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/style.css" />
 		<script src="jquery.min.js"></script>  
 		<script src="bootstrap.min.js"></script>
 		<script src="croppie.js"></script>
@@ -84,8 +58,8 @@ if (!isset($APP)) die('No direct access allowed');
   </noscript>
 
 
-      <img src="../../img/outpost-icc-pm.png" alt="logo" title="ICC logo" height='64'/>
         <div class="container" style="text-align:center">
+      <img src="../../img/outpost-icc-pm.png" alt="logo" title="ICC logo" height='64'/>
           <br />
           <br />
           <br />
@@ -100,7 +74,9 @@ if (!isset($APP)) die('No direct access allowed');
   				</div>
   			</div>
   		</div>
+<?php include './footer.php'; ?>
     </body>  
+
 </html>
 
 <div id="uploadimageModal" class="modal" role="dialog">
@@ -129,7 +105,8 @@ if (!isset($APP)) die('No direct access allowed');
     	</div>
     </div>
 </div>
-<?php $viewchar = $_GET['viewChar']; ?>
+<?php $viewchar = $_GET['viewChar']; 
+?>
 
 <script>
 var viewchar = "<?php echo $viewchar; ?>"; 

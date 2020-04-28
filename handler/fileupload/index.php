@@ -15,21 +15,19 @@
 </head>
 <body class="notransition" onload="">
 
-        <div class="container" style="text-align:center">
           <br />
           <br />
           <br />
       <br />
       <br />
-			<div class="panel panel-default">
-  				<div class="panel-heading">Select Profile Image</div>
+			<div class="main cell" align="center">
   				<div class="panel-body" align="center">
+					<h2>Select Profile Image</h2>
   					<input type="file" name="upload_image" id="upload_image" />
   					<br />
   					<div id="uploaded_image"></div>
   				</div>
   			</div>
-  		</div>
 <?php include './footer.php'; ?>
     </body>  
 

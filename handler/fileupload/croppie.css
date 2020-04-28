@@ -1,3 +1,112 @@
+button, .button {
+
+  // button DEFAULTS
+  cursor: pointer;
+  color: $textcolor;
+  background: $lite;
+  border: 1px solid $wit;
+  border-radius: 5px;
+  padding: 0.75rem 1.75rem;
+  transition: 0.4s;
+  margin-bottom: 0.5rem;
+  text-shadow: 1px 1px 4px rgba($btnshadow, 0.6);
+
+  @media(max-width: 768px) {
+    padding: 0.5rem;
+  }
+
+  &:link, &a:link {
+    color: $textcolor;
+  }
+
+  &:hover {
+    background: $inputbg;
+  }
+
+  // cyan button variant
+  &.cyan {
+    color: #FFF;
+    background: $cyan;
+    border-color: $cyaActive;
+    &:hover {
+      background: $cyaHover;
+      border-color: $cyaHover;
+    }
+    &:focus, &:active {
+      background: $cyaActive;
+    }
+    &.no-bg {
+      color: $cyan;
+    }
+  }
+
+  // blue button variant
+  &.blue {
+    color: #FFF;
+    background: $blue;
+    border-color: $bluActive;
+    &:hover {
+      background: $bluHover;
+      border-color: $bluHover;
+    }
+    &:focus, &:active {
+      background: $bluActive;
+    }
+    &.no-bg {
+      color: $bluHover;
+    }
+  }
+
+  // green button variant
+  &.green {
+    color: #FFF;
+    background: $green;
+    border-color: $green;
+    &:hover {
+      background: $green;
+      border-color: $green;
+    }
+    &:focus, &:active {
+      background: $green;
+    }
+    &.no-bg {
+      color: $green;
+    }
+  }
+
+  &.tomato {
+    color: $tomato;
+    border-color: $tomato;
+    background: none;
+    &:hover, &:focus, &:active {
+      background: $tomato;
+      color: #222;
+      text-shadow: none;
+    }
+  }
+
+  &.disabled {
+    background: $btndisabled;
+    border-color: $lite;
+    color: $textmuted;
+    &:hover,&:focus, &:active {
+      background: $btndisabled;
+    }
+  }
+
+  &.no-bg {
+    background: none;
+    &:focus, &:active, &:hover {
+      color: #FFF;
+    }
+  }
+
+  &.bar {
+    width: 100%;
+  }
+
+}
+
 .croppie-container {
     width: 100%;
     height: 100%;

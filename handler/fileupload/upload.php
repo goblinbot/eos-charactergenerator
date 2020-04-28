@@ -1,4 +1,6 @@
 <?php
+  include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
+//  include_once($APP["root"] . "/_includes/functions.global.php");
 
 error_reporting(E_ALL);
 //upload.php
@@ -22,19 +24,26 @@ if(isset($_POST["image"]))
 	echo 'data size:'.strlen($data)."\n";
 
 	$rootpath = '/var/www/html.dev2';
-	$imageName = '/eoschargen/img/tmp/' . time() . '.png';
+	$imageName = '/eoschargen/img/tmp/' . time() . '.jpg';
 	echo 'file location:'.$rootpath.$imageName."\n";
-
+	echo '<head><link rel="stylesheet" href="croppie.css" /></head>';
 	echo 'Current php user:'.get_current_user()."\n";
 	echo 'Current whoami:'.exec('whoami')."\n";
 	$res = file_put_contents($rootpath.$imageName, $data);
 	echo 'save result:'.$res."\n";
 	if (!$res) echo 'save error:';
 	print_r(error_get_last());
-
+	$charid = $_POST["charid"];
 	echo '-->';
 	echo '<img src="'.$imageName.'" class="img-thumbnail" />';
+	echo '<form action="save.php" method="post"><input type="hidden" value="'.$imageName.'" name="image_name">'
+        . '<input type="hidden" value="'.$charid.'" name="charid">'
+        . '<input type="submit" class="button" value="Save as new profile picture"></form>'
+        . '<form action="cancel.php" method="post"><input type="hidden" value="'.$imageName.'" name="image_name">'
+        . '<input type="hidden" value="' .$charid. '" name="charid">'
+        . '<input class="button" type="submit" value="Cancel"></form>';
 
 }
 
 ?>
+

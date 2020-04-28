@@ -82,8 +82,10 @@
     	</div>
     </div>
 </div>
+<?php $viewchar = $_GET['viewChar']; ?>
 
-<script>  
+<script>
+var viewchar = "<?php echo $viewchar; ?>"; 
 $(document).ready(function(){
 
 	$image_crop = $('#image_demo').croppie({
@@ -111,7 +113,6 @@ $(document).ready(function(){
     reader.readAsDataURL(this.files[0]);
     $('#uploadimageModal').modal('show');
   });
-
   $('.crop_image').click(function(event){
     $image_crop.croppie('result', {
       type: 'canvas',
@@ -120,7 +121,7 @@ $(document).ready(function(){
       $.ajax({
         url:"upload.php",
         type: "POST",
-        data:{"image": response},
+        data:{"image": response, "charid": viewchar},
         success:function(data)
         {
           $('#uploadimageModal').modal('hide');

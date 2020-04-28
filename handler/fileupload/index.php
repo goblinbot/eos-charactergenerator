@@ -2,65 +2,20 @@
   // globals
   include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
   include_once($APP["root"] . "/_includes/functions.global.php");
-if (!isset($APP)) die('No direct access allowed');
-
-
-  if(!isset($jid) || $jid == false || $jid == null || $jid == "") {
-
-    if(!isset($APP["loginpage"]) || $APP["loginpage"] == "" || $APP["loginpage"] == "/" || $APP["loginpage"] == "#") {
-
-      die('You are not logged in, and no valid login page has been set. Please contact Eos IT for more information. [ ERR: 101 ]');
-      exit();
-
-    } else {
-
-      header("location: ".$APP["loginpage"]);
-      exit();
-
-    }
-
-  }
-
-  $sheetArr = getCharacterSheets();
-  if(!isset($_SESSION)) {
-    session_start();
-  }
-
+  include_once($APP["root"] . "/header.php");
 ?>
 
 <!DOCTYPE html>
 <html lang="en" style="background-color:#262e3e;">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="theme-color" content="#262e3e">
-
-  <noscript>
-    <style>div { display:none!important; }</style>
-  </noscript>
-
-  <title>CHARGEN</title>
-
-  <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/reset.css" />
-  <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/style.css" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-		<script src="croppie.js"></script>
-		<link rel="stylesheet" href="croppie.css" />
-    </head>  
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+      <script src="croppie.js"></script>
+      <link rel="stylesheet" href="croppie.css" />
+</head>
 <body class="notransition" onload="">
 
-  <noscript>
-    <p style="font-size:24px;padding:30px 15px;text-align:center;">This application needs JavaScript to work. Please enable JavaScript.</p>
-    <p style="text-align:center;">:(</p>
-  </noscript>
-
-
         <div class="container" style="text-align:center">
-      <img src="../../img/outpost-icc-pm.png" alt="logo" title="ICC logo" height='64'/>
           <br />
           <br />
           <br />

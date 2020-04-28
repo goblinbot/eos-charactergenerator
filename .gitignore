@@ -3,4 +3,9 @@ db.php
 chardb.sql
 FIRST MERGE GIT
 *.bak
-/img/passphoto/
+/img/passphoto/npc/*.jpg
+/img/passphoto/npc/*.JPG
+/img/passphoto/*.jpg
+/img/passphoto/*.JPG
+/img/passphoto/*.png
+/img/tmp/*.jpg

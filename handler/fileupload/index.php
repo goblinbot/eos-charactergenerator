@@ -12,22 +12,23 @@
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
       <script src="croppie.js"></script>
       <link rel="stylesheet" href="croppie.css" />
+
+      <style>
+        .main.cell {
+          place-content: center;
+        }
+      </style>
 </head>
 <body class="notransition" onload="">
 
-          <br />
-          <br />
-          <br />
-      <br />
-      <br />
-			<div class="main cell" align="center">
-  				<div class="panel-body" align="center">
-					<h2>Select Profile Image</h2>
-  					<input type="file" name="upload_image" id="upload_image" />
-  					<br />
-  					<div id="uploaded_image"></div>
-  				</div>
-  			</div>
+  <div class="main cell" align="center">
+      <div class="panel-body" align="center">
+      <h2>Select Profile Image</h2>
+        <input type="file" name="upload_image" id="upload_image" />
+        <br />
+        <div id="uploaded_image"></div>
+      </div>
+    </div>
 <?php include './footer.php'; ?>
     </body>  
 

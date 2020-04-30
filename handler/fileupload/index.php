@@ -3,6 +3,23 @@
   include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
   include_once($APP["root"] . "/_includes/functions.global.php");
   include_once($APP["root"] . "/header.php");
+
+  if(!isset($_SESSION)) {
+    session_start();
+  }
+  $charID = $_GET["viewChar"];
+
+      $sql2 = "SELECT `characterID` FROM `ecc_characters` WHERE `characterID` = $charID";
+      $res2 = $UPLINK->query($sql2) or trigger_error(mysqli_error($UPLINK));
+      // redirect to SET_ACTIVE if 1 character exists.
+      if (mysqli_num_rows($res2) > 0) {
+        $character = mysqli_fetch_assoc($res2);
+        if ($character['accountID'] != $jid) {
+          exit();
+          header("location: {$APP['header']}/index.php");
+        }
+      }
+      }
 ?>
 
 <!DOCTYPE html>

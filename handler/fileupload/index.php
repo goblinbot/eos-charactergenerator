@@ -28,8 +28,9 @@
         <br />
         <div id="uploaded_image"></div>
         <div class="panel-body">
-        <p>Please submit a photo of your head and shoulders, taken against a solid color (preferably white) background. 
-        Please use the below photos as an example of what you should submit.</p>
+        <h3>Please submit a photo of your head and shoulders, taken against a solid color (preferably white) background. <br />
+        Please use the below photos as an example of what you should submit. <br />
+	This will be printed on your character's IC ID Card, so ideally the photo should be of you dressed as your character would appear.</h3>
         <img src="<?php echo $APP["header"]; ?>/img/Example.png">
         </div>
       </div>

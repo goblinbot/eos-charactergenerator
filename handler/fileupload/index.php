@@ -27,6 +27,7 @@
         <input type="file" name="upload_image" id="upload_image" />
         <br />
         <div id="uploaded_image"></div>
+        <img src="<?php $APP["root"]?>/img/Example.png">
       </div>
     </div>
 <?php include './footer.php'; ?>

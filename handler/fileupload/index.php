@@ -8,16 +8,19 @@
     session_start();
   }
 // Validate that viewChar belongs to logged in Joomla User
-  $charID = $_GET["viewChar"];
+    $charID = $_GET["viewChar"];
       $sql2 = "SELECT `characterID`,`accountID` FROM `ecc_characters` WHERE `characterID` = $charID";
       $res2 = $UPLINK->query($sql2) or trigger_error(mysqli_error($UPLINK));
       if (mysqli_num_rows($res2) > 0) {
         $character = mysqli_fetch_assoc($res2);
         if ($character['accountID'] != $jid) {
- 	  echo  "charID:".$charID."<br />CharacterAcctID:".$character['accountID']."<br />JoomlaID:".$jid;
-          header("location: {$APP['header']}/index.php");
+ 	        header("location: {$APP['header']}/index.php");
           exit();
         }
+      }
+      else {
+      header("location: {$APP['header']}/index.php");
+      exit();
       }
 //End Validation
 ?>

@@ -23,11 +23,15 @@
 
   <div class="main cell" align="center">
       <div class="panel-body" align="center">
-      <h2>Select Profile Image</h2>
+      <h1>Select Profile Image</h2>
         <input type="file" name="upload_image" id="upload_image" />
         <br />
         <div id="uploaded_image"></div>
+        <div class="panel-body">
+        <p>Please submit a photo of your head and shoulders, taken against a solid color (preferably white) background. 
+        Please use the below photos as an example of what you should submit.</p>
         <img src="<?php echo $APP["header"]; ?>/img/Example.png">
+        </div>
       </div>
     </div>
 <?php include './footer.php'; ?>

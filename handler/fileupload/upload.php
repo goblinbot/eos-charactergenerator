@@ -26,7 +26,7 @@ if(isset($_POST["image"]))
 	$rootpath = $_SERVER["DOCUMENT_ROOT"] ;
 	$imageName = '/eoschargen/img/tmp/' . time() . '.jpg';
 	echo 'file location:'.$rootpath.$imageName."\n";
-	echo '<head><link rel="stylesheet" href="croppie.css" /></head>';
+	echo '<head><link rel="stylesheet" href="croppie.css" /> <script src="vendors/exif-js/exif-js"></script> </head>';
 	echo 'Current php user:'.get_current_user()."\n";
 	echo 'Current whoami:'.exec('whoami')."\n";
 	$res = file_put_contents($rootpath.$imageName, $data);
@@ -46,4 +46,3 @@ if(isset($_POST["image"]))
 }
 
 ?>
-

@@ -15,6 +15,7 @@ if (!isset($APP)) die('No direct access allowed');
   </div>
 
 </div> <!-- grid -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript" src="<?=$APP["header"]?>/_includes/js/functions.js"></script>
 </body>
 </html>

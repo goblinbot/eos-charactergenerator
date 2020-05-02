@@ -56,7 +56,7 @@
         </div>
       </div>
     </div>
-<?php include './footer.php'; ?>
+<?php include $APP["root"] . '/footer.php'; ?>
     </body>  
 
 </html>

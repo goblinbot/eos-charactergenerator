@@ -9,10 +9,10 @@
 </head>
 
 <body>
-<div>
-<?php
-header("Content-Type: text/html; charset=ISO-8859-1");
-include_once($_SERVER["DOCUMENT_ROOT"] .'/eoschargen/db.php');
+    <div>
+        <?php
+        header("Content-Type: text/html; charset=ISO-8859-1");
+        include_once($_SERVER["DOCUMENT_ROOT"] . '/eoschargen/db.php');
 
         $bldg_sql = "select field_value from `jml_eb_field_values` where field_id = 36 AND field_value !='medische uitzondering \"Geregeld met Orga\"' GROUP by field_value";
         $bldg_res = $UPLINK->query($bldg_sql);

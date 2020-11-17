@@ -44,3 +44,5 @@ if(isset($_POST["image"]))
         . '<input class="button" type="submit" value="Cancel"></form>';
 
 }
+
+?>

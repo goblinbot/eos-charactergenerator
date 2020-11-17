@@ -1,20 +1,20 @@
 <?php
-  // globals
-  include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
-  include_once($APP["root"] . "/_includes/functions.global.php");
+// globals
+include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
+include_once($APP["root"] . "/_includes/functions.global.php");
 
 
-  include_once($APP["root"] . "/header.php");
+include_once($APP["root"] . "/header.php");
 
-  if(!isset($_SESSION)) {
-    session_start();
-  }
+if (!isset($_SESSION)) {
+  session_start();
+}
 
 ?>
 <div class="wsleft cell"></div>
 
 <div class="menu cell">
-  <?=generateMenu('myaccount');?>
+  <?= generateMenu('myaccount'); ?>
 </div>
 
 <div class="main cell">
@@ -33,4 +33,4 @@
 
 
 <?php
-  include_once($APP["root"] . "/footer.php");
+include_once($APP["root"] . "/footer.php");

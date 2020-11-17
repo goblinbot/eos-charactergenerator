@@ -32,5 +32,3 @@ $array = array(
     'groups' => $array1
 );
 $jgroups = $array["groups"];
-
-?>

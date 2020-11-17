@@ -8,7 +8,7 @@ $DB    =    'my_database';
 
 // create the mysqli connection.
 $UPLINK = mysqli_connect($HOST, $USER, $PASS, $DB);
-  unset($HOST);
-  unset($USER);
-  unset($PASS);
-  unset($DB);
+unset($HOST);
+unset($USER);
+unset($PASS);
+unset($DB);

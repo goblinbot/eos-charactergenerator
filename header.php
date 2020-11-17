@@ -1,24 +1,21 @@
 <?php
-  if (!isset($APP)) die('No direct access allowed');
+if (!isset($APP)) die('No direct access allowed');
 
 
-  if(!isset($jid) || $jid == false || $jid == null || $jid == "") {
+if (!isset($jid) || $jid == false || $jid == null || $jid == "") {
 
-    if(!isset($APP["loginpage"]) || $APP["loginpage"] == "" || $APP["loginpage"] == "/" || $APP["loginpage"] == "#") {
+  if (!isset($APP["loginpage"]) || $APP["loginpage"] == "" || $APP["loginpage"] == "/" || $APP["loginpage"] == "#") {
 
-      die('You are not logged in, and no valid login page has been set. Please contact Eos IT for more information. [ ERR: 101 ]');
-      exit();
+    die('You are not logged in, and no valid login page has been set. Please contact Eos IT for more information. [ ERR: 101 ]');
+    exit();
+  } else {
 
-    } else {
-
-      header("location: ".$APP["loginpage"]);
-      exit();
-
-    }
-
+    header("location: " . $APP["loginpage"]);
+    exit();
   }
+}
 
-  $sheetArr = getCharacterSheets();
+$sheetArr = getCharacterSheets();
 ?>
 
 <!DOCTYPE html>
@@ -31,24 +28,30 @@
   <meta name="theme-color" content="#262e3e">
 
   <noscript>
-    <style>div { display:none!important; }</style>
+    <style>
+      div {
+        display: none !important;
+      }
+    </style>
   </noscript>
 
   <title>CHARGEN</title>
 
-  <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/reset.css" />
-  <link rel="stylesheet" type="text/css" href="<?=$APP['header']?>/_includes/css/style.css" />
+  <link rel="stylesheet" type="text/css" href="<?= $APP['header'] ?>/_includes/css/reset.css" />
+  <link rel="stylesheet" type="text/css" href="<?= $APP['header'] ?>/_includes/css/style.css" />
+
   <head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
   <body class="notransition" onload="">
-  
-  <noscript>
-    <p style="font-size:24px;padding:30px 15px;text-align:center;">This application needs JavaScript to work. Please enable JavaScript.</p>
-    <p style="text-align:center;">:(</p>
-  </noscript>
 
-  <div class="grid">
+    <noscript>
+      <p style="font-size:24px;padding:30px 15px;text-align:center;">This application needs JavaScript to work. Please enable JavaScript.</p>
+      <p style="text-align:center;">:(</p>
+    </noscript>
 
-    <div class="logo cell">
-      <img class="responsive" src="<?=$APP['header']?>/img/outpost-icc-pm.png" alt="logo" title="ICC logo"/>
-    </div>
+    <div class="grid">
+
+      <div class="logo cell">
+        <img class="responsive" src="<?= $APP['header'] ?>/img/outpost-icc-pm.png" alt="logo" title="ICC logo" />
+      </div>

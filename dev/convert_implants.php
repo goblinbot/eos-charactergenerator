@@ -1,16 +1,16 @@
 <?php
-  // globals
-  include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
-  include_once($APP["root"] . "/_includes/functions.global.php");
-  include_once($APP["root"] . "/_includes/functions.sheet.php");
+// globals
+include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
+include_once($APP["root"] . "/_includes/functions.global.php");
+include_once($APP["root"] . "/_includes/functions.sheet.php");
 
 echo "<style>th,td { padding: 0 5px; }</style>";
 
 $sql = "SELECT modifierID, sheetID, accountID, description FROM `ecc_char_implants` ORDER BY accountID ASC";
 $res = $UPLINK->query($sql);
 
-if($res) {
-  if(mysqli_num_rows($res) > 0) {
+if ($res) {
+  if (mysqli_num_rows($res) > 0) {
 
     echo "<table>
     <tr>
@@ -20,9 +20,9 @@ if($res) {
       <th>text</th>
     </tr>";
 
-    while($row = mysqli_fetch_assoc($res)){
+    while ($row = mysqli_fetch_assoc($res)) {
 
-      $sql2 = "SELECT characterID FROM `ecc_char_sheet` WHERE charSheetID = '".$row['sheetID']."' LIMIT 1";
+      $sql2 = "SELECT characterID FROM `ecc_char_sheet` WHERE charSheetID = '" . $row['sheetID'] . "' LIMIT 1";
       $res2 = $UPLINK->query($sql2);
       $row2 = mysqli_fetch_assoc($res2);
 
@@ -31,7 +31,7 @@ if($res) {
         <td style=\"width: 50px;\">#{$row['modifierID']}</td>
         <td style=\"width: 50px;\">{$row['sheetID']}</td>
         <td style=\"width: 50px;\"> => {$row2['characterID']}</td>
-        <td>".substr($row['description'], 0,49)."</td>
+        <td>" . substr($row['description'], 0, 49) . "</td>
       </tr>";
 
 
@@ -50,7 +50,6 @@ if($res) {
     //
     $sql = "ALTER TABLE `ecc_char_implants` CHANGE `sheetID` `charID` INT(11) NOT NULL";
     $res = $UPLINK->query($sql);
-
   } else {
     echo "Update complete.";
   }

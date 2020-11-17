@@ -8,22 +8,22 @@ include_once($APP["root"] . "/_includes/functions.sheet.php");
 
 
 echo "<pre>";
-echo "<p>".generateCode(25, 'hex')."</p>";
-echo "<p>".generateCode(25, 'hex')."</p>";
-echo "<p>".generateCode(25, 'hex')."</p>";
-echo "<p>".generateCode(25, 'hex')."</p>";
-echo "<p>".generateCode(25, 'hex')."</p>";
-echo "<p>".generateCode(25, 'hex')."</p>";
+echo "<p>" . generateCode(25, 'hex') . "</p>";
+echo "<p>" . generateCode(25, 'hex') . "</p>";
+echo "<p>" . generateCode(25, 'hex') . "</p>";
+echo "<p>" . generateCode(25, 'hex') . "</p>";
+echo "<p>" . generateCode(25, 'hex') . "</p>";
+echo "<p>" . generateCode(25, 'hex') . "</p>";
 echo "</pre>";
 echo "<br/><br/>";
 echo "faction samples: ";
 echo "<pre>";
-echo "<p>(5)".generateCode(12, 'number')."</p>";
-echo "<p>(5)".generateCode(12, 'number')."</p>";
-echo "<p>(9)".generateCode(12, 'number')."</p>";
-echo "<p>(8)".generateCode(12, 'number')."</p>";
-echo "<p>(7)".generateCode(12, 'number')."</p>";
-echo "<p>(7)".generateCode(12, 'number')."</p>";
+echo "<p>(5)" . generateCode(12, 'number') . "</p>";
+echo "<p>(5)" . generateCode(12, 'number') . "</p>";
+echo "<p>(9)" . generateCode(12, 'number') . "</p>";
+echo "<p>(8)" . generateCode(12, 'number') . "</p>";
+echo "<p>(7)" . generateCode(12, 'number') . "</p>";
+echo "<p>(7)" . generateCode(12, 'number') . "</p>";
 echo "</pre>";
 exit();
 

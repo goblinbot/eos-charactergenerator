@@ -1,8 +1,8 @@
 <?php
-  // globals
-  include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
-  include_once($APP["root"] . "/_includes/functions.global.php");
-  include_once($APP["root"] . "/_includes/functions.sheet.php");
+// globals
+include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
+include_once($APP["root"] . "/_includes/functions.global.php");
+include_once($APP["root"] . "/_includes/functions.sheet.php");
 
 
 echo "<style>th,td { padding: 0 5px; }</style>";
@@ -29,20 +29,18 @@ if (!isset($_GET['limit']) || $_GET['limit'] == '') {
 }
 echo "Next: $NEXT<br/>";
 
-if(isset($_GET['limit']) && (int)$_GET['limit'] < 0) {
+if (isset($_GET['limit']) && (int)$_GET['limit'] < 0) {
   exit('Input Error.');
 }
 
-if(!isset($_GET['limit']) || $_GET['limit'] == "" || $_GET['limit'] == 0) {
+if (!isset($_GET['limit']) || $_GET['limit'] == "" || $_GET['limit'] == 0) {
 
   $FROM = 0;
   $sql = "ALTER TABLE `ecc_char_skills` ADD `charID` INT NOT NULL AFTER `char_sheet_id`;";
   $UPLINK->query($sql);
-
 } else if (isset($_GET['limit']) && $_GET['limit'] != "" && (int)$_GET['limit'] > 0) {
 
-  $FROM = (((int)$_GET['limit'] * $LIMIT) + 1 );
-
+  $FROM = (((int)$_GET['limit'] * $LIMIT) + 1);
 } else {
   exit('Uncaught error..');
 }
@@ -59,8 +57,8 @@ $sql = "SELECT s.id as id, s.char_sheet_id as char_sheet_id, h.charSheetID, h.ch
 
 $res = $UPLINK->query($sql);
 
-if($res) {
-  if(mysqli_num_rows($res) > 0) {
+if ($res) {
+  if (mysqli_num_rows($res) > 0) {
 
     echo "<table>
     <tr>
@@ -70,30 +68,28 @@ if($res) {
       <th>.</th>
     </tr>";
 
-    while($row = mysqli_fetch_assoc($res)){
+    while ($row = mysqli_fetch_assoc($res)) {
 
-        echo "<tr>
+      echo "<tr>
           <td style=\"width: 50px;\">#{$row['id']}</td>
           <td style=\"width: 50px;\">{$row['char_sheet_id']}</td>
           <td style=\"width: 550px;\"> => {$row['characterID']}</td>
         ";
 
-        $sql2 = "UPDATE `ecc_char_skills`
+      $sql2 = "UPDATE `ecc_char_skills`
           SET `charID` = '{$row['characterID']}'
           WHERE id = '{$row['id']}'
           LIMIT 1";
-        $update = $UPLINK->query($sql2) or trigger_error(mysqli_error($UPLINK));
+      $update = $UPLINK->query($sql2) or trigger_error(mysqli_error($UPLINK));
 
 
-        echo "<td>-</td>
+      echo "<td>-</td>
         </tr>";
-
     }
 
     echo "</table>";
 
-    echo '<script type="text/javascript">window.location = "convert_skills.php?limit='.$NEXT.'"</script>';
-
+    echo '<script type="text/javascript">window.location = "convert_skills.php?limit=' . $NEXT . '"</script>';
   } else {
     echo "<br/><h1>Update complete.</h1>";
     exit();

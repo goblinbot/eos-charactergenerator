@@ -4,4 +4,3 @@ $charid = $_POST["charid"];
 $src = $_SERVER["DOCUMENT_ROOT"] . $_POST["image_name"];
 unlink($src);
 header("Location: ../../index.php?viewChar=".$charid."&editInfo=true");
-?>

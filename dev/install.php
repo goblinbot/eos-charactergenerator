@@ -1,14 +1,14 @@
 <?php
-  // globals
-  include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
-  include_once($APP["root"] . "/_includes/functions.global.php");
+// globals
+include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
+include_once($APP["root"] . "/_includes/functions.global.php");
 
 
-  include_once($APP["root"] . "/header.php");
+include_once($APP["root"] . "/header.php");
 
-  if(!isset($_SESSION)) {
-    session_start();
-  }
+if (!isset($_SESSION)) {
+  session_start();
+}
 
 ?>
 <div class="wsleft cell"></div>
@@ -22,15 +22,15 @@
 
     <h1>Install Database</h1>
 
-    <br/>
+    <br />
 
     <?php
-      if(mysqli_ping($UPLINK)) {
+    if (mysqli_ping($UPLINK)) {
 
-        if(isset($_GET['check']) && $_GET['check'] == true) {
+      if (isset($_GET['check']) && $_GET['check'] == true) {
 
-          // CHARACTERS ///////////////////////////////////////
-          $sql = "CREATE TABLE IF NOT EXISTS `ecc_characters` (
+        // CHARACTERS ///////////////////////////////////////
+        $sql = "CREATE TABLE IF NOT EXISTS `ecc_characters` (
             `characterID` int(11) NOT NULL AUTO_INCREMENT,
             `accountID` int(11) NOT NULL,
             `character_name` varchar(100) DEFAULT NULL,
@@ -45,10 +45,10 @@
             `homeplanet` varchar(25) DEFAULT NULL,
             PRIMARY KEY (`characterID`)
           ) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
-          $res = $UPLINK->query($sql)or trigger_error(mysqli_error($UPLINK));
+        $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
 
-          // AUGMENTATIONS ///////////////////////////////////////
-          $sql = "CREATE TABLE IF NOT EXISTS `ecc_char_implants` (
+        // AUGMENTATIONS ///////////////////////////////////////
+        $sql = "CREATE TABLE IF NOT EXISTS `ecc_char_implants` (
             `modifierID` int(11) NOT NULL AUTO_INCREMENT,
             `sheetID` int(11) NOT NULL,
             `accountID` int(11) NOT NULL,
@@ -61,10 +61,10 @@
             KEY `characterID` (`sheetID`),
             KEY `accountID` (`accountID`)
           ) ENGINE=InnoDB AUTO_INCREMENT=2049 DEFAULT CHARSET=latin1;";
-          $res = $UPLINK->query($sql)or trigger_error(mysqli_error($UPLINK));
+        $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
 
-          // CHARACTER SHEETS /////////////////////////////////////////
-          $sql = "CREATE TABLE IF NOT EXISTS `ecc_char_sheet` (
+        // CHARACTER SHEETS /////////////////////////////////////////
+        $sql = "CREATE TABLE IF NOT EXISTS `ecc_char_sheet` (
             `charSheetID` int(11) NOT NULL AUTO_INCREMENT,
             `nickname` varchar(32) DEFAULT NULL,
             `characterID` int(11) NOT NULL,
@@ -75,28 +75,28 @@
             PRIMARY KEY (`charSheetID`),
             KEY `characterID` (`characterID`)
           ) ENGINE=InnoDB AUTO_INCREMENT=9900 DEFAULT CHARSET=latin1;";
-          $res = $UPLINK->query($sql)or trigger_error(mysqli_error($UPLINK));
+        $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
 
-          // add missing fields: (i.e. nicknames)
-          $sql = "SELECT * FROM ecc_char_sheet LIMIT 1;";
-          $res = $UPLINK->query($sql)or trigger_error(mysqli_error($_WCMS_DBi));
-          $row = mysqli_fetch_assoc($res);
+        // add missing fields: (i.e. nicknames)
+        $sql = "SELECT * FROM ecc_char_sheet LIMIT 1;";
+        $res = $UPLINK->query($sql) or trigger_error(mysqli_error($_WCMS_DBi));
+        $row = mysqli_fetch_assoc($res);
 
-          if (!isset($row["inhoud_intro"])) {
-            $alter = $UPLINK->query("ALTER TABLE `ecc_char_sheet` ADD `nickname` VARCHAR( 32 ) NULL AFTER `charSheetID`;");
-          }
+        if (!isset($row["inhoud_intro"])) {
+          $alter = $UPLINK->query("ALTER TABLE `ecc_char_sheet` ADD `nickname` VARCHAR( 32 ) NULL AFTER `charSheetID`;");
+        }
 
-          // SKILLS BELONGING TO CHARACTER SHEETS //////////////////////
-          $sql = "CREATE TABLE IF NOT EXISTS `ecc_char_skills` (
+        // SKILLS BELONGING TO CHARACTER SHEETS //////////////////////
+        $sql = "CREATE TABLE IF NOT EXISTS `ecc_char_skills` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `skill_id` int(11) NOT NULL,
             `char_sheet_id` int(11) NOT NULL,
             PRIMARY KEY (`id`)
           ) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;";
-          $res = $UPLINK->query($sql)or trigger_error(mysqli_error($UPLINK));
+        $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
 
-          // FACTION STRENGTH AND WEAKNESSES/////////////////////////////
-          $sql = "CREATE TABLE IF NOT EXISTS `ecc_factionmodifiers` (
+        // FACTION STRENGTH AND WEAKNESSES/////////////////////////////
+        $sql = "CREATE TABLE IF NOT EXISTS `ecc_factionmodifiers` (
             `factionID` int(11) NOT NULL AUTO_INCREMENT,
             `faction_siteindex` varchar(20) NOT NULL DEFAULT 'aquila',
             `type` varchar(10) NOT NULL DEFAULT 'strong',
@@ -104,14 +104,14 @@
             `cost_modifier` int(5) NOT NULL DEFAULT '-1',
             PRIMARY KEY (`factionID`)
           ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;";
-          $res = $UPLINK->query($sql)or trigger_error(mysqli_error($UPLINK));
+        $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
 
-          $sql = "SELECT * FROM `ecc_factionmodifiers` LIMIT 1";
-          $res = $UPLINK->query($sql)or trigger_error(mysqli_error($UPLINK));
+        $sql = "SELECT * FROM `ecc_factionmodifiers` LIMIT 1";
+        $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
 
-          // CREATE DEFAULT FACTION MODIFIERS ////////////////////////////////
-          if(mysqli_num_rows($res) == 0) {
-            $sql = "INSERT INTO `ecc_factionmodifiers` (`factionID`, `faction_siteindex`, `type`, `skill_id`, `cost_modifier`) VALUES
+        // CREATE DEFAULT FACTION MODIFIERS ////////////////////////////////
+        if (mysqli_num_rows($res) == 0) {
+          $sql = "INSERT INTO `ecc_factionmodifiers` (`factionID`, `faction_siteindex`, `type`, `skill_id`, `cost_modifier`) VALUES
               (1, 'aquila', 'strong', 12002, -1),
               (2, 'aquila', 'strong', 12007, -1),
               (3, 'aquila', 'weak', 12012, 5),
@@ -125,11 +125,11 @@
               (12, 'sona', 'strong', 12012, -1),
               (13, 'sona', 'strong', 12010, -1),
               (14, 'sona', 'weak', 12003, 5);";
-            $res = $UPLINK->query($sql)or trigger_error(mysqli_error($UPLINK));
-          }
+          $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
+        }
 
-          // ALL THE SKILLS. ALL 350+ OF THEM.//////////////////////////////////
-          $sql = "CREATE TABLE IF NOT EXISTS `ecc_skills_allskills` (
+        // ALL THE SKILLS. ALL 350+ OF THEM.//////////////////////////////////
+        $sql = "CREATE TABLE IF NOT EXISTS `ecc_skills_allskills` (
             `skill_id` int(11) NOT NULL AUTO_INCREMENT,
             `label` varchar(50) NOT NULL,
             `skill_index` varchar(15) NOT NULL,
@@ -140,14 +140,14 @@
             PRIMARY KEY (`skill_id`),
             KEY `parent` (`parent`)
           ) ENGINE=InnoDB AUTO_INCREMENT=31342 DEFAULT CHARSET=latin1;";
-          $res = $UPLINK->query($sql)or trigger_error(mysqli_error($UPLINK));
+        $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
 
-          $sql = "SELECT * FROM `ecc_skills_allskills` LIMIT 1";
-          $res = $UPLINK->query($sql)or trigger_error(mysqli_error($UPLINK));
+        $sql = "SELECT * FROM `ecc_skills_allskills` LIMIT 1";
+        $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
 
-          if(mysqli_num_rows($res) == 0) {
+        if (mysqli_num_rows($res) == 0) {
 
-            $sql = "INSERT INTO `ecc_skills_allskills` (`skill_id`, `label`, `skill_index`, `parent`, `level`, `version`, `description`) VALUES
+          $sql = "INSERT INTO `ecc_skills_allskills` (`skill_id`, `label`, `skill_index`, `parent`, `level`, `version`, `description`) VALUES
               (31012, 'Ballistiek beginner', 'guns_1', 12000, 1, 1, 'Je hebt je beginnerscursus afgerond en leren omgaan met simpele vuurwapens. Het gaat\r\nhierbij om wapens met een klein magazijn. Veel kolonisten hebben op zijn minst een simpel\r\nvuurwapen bij zich waar ze bedreven mee zijn.\r\nWat je mag gebruiken:\r\nâ€‹\r\n enkelschots wapens, eventueel met klein intern magazijn (max 3\r\nschoten). Denk aan de Jolt, Firestrike en Triad modellen.'),
               (31013, 'Ballistiek amateur', 'guns_2', 12000, 2, 1, 'Je kan omgaan met semi-automatische pistolen en jachtgeweren, vaak geladen met een intern magazijn. Dit is het niveau van de meeste wetshandhavers, sportschutters,\r\nsportjagers en coloniale milities op zitten. Je mag op dit niveau ook archaÃ¯sche wapens zoals bogen gebruiken, wat voor sommige facties nog een ceremoniÃ«le waarde heeft.\r\nWat je mag gebruiken:\r\nâ€‹\r\n simpele jachtgeweren met of zonder magazijn, revolver. Denk aan de\r\nMaverick, Hammershot en Barrel Break'),
               (31014, 'Ballistiek professional', 'guns_3', 12000, 3, 1, 'Je kan omgaan met semi-automatische wapens met variabele magazijnen, en kent de basis van standaard explosieven zoals granaten. Vrijwel alle militairen trainen tot minimaal dit\r\nniveau ongeacht factie, en vaak zijn prive-beveiligers en huurlingen ook op dit niveau (al dan niet ex-militair).\r\nWat je mag gebruiken: \r\nâ€‹\r\nsemi-automatische wapens met 6-18 schots rechte magazijnen\r\n(geen drums) en multischot wapens. Denk aan de Recon, Stryfe, Longshot en Sledgefire.\r\nVanaf dit niveau ben je ook in staat om granaten gebruiken.'),
@@ -288,9 +288,9 @@
               (31149, 'Craniale her-configuratie', 'cyborg_8', 12027, 8, 1, 'Je laat je brein verplaatsen naar je torso en vervangt je hoofd door een plasteel replica. In dit hoofd kan je nog een extra mod plaatsen. Je bloed niet meer dood maar verbruikt 1 extra energiecel per dag - als je die niet hebt verlies je het voordeel van je hoofd-modificatie. Je kan nog wel doelbewust worden vernietigd door je te blijven beschadigen (vijf klappen of kogels nadat je op 0 bent of equivalente schade).'),
               (31150, 'Synth-Skin Pantser', 'cyborg_9', 12027, 9, 1, 'Je hebt geen HP meer, alleen nog maar AP. Je krijgt 6 AP om mee te beginnen en bent volledig repareerbaar. Dit stackt met alle andere vormen van pantser en\r\nkrachtvelden tot het gebruikelijke maximum. Tasers doen 2 AP schade - als dit je laatste AP zijn dan heeft een taser het gebruikelijke effect op je.'),
               (31151, 'Transhumanisme', 'cyborg_10', 12027, 10, 1, 'Je hebt een livelink backup van je brein. Mocht je komen te overlijden kan je terugkomen als een androide of kloon van jezelf. Je herinnert je dood en weet dat je nieuwe lichaam het nog twee evenementen volhoudt. Daarna is de data gecorrumpeerd en ben je effectief overleden.');";
-            $res = $UPLINK->query($sql)or trigger_error(mysqli_error($UPLINK));
+          $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
 
-            $sql = "INSERT INTO `ecc_skills_allskills` (`skill_id`, `label`, `skill_index`, `parent`, `level`, `version`, `description`) VALUES
+          $sql = "INSERT INTO `ecc_skills_allskills` (`skill_id`, `label`, `skill_index`, `parent`, `level`, `version`, `description`) VALUES
             (31152, 'Balance / Vliegbrevet', 'dex_1', 12028, 1, 1, 'Als een effect je tegen de grond zou werpen kan je effect negeren. Je staat dan gewoon 2 seconden onwennig terwijl je je evenwicht behoud, maar je hoeft niet op de grond gaan liggen.\r\n\r\nJe mag vliegen in non-combat vliegtuigen. Zie dit als het autorijbewijs van de toekomst.'),
             (31153, 'Bodyguard', 'dex_2', 12028, 2, 1, 'Voor een gevecht stel je iemand aan die je wilt beschermen. Je blijft bij deze persoon tijdens een gevecht. Na een gevecht mag je 1 klap of schot overnemen van die persoon.'),
             (31154, 'Melee ambidex / Onbedwingbaar', 'dex_3', 12028, 3, 1, 'Je mag in elke hand een eenhandig melee wapen gebruiken (mits je de melee wapens kunt gebruiken, zie melee).\r\n\r\nJe bent zo behendig dat je niet door een persoon in bedwang kan worden gehouden. Er zijn 2 of meerdere personen hier voor nodig. Als 1 persoon je probeert te bedwingen, geef even subtiel aan dat je deze techniek hebt.'),
@@ -442,9 +442,9 @@
             (31300, 'Hidden pocket', 'itarchi_9', 12057, 9, 1, 'Je creÃ«ert een information node die ontraceerbaar is, waar je 10 documenten op kunt slaan die onhackbaar is. Deze 10 documenten kunnen nooit remote accessed worden.'),
             (31301, 'City of Light', 'itarchi_10', 12057, 10, 1, 'Dit vereist dat je gedeeltelijk of geheel een groot netwerk beheert zoals dat van een militaire basis, schip of Bastion Eos. Iedereen die Informatica gebruikt binnen je netwerk mag 1x per dag een extra wachtwoordvakje of firewallvakje omdraaien door het inzetten van het volledige potentieel van je netwerk.');";
 
-            $res = $UPLINK->query($sql)or trigger_error(mysqli_error($UPLINK));
+          $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
 
-            $sql = "INSERT INTO `ecc_skills_allskills` (`skill_id`, `label`, `skill_index`, `parent`, `level`, `version`, `description`) VALUES
+          $sql = "INSERT INTO `ecc_skills_allskills` (`skill_id`, `label`, `skill_index`, `parent`, `level`, `version`, `description`) VALUES
             (31302, 'Skill savant 6', 'savant_6', 12058, 6, 1, 'Skill description'),
             (31303, 'Skill savant 7', 'savant_7', 12058, 7, 1, 'Skill description'),
             (31304, 'Skill savant 8', 'savant_8', 12058, 8, 1, 'Skill description'),
@@ -485,10 +485,10 @@
             (31339, 'I got it!', 'shishaper_8', 12065, 8, 1, '(+1 BP): Door je op een explosief te werpen mag je in ruil voor 2 van je beschermingspunten van je schild het effect van het explosief teniet doen.\r\n'),
             (31340, 'Bullet Magnet', 'shishaper_9', 12065, 9, 1, '(+1 BP): Je laat zoveel energie door je schild stromen dat je een dubbel schild krijgt die het aankomende gevecht de kogels maar 1 schade laat doen. (Ã‰Ã©n keer per dag, dubbel zo makkelijk te detecteren op sensoren) \r\n'),
             (31341, 'Get behind me!', 'shishaper_10', 12065, 10, 1, '+1BP): Je vergroot je schild zodat je team in je schild kan staan. Je team mag van je schild profiteren zolang ze binnen twee meter van je staan. (Dit kan in combinatie met de andere vaardigheden in de specialisatie)\r\n');";
-            $res = $UPLINK->query($sql)or trigger_error(mysqli_error($UPLINK));
-          }
+          $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
+        }
 
-          $sql = "CREATE TABLE IF NOT EXISTS `ecc_skills_groups` (
+        $sql = "CREATE TABLE IF NOT EXISTS `ecc_skills_groups` (
             `primaryskill_id` int(11) NOT NULL AUTO_INCREMENT,
             `name` varchar(50) NOT NULL,
             `siteindex` varchar(15) NOT NULL,
@@ -497,13 +497,13 @@
             `status` varchar(15) DEFAULT 'active',
             PRIMARY KEY (`primaryskill_id`)
           ) ENGINE=InnoDB AUTO_INCREMENT=12066 DEFAULT CHARSET=latin1;";
-          $res = $UPLINK->query($sql)or trigger_error(mysqli_error($UPLINK));
+        $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
 
-          $sql = "SELECT * FROM `ecc_skills_groups` LIMIT 1";
-          $res = $UPLINK->query($sql)or trigger_error(mysqli_error($UPLINK));
+        $sql = "SELECT * FROM `ecc_skills_groups` LIMIT 1";
+        $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
 
-          if(mysqli_num_rows($res) == 0) {
-            $sql = "INSERT INTO `ecc_skills_groups` (`primaryskill_id`, `name`, `siteindex`, `psychic`, `parents`, `status`) VALUES
+        if (mysqli_num_rows($res) == 0) {
+          $sql = "INSERT INTO `ecc_skills_groups` (`primaryskill_id`, `name`, `siteindex`, `psychic`, `parents`, `status`) VALUES
               (12000, 'Ballistiek', 'guns', 'false', 'none', 'active'),
               (12001, 'Melee', 'melee', 'false', 'none', 'active'),
               (12002, 'Bescherming', 'besch', 'false', 'none', 'active'),
@@ -570,16 +570,14 @@
               (12063, 'Bodyguard', 'bodyguard', 'false', 'dex', 'beta'),
               (12064, 'Flash Fighter', 'flash', 'false', 'melee', 'beta'),
               (12065, 'Shield shaper', 'shishaper', 'false', 'besch', 'beta');";
-            $res = $UPLINK->query($sql)or trigger_error(mysqli_error($UPLINK));
-          }
-
-        } else {
-
-          echo "<p>Database connection confirmed.</p><br/><br/>";
-          echo "<p><a class=\"button\" href=\"".$APP['header']."/dev/install.php?check=confirm\"><i class=\"fas fa-check green\"></i>&nbsp;Confirm install</a></p>";
+          $res = $UPLINK->query($sql) or trigger_error(mysqli_error($UPLINK));
         }
+      } else {
 
+        echo "<p>Database connection confirmed.</p><br/><br/>";
+        echo "<p><a class=\"button\" href=\"" . $APP['header'] . "/dev/install.php?check=confirm\"><i class=\"fas fa-check green\"></i>&nbsp;Confirm install</a></p>";
       }
+    }
 
     ?>
 
@@ -592,4 +590,4 @@
 
 
 <?php
-  include_once($APP["root"] . "/footer.php");
+include_once($APP["root"] . "/footer.php");

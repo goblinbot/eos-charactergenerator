@@ -1,5 +1,5 @@
 <?php
-include_once($_SERVER["DOCUMENT_ROOT"] .'/eoschargen/db.php');
+include_once($_SERVER["DOCUMENT_ROOT"] . '/eoschargen/db.php');
 $id = array($EVENTID);
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -66,7 +66,7 @@ $name = array();
 $building = array();
 $bastion_room = array();
 $tweede_room = array();
-foreach($aSleepers as $key => $aSleeper){
+foreach ($aSleepers as $key => $aSleeper) {
     $building[$key]  = $aSleeper['building'];
     $bastion_room[$key]  = $aSleeper['bastion_room'];
     $tweede_room[$key]  = $aSleeper['tweede_room'];
@@ -74,16 +74,22 @@ foreach($aSleepers as $key => $aSleeper){
 }
 
 array_multisort(
-    $building, SORT_ASC,
-    $bastion_room, SORT_ASC,
-    $tweede_room, SORT_ASC,
-    $name, SORT_ASC,
-    $aSleepers);
+    $building,
+    SORT_ASC,
+    $bastion_room,
+    SORT_ASC,
+    $tweede_room,
+    SORT_ASC,
+    $name,
+    SORT_ASC,
+    $aSleepers
+);
 
 ?>
 
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
 
@@ -91,57 +97,58 @@ array_multisort(
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Orbitron:400,500,700,900" rel="stylesheet">
 </head>
+
 <body>
-<div>
-    <table>
-        <thead>
-            <td>
-                Name
-            </td>
-            <td>
-                Building
-            </td>
-            <td>
-                Room
-            </td>
-        </thead>
+    <div>
+        <table>
+            <thead>
+                <td>
+                    Name
+                </td>
+                <td>
+                    Building
+                </td>
+                <td>
+                    Room
+                </td>
+            </thead>
             <?php
             $building = "bastion";
             $room = $aSleepers[0]["bastion_room"];
-            foreach($aSleepers as $aSleeper){
+            foreach ($aSleepers as $aSleeper) {
                 $roomsleep = "";
-                if(!empty($aSleeper["bastion_room"])){
+                if (!empty($aSleeper["bastion_room"])) {
                     $roomsleep = $aSleeper["bastion_room"];
                 }
-                if(!empty($aSleeper["tweede_room"])){
+                if (!empty($aSleeper["tweede_room"])) {
                     $roomsleep = $aSleeper["tweede_room"];
                 }
                 $blaat = 0;
-                if($building != $aSleeper["building"]){
+                if ($building != $aSleeper["building"]) {
                     echo "<tr><td colspan='3' height='8px; display:block;'> </td></tr>";
                     $blaat = 1;
                 }
-                if($blaat != 1){
-                    if($room != $roomsleep){
+                if ($blaat != 1) {
+                    if ($room != $roomsleep) {
                         echo "<tr><td colspan='3' height='8px; display:block;'> </td></tr>";
                     }
                 }
                 $blaat = 0;
             ?>
-            <tr>
-                <td>
-                    <?php
-                    $name =  explode (" - ", $aSleeper["name"]);
-                    echo $name[0];
-                    ?>
-                </td>
-                <td>
-                    <?php echo $aSleeper["building"]; ?>
-                </td>
-                <td>
-                    <?php echo $roomsleep; ?>
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        <?php
+                        $name =  explode(" - ", $aSleeper["name"]);
+                        echo $name[0];
+                        ?>
+                    </td>
+                    <td>
+                        <?php echo $aSleeper["building"]; ?>
+                    </td>
+                    <td>
+                        <?php echo $roomsleep; ?>
+                    </td>
+                </tr>
 
             <?php
 
@@ -150,10 +157,9 @@ array_multisort(
                 $room = $roomsleep;
             }
             ?>
-        </thead>
-    </table>
-</div>
+            </thead>
+        </table>
+    </div>
 </body>
+
 </html>
-
-

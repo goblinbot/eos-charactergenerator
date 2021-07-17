@@ -20,3 +20,4 @@ $APP["root"] = $_SERVER["DOCUMENT_ROOT"] . $APP["header"];
 $APP["loginpage"] = "/return-to-chargen";
 
 // $jid = 451;
+$APP["allowed_groups"] = [2,57,13,11,19,12,20,36,30];

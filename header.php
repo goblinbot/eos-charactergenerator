@@ -14,7 +14,7 @@ if (!isset($jid) || $jid == false || $jid == null || $jid == "") {
     exit();
   }
 }
-if (!empty(array_intersect($jgroups, $APP["allowed_groups"]))){
+if ( isset($APP["allowed_groups"]) && !empty(array_intersect($jgroups, $APP["allowed_groups"]))){
 $sheetArr = getCharacterSheets();
 } else {
 echo "Access denied. Please contact a member of the organization to be granted CharGen access.";

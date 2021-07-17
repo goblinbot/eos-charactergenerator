@@ -1,11 +1,12 @@
 <?php
 // include the db.php connection. This file is not available on my github for security reasons.
 // to make your own, see db.sample.php
+// config variable.
+$APP = array();
+
 include_once($_SERVER["DOCUMENT_ROOT"] . '/eoschargen/db.php');
 require_once($_SERVER["DOCUMENT_ROOT"] . '/eoschargen/_includes/joomla.php');
 
-// config variable.
-$APP = array();
 
 // opens an array to be filled later with the CSS and JS, which will eventually be included by PHP.
 $APP["includes"] = array();

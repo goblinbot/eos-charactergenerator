@@ -8,7 +8,12 @@ $DB    =    'my_database';
 
 // create the mysqli connection.
 $UPLINK = mysqli_connect($HOST, $USER, $PASS, $DB);
+//Create the PDO Connection
+db::$conn = new PDO('mysql:host='.$HOST.';dbname='.$DB.';charset=utf8mb4', $USER, $PASS);
+
 unset($HOST);
 unset($USER);
 unset($PASS);
 unset($DB);
+
+// $APP["allowed_groups"] = [5,7,25];

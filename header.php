@@ -15,7 +15,10 @@ if (!isset($jid) || $jid == false || $jid == null || $jid == "") {
   }
 }
 if (!empty(array_intersect($jgroups, $APP["allowed_groups"]))){
-  $sheetArr = getCharacterSheets();
+$sheetArr = getCharacterSheets();
+} else {
+echo "Access denied. Please contact a member of the organization to be granted CharGen access.";
+exit();
 }
 ?>
 
@@ -56,11 +59,3 @@ if (!empty(array_intersect($jgroups, $APP["allowed_groups"]))){
       <div class="logo cell">
         <img class="responsive" src="<?= $APP['header'] ?>/img/outpost-icc-pm.png" alt="logo" title="ICC logo" />
       </div>
-
-<?php
-
-if (empty(array_intersect($jgroups, $APP["allowed_groups"]))){
-  echo "Access denied. Please contact a member of the organization to be granted CharGen access.";
-  exit();
-}
-?>

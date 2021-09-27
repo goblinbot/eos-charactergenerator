@@ -91,7 +91,7 @@
     ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR  (r.published in (0,1) AND r.payment_method = 'os_offline'))
     UNION
     SELECT r.id, v6.field_value as foodlocation, CONCAT(v5.field_value,' ',r.first_name, ' ', COALESCE(v2.field_value,''),' ', SUBSTRING(r.last_name,1,1),'.') as name, 
-    'tweede gebouw' as building, CONCAT(COALESCE(v4.field_value,''),COALESCE(v3.field_value,'')) as room from joomla.jml_eb_registrants r
+    'Bastion' as building, CONCAT(COALESCE(v4.field_value,''),COALESCE(v3.field_value,'')) as room from joomla.jml_eb_registrants r
     left join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 16)
     left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 73)
     left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 72)

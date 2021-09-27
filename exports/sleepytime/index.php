@@ -23,7 +23,7 @@ UNION
 This TSQL Statement Grabs Figuranten (with real bed), SLs and Keuken Crew in the Bastion
 */
 select r.id, CONCAT(v5.field_value,' ',r.first_name, ' ', COALESCE(v6.field_value,''),' ', SUBSTRING(r.last_name,1,1),'.') as name, 'Bastion' as building, 
-NULL as tweede_room, CONCAT(COALESCE(v4.field_value,''),COALESCE(v3.field_value,''),COALESCE(v8.field_value,'')) as bastion_room from joomla.jml_eb_registrants r
+CONCAT(COALESCE(v4.field_value,''),COALESCE(v3.field_value,''),COALESCE(v8.field_value,'')) as bastion_room, NULL as tweede_room from joomla.jml_eb_registrants r
 left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 73)
 left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 72)
 left join joomla.jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 14)

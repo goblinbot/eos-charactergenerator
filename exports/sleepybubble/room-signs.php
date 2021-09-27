@@ -89,8 +89,7 @@
                     left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 72)
                     left join joomla.jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 14)
                     left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 58)
-                where v5.field_value != 'Speler' AND 
-                ASCII(UPPER(LEFT(CONCAT(coalesce(v3.field_value,''),coalesce(v4.field_value,''),coalesce(v6.field_value,''),coalesce(v7.field_value,'')),1))) 
+                where v5.field_value != 'Speler' AND ASCII(UPPER(LEFT(CONCAT(COALESCE(v4.field_value,''), COALESCE(v3.field_value,'')),1))) 
                 NOT BETWEEN 64 AND 90 AND 'tweede gebouw' =  '$building' AND r.event_id = $EVENTID and (v3.field_value = '$room' or v4.field_value = '$room') AND
                 ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR  (r.published in (0,1) AND r.payment_method = 'os_offline'))
     
@@ -105,7 +104,7 @@
                     left join joomla.jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 14)
                     left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 58)
                 where v5.field_value != 'Speler' AND 
-                ASCII(UPPER(LEFT(CONCAT(coalesce(v3.field_value,''),coalesce(v4.field_value,''),coalesce(v6.field_value,''),coalesce(v7.field_value,'')),1))) 
+                ASCII(UPPER(LEFT(CONCAT(COALESCE(v4.field_value,''),COALESCE(v3.field_value,'')),1))) 
                 BETWEEN 64 AND 90 AND 'Bastion' =  '$building' AND r.event_id = $EVENTID and (v3.field_value = '$room' or v4.field_value = '$room') AND
                 ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR  (r.published in (0,1) AND r.payment_method = 'os_offline'))
     

@@ -164,7 +164,7 @@ echo '<h1>Allergy report for ' . $row['title'] . '</h1>';
         WHERE r.event_id = $EVENTID AND 'Bastion' = $building AND (v5.field_value = 'Bastion' 
         OR ASCII(UPPER(LEFT(CONCAT(COALESCE(v4.field_value,''),COALESCE(v6.field_value,''),COALESCE(v8.field_value,'')),1))) BETWEEN 64 AND 90)
         AND ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR 
-        AND (r.published in (0,1) AND r.payment_method = 'os_offline'))
+        (r.published in (0,1) AND r.payment_method = 'os_offline'))
         UNION
         select replace(replace(v2.field_value,'[',''),']',',') as diet, concat(r.first_name,' ',r.last_name) as name, 
         v3.field_value as other from joomla.jml_eb_registrants r
@@ -177,7 +177,7 @@ echo '<h1>Allergy report for ' . $row['title'] . '</h1>';
         WHERE r.event_id = $EVENTID AND 'tweede gebouw' = $building AND (v5.field_value = 'tweede gebouw' 
         OR ASCII(UPPER(LEFT(CONCAT(COALESCE(v4.field_value,''),COALESCE(v6.field_value,''),COALESCE(v8.field_value,'')),1))) NOT BETWEEN 64 AND 90)
         AND ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR 
-        AND (r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER BY diet desc;";
+        (r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER BY diet desc;";
   $res = $UPLINK->query($sql);
   while ($row = mysqli_fetch_array($res)) {
     echo "<tr><td>" . $row['name'] . "</td>";

@@ -303,7 +303,7 @@ $sql = "SELECT title FROM jml_eb_events where id = $EVENTID;";
 $res = $UPLINK->query($sql);
 $row = mysqli_fetch_array($res);
 $building = 'tweede gebouw';
-
+echo '<p class="single_record"></p>';
 echo '<h1>Allergy report for ' . $row['title'] . ' - ' . $building . '</h1>';
 ?>
 
@@ -348,8 +348,6 @@ echo '<h1>Allergy report for ' . $row['title'] . ' - ' . $building . '</h1>';
 
   $allergy_counts = array_count_values($allergy_array);
   arsort($allergy_counts);
-  echo '<p><button class="button" id="printPageButton" style="width: 100px;" onClick="window.print();">Print</button></p>';
-
   echo "<font size=5>Summary</font>";
   echo "<table><font size=3>";
   foreach ($allergy_counts as $key => $val) {

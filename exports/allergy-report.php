@@ -94,9 +94,9 @@ include_once($APP["root"] . '/exports/current-players.php');
 $sql = "SELECT title FROM jml_eb_events where id = $EVENTID;";
 $res = $UPLINK->query($sql);
 $row = mysqli_fetch_array($res);
-$building = 'Bastion';
+$building = 'tweede gebouw';
 
-echo '<h1>Allergy report for ' . $row['title'] . '</h1>';
+echo '<h1>Allergy report for ' . $row['title'] . ' - ' . $building . '</h1>';
 ?>
 
 <body>
@@ -109,7 +109,7 @@ echo '<h1>Allergy report for ' . $row['title'] . '</h1>';
   left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 73)
   left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 72)
   left join joomla.jml_eb_field_values v8 on (v8.registrant_id = r.id and v8.field_id = 38)
-  WHERE r.event_id = $EVENTID AND 'Bastion' = $building AND (v5.field_value = 'Bastion' 
+  WHERE r.event_id = $EVENTID AND 'Bastion' = '$building' AND (v5.field_value = 'Bastion' 
   OR ASCII(UPPER(LEFT(CONCAT(COALESCE(v4.field_value,''),COALESCE(v3.field_value,''),COALESCE(v8.field_value,'')),1))) BETWEEN 64 AND 90)
   AND ((r.published = 1 AND (r.payment_method = 'os_ideal' 
   OR r.payment_method = 'os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline'))
@@ -121,7 +121,7 @@ echo '<h1>Allergy report for ' . $row['title'] . '</h1>';
   left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 73)
   left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 72)
   left join joomla.jml_eb_field_values v8 on (v8.registrant_id = r.id and v8.field_id = 38)
-  WHERE r.event_id = $EVENTID AND 'tweede gebouw' = $building AND (v5.field_value = 'tweede gebouw' 
+  WHERE r.event_id = $EVENTID AND 'tweede gebouw' = '$building' AND (v5.field_value = 'tweede gebouw' 
   OR ASCII(UPPER(LEFT(CONCAT(COALESCE(v4.field_value,''),COALESCE(v3.field_value,''),COALESCE(v8.field_value,'')),1))) NOT BETWEEN 64 AND 90)
   AND ((r.published = 1 AND (r.payment_method = 'os_ideal' 
   OR r.payment_method = 'os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER BY diet;";
@@ -161,7 +161,7 @@ echo '<h1>Allergy report for ' . $row['title'] . '</h1>';
           left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 72)
           left join joomla.jml_eb_field_values v8 on (v8.registrant_id = r.id and v8.field_id = 38)
           left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 57)
-        WHERE r.event_id = $EVENTID AND 'Bastion' = $building AND (v5.field_value = 'Bastion' 
+        WHERE r.event_id = $EVENTID AND 'Bastion' = '$building' AND (v5.field_value = 'Bastion' 
         OR ASCII(UPPER(LEFT(CONCAT(COALESCE(v4.field_value,''),COALESCE(v6.field_value,''),COALESCE(v8.field_value,'')),1))) BETWEEN 64 AND 90)
         AND ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR 
         (r.published in (0,1) AND r.payment_method = 'os_offline'))
@@ -174,7 +174,7 @@ echo '<h1>Allergy report for ' . $row['title'] . '</h1>';
           left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 72)
           left join joomla.jml_eb_field_values v8 on (v8.registrant_id = r.id and v8.field_id = 38)
           left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 57)
-        WHERE r.event_id = $EVENTID AND 'tweede gebouw' = $building AND (v5.field_value = 'tweede gebouw' 
+        WHERE r.event_id = $EVENTID AND 'tweede gebouw' = '$building' AND (v5.field_value = 'tweede gebouw' 
         OR ASCII(UPPER(LEFT(CONCAT(COALESCE(v4.field_value,''),COALESCE(v6.field_value,''),COALESCE(v8.field_value,'')),1))) NOT BETWEEN 64 AND 90)
         AND ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR 
         (r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER BY diet desc;";

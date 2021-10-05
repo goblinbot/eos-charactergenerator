@@ -8,7 +8,6 @@ $APP["includes"] = array();
 
 // location of the application. for example: http://localhost/chargen/ == '/chargen'. If the application is in the ROOT, you can leave this blank.
 $APP["header"] = "/eoschargen";
-
 // define the root folder by adding the header (location) to the server root, defined by PHP.
 $APP["root"] = $_SERVER["DOCUMENT_ROOT"] . $APP["header"];
 
@@ -95,8 +94,7 @@ $sql = "SELECT title FROM jml_eb_events where id = $EVENTID;";
 $res = $UPLINK->query($sql);
 $row = mysqli_fetch_array($res);
 $building = 'Bastion';
-
-echo '<h1>Allergy report for ' . $row['title'] . ' - ' . $building . '</h1>';
+echo '<h1>Diet/Allergy report for ' . $row['title'] . ' - ' . $building . ' <img src="../img/32033.png"></img></h1>';
 ?>
 
 <body>
@@ -105,24 +103,8 @@ echo '<h1>Allergy report for ' . $row['title'] . ' - ' . $building . '</h1>';
   $sql = "select replace(replace(v2.field_value,'[',''),']',',') as diet 
   from joomla.jml_eb_registrants r
   join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 56)
-  join joomla.jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 36)
-  left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 73)
-  left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 72)
-  left join joomla.jml_eb_field_values v8 on (v8.registrant_id = r.id and v8.field_id = 38)
-  WHERE r.event_id = $EVENTID AND 'Bastion' = '$building' AND (v5.field_value = 'Bastion' 
-  OR ASCII(UPPER(LEFT(CONCAT(COALESCE(v4.field_value,''),COALESCE(v3.field_value,''),COALESCE(v8.field_value,'')),1))) BETWEEN 64 AND 90)
-  AND ((r.published = 1 AND (r.payment_method = 'os_ideal' 
-  OR r.payment_method = 'os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline'))
-  UNION
-  select replace(replace(v2.field_value,'[',''),']',',') as diet 
-  from joomla.jml_eb_registrants r
-  join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 56)
-  join joomla.jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 36)
-  left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 73)
-  left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 72)
-  left join joomla.jml_eb_field_values v8 on (v8.registrant_id = r.id and v8.field_id = 38)
-  WHERE r.event_id = $EVENTID AND 'tweede gebouw' = '$building' AND (v5.field_value = 'tweede gebouw' 
-  OR ASCII(UPPER(LEFT(CONCAT(COALESCE(v4.field_value,''),COALESCE(v3.field_value,''),COALESCE(v8.field_value,'')),1))) NOT BETWEEN 64 AND 90)
+  left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 58)
+  WHERE r.event_id = $EVENTID AND eetlocatie.field_value = '$building'
   AND ((r.published = 1 AND (r.payment_method = 'os_ideal' 
   OR r.payment_method = 'os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER BY diet;";
   $res = $UPLINK->query($sql);
@@ -149,35 +131,18 @@ echo '<h1>Allergy report for ' . $row['title'] . ' - ' . $building . '</h1>';
     echo "<td>" . $key . "</td><td>" . $val . "</td></tr>";
   }
   echo "</font></table>";
-  echo '<p class="single_record"></p>';
+  // echo '<p class="single_record"></p>';
   echo "<font size=5>Detail</font>";
   echo "<table>";
   echo "<th>Name</th><th>Allergie</th><th>Dieet</th><th>Other Allergies</th>";
   $sql = "select replace(replace(v2.field_value,'[',''),']',',') as diet, concat(r.first_name,' ',r.last_name) as name, 
-        v3.field_value as other from joomla.jml_eb_registrants r
-          join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 56)
-          join joomla.jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 36)
-          left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 73)
-          left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 72)
-          left join joomla.jml_eb_field_values v8 on (v8.registrant_id = r.id and v8.field_id = 38)
-          left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 57)
-        WHERE r.event_id = $EVENTID AND 'Bastion' = '$building' AND (v5.field_value = 'Bastion' 
-        OR ASCII(UPPER(LEFT(CONCAT(COALESCE(v4.field_value,''),COALESCE(v6.field_value,''),COALESCE(v8.field_value,'')),1))) BETWEEN 64 AND 90)
-        AND ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR 
-        (r.published in (0,1) AND r.payment_method = 'os_offline'))
-        UNION
-        select replace(replace(v2.field_value,'[',''),']',',') as diet, concat(r.first_name,' ',r.last_name) as name, 
-        v3.field_value as other from joomla.jml_eb_registrants r
-          join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 56)
-          join joomla.jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 36)
-          left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 73)
-          left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 72)
-          left join joomla.jml_eb_field_values v8 on (v8.registrant_id = r.id and v8.field_id = 38)
-          left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 57)
-        WHERE r.event_id = $EVENTID AND 'tweede gebouw' = '$building' AND (v5.field_value = 'tweede gebouw' 
-        OR ASCII(UPPER(LEFT(CONCAT(COALESCE(v4.field_value,''),COALESCE(v6.field_value,''),COALESCE(v8.field_value,'')),1))) NOT BETWEEN 64 AND 90)
-        AND ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR 
-        (r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER BY diet desc;";
+  v3.field_value as other from joomla.jml_eb_registrants r
+    join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 56)
+    left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 57)
+    left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 58)
+  WHERE r.event_id = $EVENTID AND eetlocatie.field_value = '$building'
+  AND ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR 
+  (r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER BY diet desc;";
   $res = $UPLINK->query($sql);
   while ($row = mysqli_fetch_array($res)) {
     echo "<tr><td>" . $row['name'] . "</td>";
@@ -263,7 +228,8 @@ echo '<h1>Allergy report for ' . $row['title'] . ' - ' . $building . '</h1>';
       margin-top: 0;
       margin-bottom: 0;
       background: #FFF;
-      background-image: url('../img/32033.png');
+      background:url('');
+  		background-size:100% 10%;
       background-position: top right;
       background-position: 65% 0px;
       background-repeat: no-repeat;
@@ -302,35 +268,20 @@ echo '<h1>Allergy report for ' . $row['title'] . ' - ' . $building . '</h1>';
 $sql = "SELECT title FROM jml_eb_events where id = $EVENTID;";
 $res = $UPLINK->query($sql);
 $row = mysqli_fetch_array($res);
-$building = 'tweede gebouw';
+$building = 'Zonnedauw';
 echo '<p class="single_record"></p>';
-echo '<h1>Allergy report for ' . $row['title'] . ' - ' . $building . '</h1>';
+
+echo '<h1>Diet/Allergy report for ' . $row['title'] . ' - ' . $building . ' <img src="../img/32033.png"></img></h1>';
 ?>
 
 <body>
+  
   <?php
-
   $sql = "select replace(replace(v2.field_value,'[',''),']',',') as diet 
   from joomla.jml_eb_registrants r
   join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 56)
-  join joomla.jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 36)
-  left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 73)
-  left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 72)
-  left join joomla.jml_eb_field_values v8 on (v8.registrant_id = r.id and v8.field_id = 38)
-  WHERE r.event_id = $EVENTID AND 'Bastion' = '$building' AND (v5.field_value = 'Bastion' 
-  OR ASCII(UPPER(LEFT(CONCAT(COALESCE(v4.field_value,''),COALESCE(v3.field_value,''),COALESCE(v8.field_value,'')),1))) BETWEEN 64 AND 90)
-  AND ((r.published = 1 AND (r.payment_method = 'os_ideal' 
-  OR r.payment_method = 'os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline'))
-  UNION
-  select replace(replace(v2.field_value,'[',''),']',',') as diet 
-  from joomla.jml_eb_registrants r
-  join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 56)
-  join joomla.jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 36)
-  left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 73)
-  left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 72)
-  left join joomla.jml_eb_field_values v8 on (v8.registrant_id = r.id and v8.field_id = 38)
-  WHERE r.event_id = $EVENTID AND 'tweede gebouw' = '$building' AND (v5.field_value = 'tweede gebouw' 
-  OR ASCII(UPPER(LEFT(CONCAT(COALESCE(v4.field_value,''),COALESCE(v3.field_value,''),COALESCE(v8.field_value,'')),1))) NOT BETWEEN 64 AND 90)
+  left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 58)
+  WHERE r.event_id = $EVENTID AND eetlocatie.field_value = '$building'
   AND ((r.published = 1 AND (r.payment_method = 'os_ideal' 
   OR r.payment_method = 'os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER BY diet;";
   $res = $UPLINK->query($sql);
@@ -348,6 +299,8 @@ echo '<h1>Allergy report for ' . $row['title'] . ' - ' . $building . '</h1>';
 
   $allergy_counts = array_count_values($allergy_array);
   arsort($allergy_counts);
+  echo '<p><button class="button" id="printPageButton" style="width: 100px;" onClick="window.print();">Print</button></p>';
+
   echo "<font size=5>Summary</font>";
   echo "<table><font size=3>";
   foreach ($allergy_counts as $key => $val) {
@@ -355,35 +308,18 @@ echo '<h1>Allergy report for ' . $row['title'] . ' - ' . $building . '</h1>';
     echo "<td>" . $key . "</td><td>" . $val . "</td></tr>";
   }
   echo "</font></table>";
-  echo '<p class="single_record"></p>';
+  // echo '<p class="single_record"></p>';
   echo "<font size=5>Detail</font>";
   echo "<table>";
   echo "<th>Name</th><th>Allergie</th><th>Dieet</th><th>Other Allergies</th>";
   $sql = "select replace(replace(v2.field_value,'[',''),']',',') as diet, concat(r.first_name,' ',r.last_name) as name, 
-        v3.field_value as other from joomla.jml_eb_registrants r
-          join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 56)
-          join joomla.jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 36)
-          left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 73)
-          left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 72)
-          left join joomla.jml_eb_field_values v8 on (v8.registrant_id = r.id and v8.field_id = 38)
-          left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 57)
-        WHERE r.event_id = $EVENTID AND 'Bastion' = '$building' AND (v5.field_value = 'Bastion' 
-        OR ASCII(UPPER(LEFT(CONCAT(COALESCE(v4.field_value,''),COALESCE(v6.field_value,''),COALESCE(v8.field_value,'')),1))) BETWEEN 64 AND 90)
-        AND ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR 
-        (r.published in (0,1) AND r.payment_method = 'os_offline'))
-        UNION
-        select replace(replace(v2.field_value,'[',''),']',',') as diet, concat(r.first_name,' ',r.last_name) as name, 
-        v3.field_value as other from joomla.jml_eb_registrants r
-          join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 56)
-          join joomla.jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 36)
-          left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 73)
-          left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 72)
-          left join joomla.jml_eb_field_values v8 on (v8.registrant_id = r.id and v8.field_id = 38)
-          left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 57)
-        WHERE r.event_id = $EVENTID AND 'tweede gebouw' = '$building' AND (v5.field_value = 'tweede gebouw' 
-        OR ASCII(UPPER(LEFT(CONCAT(COALESCE(v4.field_value,''),COALESCE(v6.field_value,''),COALESCE(v8.field_value,'')),1))) NOT BETWEEN 64 AND 90)
-        AND ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR 
-        (r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER BY diet desc;";
+  v3.field_value as other from joomla.jml_eb_registrants r
+    join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 56)
+    left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 57)
+    left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 58)
+  WHERE r.event_id = $EVENTID AND eetlocatie.field_value = '$building'
+  AND ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal')) OR 
+  (r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER BY diet desc;";
   $res = $UPLINK->query($sql);
   while ($row = mysqli_fetch_array($res)) {
     echo "<tr><td>" . $row['name'] . "</td>";

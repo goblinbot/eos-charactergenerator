@@ -5,7 +5,7 @@ require_once $APP["root"] . "/_includes/functions.global.php";
 
 require_once $APP["root"] . '/exports/current-players.php';
 
-(string)$_FACTION = (isset($_GET['faction']) && $_GET['faction'] != "" ? $_GET['faction'] : 'aquila');
+(string)$_FACTION = (isset($_GET['faction']) && $_GET['faction'] != "" ? $_GET['faction'] : '%');
 (string)$_BUILDING = (isset($_GET['building']) && $_GET['building'] != "" ? $_GET['building'] : 'Bastion');
 
 ?>
@@ -228,7 +228,7 @@ require_once $APP["root"] . '/exports/current-players.php';
               join jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 14) /*Soort Inschrijving*/
               join jml_eb_field_values v3 ON (v3.registrant_id = r.id AND v3.field_id = 36) /* Building */
               join ecc_characters c1 on c1.characterID = SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1)
-              where v2.field_value = 'Speler' AND r.event_id = 15  AND  v3.field_value NOT LIKE 'medische%' AND `faction` = '$_FACTION' AND v3.field_value = '$_BUILDING'
+              where v2.field_value = 'Speler' AND r.event_id = $EVENTID  AND  v3.field_value NOT LIKE 'medische%' AND `faction` LIKE '$_FACTION' AND v3.field_value = '$_BUILDING'
             and ((r.published = 1 AND (r.payment_method = 'os_ideal' or r.payment_method='os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline'))
           UNION ALL
           SELECT count(SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1)) as totalchars, c1.faction, LEFT(v6.field_value,LOCATE(',',v6.field_value) - 1)  as building from jml_eb_registrants r
@@ -237,7 +237,7 @@ require_once $APP["root"] . '/exports/current-players.php';
         join jml_eb_field_values v3 ON (v3.registrant_id = r.id AND v3.field_id = 36)
         join ecc_characters c1 on c1.characterID = SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1)
         left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 71)
-          where v2.field_value = 'Speler' AND r.event_id = 15  AND  v3.field_value LIKE 'medische%' AND `faction` = '$_FACTION' AND v3.field_value = '$_BUILDING' 
+          where v2.field_value = 'Speler' AND r.event_id = $EVENTID  AND  v3.field_value LIKE 'medische%' AND `faction` LIKE '$_FACTION'  AND LEFT(v6.field_value,LOCATE(',',v6.field_value) - 1) = '$_BUILDING'
          and ((r.published = 1 AND (r.payment_method = 'os_ideal' or r.payment_method='os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline'))
           ) t1;";
 
@@ -253,6 +253,7 @@ require_once $APP["root"] . '/exports/current-players.php';
                 <option value=\"Ekanesh\">Ekanesh</option>
                 <option value=\"Pendzal\">Pendzal</option>
                 <option value=\"Sona\">Sona</option>
+                <option value=\"\">ALL FACTIONS</option>
               </select>";
         echo "<select id=\"buildingswitch\"
               style=\"padding: 5px; border-radius: 2px; margin-bottom: 1rem;\"
@@ -265,7 +266,9 @@ require_once $APP["root"] . '/exports/current-players.php';
         $res2 = $UPLINK->query($sql2);
         $row2 = mysqli_fetch_array($res2);
 
-        echo "<div style=\"padding: 15px;\"><h1>" . $row2['title'] . "<br>Number of $_FACTION Characters in $_BUILDING: $resCOUNT</h1><br/><br/>";
+        echo "<div style=\"padding: 15px;\"><h1>" . $row2['title'] . "<br>Number of ";
+        if ($_FACTION != '%') {echo $_FACTION . " ";}
+        echo "Characters in $_BUILDING: $resCOUNT</h1><br/><br/>";
 
         $printresult = "";
 
@@ -297,7 +300,7 @@ require_once $APP["root"] . '/exports/current-players.php';
 	join jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 14)
         join ecc_characters c1 on c1.characterID = SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1)
         join jml_eb_field_values v3 ON (v3.registrant_id = r.id AND v3.field_id = 36) /* Building */
-        where v2.field_value = 'Speler' AND r.event_id = $EVENTID  and characterID <> 257 AND v3.field_value = '$_BUILDING' AND `faction` = '$_FACTION' and ((r.published = 1 AND (r.payment_method = 'os_ideal' or r.payment_method = 'os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline'))
+        where v2.field_value = 'Speler' AND r.event_id = $EVENTID  and characterID <> 257 AND v3.field_value = '$_BUILDING' AND `faction` LIKE '$_FACTION' and ((r.published = 1 AND (r.payment_method = 'os_ideal' or r.payment_method = 'os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline'))
         UNION
         SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1) as characterID, c1.character_name, c1.faction, c1.sheet_status, c1.print_status from jml_eb_registrants r
         join jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
@@ -305,8 +308,8 @@ require_once $APP["root"] . '/exports/current-players.php';
         join ecc_characters c1 on c1.characterID = SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1)
         join jml_eb_field_values v3 ON (v3.registrant_id = r.id AND v3.field_id = 36) /* Building */
         left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 71) /*ROOM*/
-        where v2.field_value = 'Speler' AND r.event_id = $EVENTID  and characterID <> 257 AND v3.field_value LIKE 'medische%' AND LEFT(v6.field_value,LOCATE(',',v6.field_value) - 1) = '$_BUILDING' AND `faction` = '$_FACTION' and ((r.published = 1 AND (r.payment_method = 'os_ideal' or r.payment_method = 'os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline'))
-          ORDER BY faction,character_name
+        where v2.field_value = 'Speler' AND r.event_id = $EVENTID  and characterID <> 257 AND v3.field_value LIKE 'medische%' AND LEFT(v6.field_value,LOCATE(',',v6.field_value) - 1) = '$_BUILDING' AND `faction` LIKE '$_FACTION' and ((r.published = 1 AND (r.payment_method = 'os_ideal' or r.payment_method = 'os_paypal')) OR (r.published in (0,1) AND r.payment_method = 'os_offline'))
+          ORDER BY character_name
           LIMIT " . (int)$limitFirst . " , " . (int)$perPage . " ";
         $res = $UPLINK->query($sql);
 

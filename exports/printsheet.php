@@ -286,7 +286,7 @@ require_once $APP["root"] . '/exports/current-players.php';
             if (($pageNumber - 1) == $offset) {
                 echo "<span style=\"padding:8px 4px; color: red;\"><button type='disabled'><strong><font size=4>$pageNumber</font></strong></button></span>";
             } else {
-                echo "<a style=\"padding:8px 4px;\" href=\"" . $APP['header'] . "/exports/printsheet.php?offset=" . ($pageNumber - 1) . "&faction=$_FACTION\"><button>$pageNumber</button></a>";
+                echo "<a style=\"padding:8px 4px;\" href=\"" . $APP['header'] . "/exports/printsheet.php?offset=" . ($pageNumber - 1) . "&faction=$_FACTION&building=$_BUILDING\"><button>$pageNumber</button></a>";
             }
 
             $pageNumber++;
@@ -359,7 +359,7 @@ require_once $APP["root"] . '/exports/current-players.php';
                 if (($pageNumber - 1) == $offset) {
                     echo "<span style=\"padding:8px 4px; color: red;\"><button type='disabled'><strong><font size=4>$pageNumber</font></strong></button></span>";
                 } else {
-                    echo "<a style=\"padding:8px 4px;\" href=\"" . $APP['header'] . "/exports/printsheet.php?offset=" . ($pageNumber - 1) . "&faction=$_FACTION\"><button>$pageNumber</button></a>";
+                    echo "<a style=\"padding:8px 4px;\" href=\"" . $APP['header'] . "/exports/printsheet.php?offset=" . ($pageNumber - 1) . "&faction=$_FACTION&building=$_BUILDING\"><button>$pageNumber</button></a>";
                 }
 
                 $pageNumber++;

@@ -161,7 +161,7 @@ join ecc_skills_allskills s2 on (s1.skill_id = s2.skill_id)
 where s1.skill_id = $skillID and c.sheet_status='active' AND characterID in
 (SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1) as id from jml_eb_registrants r
 join jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
-where r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' or r.payment_method = 'os_paypal'))
+where r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact'))
 OR (r.published in (0,1) AND r.payment_method = 'os_offline'))) ORDER BY character_name";
     $res = $UPLINK->query($sql);
     echo '<table><th>Name</th><th>Faction</th>';

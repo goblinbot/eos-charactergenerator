@@ -88,6 +88,7 @@ include_once($APP["root"] . '/exports/current-players.php');
     }
   </style>
 </head>
+<!-- BASTION SECTION -->
 <?php
 
 $sql = "SELECT title FROM jml_eb_events where id = $EVENTID;";
@@ -103,8 +104,9 @@ echo '<h1>Diet/Allergy report for ' . $row['title'] . ' - ' . $building . ' <img
   $sql = "select replace(replace(v2.field_value,'[',''),']',',') as diet 
   from joomla.jml_eb_registrants r
   join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 56)
-  left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 36)
-  WHERE r.event_id = $EVENTID AND eetlocatie.field_value = '$building'
+  left join joomla.jml_eb_field_values slaaplocatie on (slaaplocatie.registrant_id = r.id and slaaplocatie.field_id = 36)
+  left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 58)
+  WHERE r.event_id = $EVENTID AND ifnull(eetlocatie.field_value,slaaplocatie.field_value) = '$building'
   AND ((r.published = 1 AND (r.payment_method = 'os_ideal' 
   OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR (r.published in (0,1) AND r.payment_method = 'os_offline')) ORDER BY diet;";
   $res = $UPLINK->query($sql);
@@ -139,11 +141,12 @@ echo '<h1>Diet/Allergy report for ' . $row['title'] . ' - ' . $building . ' <img
   v3.field_value as other from joomla.jml_eb_registrants r
     join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 56)
     left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 57)
-    left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 36)
-  left join joomla.jml_eb_field_values soort_inschrijving on (soort_inschrijving.registrant_id = r.id and soort_inschrijving.field_id = 14)
-  WHERE r.event_id = $EVENTID AND eetlocatie.field_value = '$building' AND soort_inschrijving.field_value = 'Speler'
-  AND ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR 
-  (r.published in (0,1) AND r.payment_method = 'os_offline'))  ORDER BY diet desc;";
+    left join joomla.jml_eb_field_values slaaplocatie on (slaaplocatie.registrant_id = r.id and slaaplocatie.field_id = 36)
+    left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 58)
+    left join joomla.jml_eb_field_values soort_inschrijving on (soort_inschrijving.registrant_id = r.id and soort_inschrijving.field_id = 14)
+    WHERE r.event_id = $EVENTID AND ifnull(eetlocatie.field_value,slaaplocatie.field_value) = '$building' AND soort_inschrijving.field_value = 'Speler'
+    AND ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR 
+    (r.published in (0,1) AND r.payment_method = 'os_offline'))  ORDER BY diet desc;";
   $res = $UPLINK->query($sql);
   while ($row = mysqli_fetch_array($res)) {
     echo "<tr><td>" . $row['name'] . "</td>";
@@ -196,7 +199,9 @@ echo '<h1>Diet/Allergy report for ' . $row['title'] . ' - ' . $building . ' <img
 </body>
 
 </html>
+<!-- END BASTION SECTION -->
 
+<!-- FOB SECTION -->
 <!DOCTYPE html>
 <html>
 
@@ -264,6 +269,7 @@ echo '<h1>Diet/Allergy report for ' . $row['title'] . ' - ' . $building . ' <img
     }
   </style>
 </head>
+
 <?php
 
 $sql = "SELECT title FROM jml_eb_events where id = $EVENTID;";
@@ -281,9 +287,10 @@ echo '<h1>Diet/Allergy report for ' . $row['title'] . ' - ' . $building . ' <img
   $sql = "select r.id, replace(replace(v2.field_value,'[',''),']',',') as diet 
   from joomla.jml_eb_registrants r
   join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 56)
-  left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 36)
+  left join joomla.jml_eb_field_values slaaplocatie on (slaaplocatie.registrant_id = r.id and slaaplocatie.field_id = 36)
+  left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 58)
   left join joomla.jml_eb_field_values soort_inschrijving on (soort_inschrijving.registrant_id = r.id and soort_inschrijving.field_id = 14)
-  WHERE r.event_id = $EVENTID AND eetlocatie.field_value = '$building' AND soort_inschrijving.field_value = 'Speler'
+  WHERE r.event_id = $EVENTID AND ifnull(eetlocatie.field_value,slaaplocatie.field_value) = '$building' AND soort_inschrijving.field_value = 'Speler'
   AND ((r.published = 1 AND (r.payment_method = 'os_ideal' 
   OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR (r.published in (0,1) AND r.payment_method = 'os_offline')) 
   UNION
@@ -327,9 +334,10 @@ echo '<h1>Diet/Allergy report for ' . $row['title'] . ' - ' . $building . ' <img
   v3.field_value as other from joomla.jml_eb_registrants r
     join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 56)
     left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 57)
-    left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 36)
+    left join joomla.jml_eb_field_values slaaplocatie on (slaaplocatie.registrant_id = r.id and slaaplocatie.field_id = 36)
+    left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 58)
     left join joomla.jml_eb_field_values soort_inschrijving on (soort_inschrijving.registrant_id = r.id and soort_inschrijving.field_id = 14)
-    WHERE  r.event_id = $EVENTID AND eetlocatie.field_value = '$building' AND soort_inschrijving.field_value = 'Speler'
+    WHERE  r.event_id = $EVENTID AND ifnull(eetlocatie.field_value,slaaplocatie.field_value) = '$building' AND soort_inschrijving.field_value = 'Speler'
     AND ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR 
     (r.published in (0,1) AND r.payment_method = 'os_offline')) 
     UNION

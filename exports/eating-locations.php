@@ -23,6 +23,7 @@ include_once($APP["root"] . '/exports/current-players.php');
 
 
 ?>
+<!-- BEGIN BASTION SECTION -->
 <!DOCTYPE html>
 <html>
 
@@ -112,13 +113,14 @@ include_once($APP["root"] . '/exports/current-players.php');
   $sql2 = "SELECT title FROM jml_eb_events where id = $EVENTID;";
   $res2 = $UPLINK->query($sql2);
   $row2 = mysqli_fetch_array($res2);
-  $sql = "select r.id, v2.field_value as building, r.first_name as oc_fn, v3.field_value as oc_tv, r.last_name as oc_ln, substring_index(v1.field_value,' - ',1) as ic_name 
+  $sql = "select r.id, ifnull(eetlocatie.field_value,slaaplocatie.field_value) as building, r.first_name as oc_fn, v3.field_value as oc_tv, r.last_name as oc_ln, substring_index(v1.field_value,' - ',1) as ic_name 
 from joomla.jml_eb_registrants r
 join joomla.jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
-join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 36)
+left join joomla.jml_eb_field_values slaaplocatie on (slaaplocatie.registrant_id = r.id and slaaplocatie.field_id = 36)
+left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 58)
 left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 16)
 left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 14)
-where v2.field_value = '$building' AND v4.field_value = 'Speler' AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR
+where ifnull(eetlocatie.field_value,slaaplocatie.field_value) = '$building' AND v4.field_value = 'Speler' AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR
 (r.published in (0,1) AND r.payment_method = 'os_offline'))
 UNION
 select r.id, v2.field_value as building, r.first_name as oc_fn, v3.field_value as oc_tv, r.last_name as oc_ln, NULL as ic_name 
@@ -153,13 +155,14 @@ where v2.field_value = '$building' AND v4.field_value != 'Speler' AND r.event_id
   $sql2 = "SELECT title FROM jml_eb_events where id = $EVENTID;";
   $res2 = $UPLINK->query($sql2);
   $row2 = mysqli_fetch_array($res2);
-  $sql = "select r.id, v2.field_value as building, r.first_name as oc_fn, v3.field_value as oc_tv, r.last_name as oc_ln, substring_index(v1.field_value,' - ',1) as ic_name 
+  $sql = "select r.id, ifnull(eetlocatie.field_value,slaaplocatie.field_value) as building, r.first_name as oc_fn, v3.field_value as oc_tv, r.last_name as oc_ln, substring_index(v1.field_value,' - ',1) as ic_name 
   from joomla.jml_eb_registrants r
   join joomla.jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
-  join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 36)
+  left join joomla.jml_eb_field_values slaaplocatie on (slaaplocatie.registrant_id = r.id and slaaplocatie.field_id = 36)
+  left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 58)
   left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 16)
   left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 14)
-  where v2.field_value = '$building' AND v4.field_value = 'Speler' AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR
+  where ifnull(eetlocatie.field_value,slaaplocatie.field_value) = '$building' AND v4.field_value = 'Speler' AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR
   (r.published in (0,1) AND r.payment_method = 'os_offline'))
   UNION
   select r.id, coalesce(figu_slaap.field_value,sl_slaap.field_value) as building, r.first_name as oc_fn, v3.field_value as oc_tv, r.last_name as oc_ln, NULL as ic_name 

@@ -144,7 +144,7 @@ echo '<h1>Diet/Allergy report for ' . $row['title'] . ' - ' . $building . ' <img
     left join joomla.jml_eb_field_values slaaplocatie on (slaaplocatie.registrant_id = r.id and slaaplocatie.field_id = 36)
     left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 58)
     left join joomla.jml_eb_field_values soort_inschrijving on (soort_inschrijving.registrant_id = r.id and soort_inschrijving.field_id = 14)
-    WHERE r.event_id = $EVENTID AND ifnull(eetlocatie.field_value,slaaplocatie.field_value) = '$building' AND soort_inschrijving.field_value = 'Speler'
+    WHERE r.event_id = $EVENTID AND ifnull(eetlocatie.field_value,slaaplocatie.field_value) = '$building' AND (ifnull(eetlocatie.field_value,'$building')  = '$building' OR soort_inschrijving.field_value = 'Speler')
     AND ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR 
     (r.published in (0,1) AND r.payment_method = 'os_offline'))  ORDER BY diet desc;";
   $res = $UPLINK->query($sql);
@@ -290,7 +290,7 @@ echo '<h1>Diet/Allergy report for ' . $row['title'] . ' - ' . $building . ' <img
   left join joomla.jml_eb_field_values slaaplocatie on (slaaplocatie.registrant_id = r.id and slaaplocatie.field_id = 36)
   left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 58)
   left join joomla.jml_eb_field_values soort_inschrijving on (soort_inschrijving.registrant_id = r.id and soort_inschrijving.field_id = 14)
-  WHERE r.event_id = $EVENTID AND ifnull(eetlocatie.field_value,slaaplocatie.field_value) = '$building' AND soort_inschrijving.field_value = 'Speler'
+  WHERE r.event_id = $EVENTID AND ifnull(eetlocatie.field_value,slaaplocatie.field_value) = '$building' AND (ifnull(eetlocatie.field_value,'$building')  = '$building' OR soort_inschrijving.field_value = 'Speler')
   AND ((r.published = 1 AND (r.payment_method = 'os_ideal' 
   OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR (r.published in (0,1) AND r.payment_method = 'os_offline')) 
   UNION
@@ -298,7 +298,8 @@ echo '<h1>Diet/Allergy report for ' . $row['title'] . ' - ' . $building . ' <img
   from joomla.jml_eb_registrants r
   join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 56)
   left join joomla.jml_eb_field_values soort_inschrijving on (soort_inschrijving.registrant_id = r.id and soort_inschrijving.field_id = 14)
-  WHERE r.event_id = $EVENTID  AND soort_inschrijving.field_value != 'Speler'
+  left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 58)
+  WHERE r.event_id = $EVENTID  AND ifnull(eetlocatie.field_value,'tweede gebouw') != 'Bastion' AND soort_inschrijving.field_value != 'Speler'
   AND ((r.published = 1 AND (r.payment_method = 'os_ideal' 
   OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR (r.published in (0,1) AND r.payment_method = 'os_offline')) 
   ORDER BY diet;";
@@ -345,9 +346,9 @@ echo '<h1>Diet/Allergy report for ' . $row['title'] . ' - ' . $building . ' <img
     v3.field_value as other from joomla.jml_eb_registrants r
     join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 56)
     left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 57)
-    left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 36)
+    left join joomla.jml_eb_field_values eetlocatie on (eetlocatie.registrant_id = r.id and eetlocatie.field_id = 58)
     left join joomla.jml_eb_field_values soort_inschrijving on (soort_inschrijving.registrant_id = r.id and soort_inschrijving.field_id = 14)
-    WHERE r.event_id = $EVENTID AND soort_inschrijving.field_value != 'Speler'
+    WHERE r.event_id = $EVENTID AND ifnull(eetlocatie.field_value,'tweede gebouw') != 'Bastion' AND soort_inschrijving.field_value != 'Speler'
     AND ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR 
     (r.published in (0,1) AND r.payment_method = 'os_offline'))
     ORDER BY diet desc;";

@@ -30,7 +30,7 @@
     left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 38)
     where v2.field_value ='$building' AND v5.field_value = 'Speler' AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR
     (r.published in (0,1) AND r.payment_method = 'os_offline')) AND (v6.field_value = 'No' OR v6.field_value IS NULL) AND (v7.field_value = 'No' OR v7.field_value IS NULL)
-    UNION
+    UNION DISTINCT
     select CONCAT(coalesce(v3.field_value,''),coalesce(v4.field_value,''),coalesce(v6.field_value,''),coalesce(v7.field_value,'')) as room from joomla.jml_eb_registrants r
     left join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 93)
     left join jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 14)
@@ -42,7 +42,7 @@
     ASCII(UPPER(LEFT(CONCAT(coalesce(v3.field_value,''),coalesce(v4.field_value,''),coalesce(v6.field_value,''),coalesce(v7.field_value,'')),1))) 
     BETWEEN 64 AND 90 AND v5.field_value != 'Speler' AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR
     (r.published in (0,1) AND r.payment_method = 'os_offline'))
-    UNION
+    UNION DISTINCT
     select CONCAT(coalesce(v3.field_value,''),coalesce(v4.field_value,''),coalesce(v6.field_value,''),coalesce(v7.field_value,'')) as room from joomla.jml_eb_registrants r
     left join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 36)
     left join jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 14)
@@ -54,9 +54,9 @@
     ASCII(UPPER(LEFT(CONCAT(coalesce(v3.field_value,''),coalesce(v4.field_value,''),coalesce(v6.field_value,''),coalesce(v7.field_value,'')),1))) 
     NOT BETWEEN 64 AND 90 AND v5.field_value != 'Speler' AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR
     (r.published in (0,1) AND r.payment_method = 'os_offline'))
-    UNION 
-    select substring_index(LEFT(v6.field_value,LOCATE(' - ',v6.field_value) - 1),',',-1) as room from joomla.jml_eb_registrants r
-    join joomla.jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
+    UNION DISTINCT
+    select trim(substring_index(LEFT(v6.field_value,LOCATE(' - ',v6.field_value) - 1),',',-1)) as room from joomla.jml_eb_registrants r
+    left join joomla.jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
     left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 37)
     left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 38)
     left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 71)
@@ -109,16 +109,18 @@
                 ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR  (r.published in (0,1) AND r.payment_method = 'os_offline'))
     
                 UNION 
-                
-                select r.id, v7.field_value as foodlocation, SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',1),' - ',-1) as name,
+
+                select r.id, v7.field_value as foodlocation, if(v5.field_value = 'Speler', trim(SUBSTRING_INDEX(v1.field_value,' - ',1)),CONCAT(v5.field_value,' ',r.first_name, ' ', COALESCE(v2.field_value,''),' ', SUBSTRING(r.last_name,1,1),'.')) as name,
                 LEFT(v6.field_value,LOCATE(',',v6.field_value) - 1) as building, substring_index(LEFT(v6.field_value,LOCATE(' - ',v6.field_value) - 1),',',-1) as room 
                 from joomla.jml_eb_registrants r
                     left join joomla.jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
+                    left join joomla.jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 16)
                     left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 37)
                     left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 38)
+                    left join joomla.jml_eb_field_values v5 on (v5.registrant_id = r.id and v5.field_id = 14)
                     left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 71)
                     left join joomla.jml_eb_field_values v7 on (v7.registrant_id = r.id and v7.field_id = 58)
-                where LEFT(v6.field_value,LOCATE(',',v6.field_value) - 1) = '$building' AND substring_index(LEFT(v6.field_value,LOCATE(' - ',v6.field_value) - 1),',',-1) = '$room' AND r.event_id = $EVENTID
+                where LEFT(v6.field_value,LOCATE(',',v6.field_value) - 1) = '$building' AND trim(substring_index(LEFT(v6.field_value,LOCATE(' - ',v6.field_value) - 1),',',-1)) = '$room' AND r.event_id = $EVENTID
                 and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR
                 (r.published in (0,1) AND r.payment_method = 'os_offline'))
                 ORDER by building, room, name;";
@@ -126,7 +128,7 @@
                 $res = $UPLINK->query($sql);
                 echo "<div class='roomsign' style=''>";
                 echo '<p><button class="button" id="printPageButton" style="width: 100%;" onClick="window.print();">Print</button></p>';
-                echo "<center class='center'><font face='Orbitron' size=15><br>" . str_replace('tweede gebouw', 'FOB', $building) . "<br>$room<br><br></font></center>";
+                echo "<center class='center'><font face='Orbitron' size=15><br>" . str_replace('tweede gebouw', 'Geitenkamp', $building) . "<br>$room<br><br></font></center>";
                 echo "<table>";
                 echo "<th><center>Name</center></th>
                 <!--<th><center>Eating Location</center></th>-->

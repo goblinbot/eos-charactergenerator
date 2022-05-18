@@ -76,8 +76,9 @@
                         left join joomla.jml_eb_field_values v3 on (v3.registrant_id = r.id and v3.field_id = 37)
                         left join joomla.jml_eb_field_values v4 on (v4.registrant_id = r.id and v4.field_id = 38)
                         left join joomla.jml_eb_field_values v6 on (v6.registrant_id = r.id and v6.field_id = 58)
+                        left join joomla.jml_eb_field_values v7 on (v7.registrant_id = r.id and v7.field_id = 71)
                     where CONCAT(coalesce(v3.field_value,''),coalesce(v4.field_value,'')) = '$room' AND v2.field_value = '$building' 
-                    AND v5.field_value = 'Speler' AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR
+                    AND v5.field_value = 'Speler' AND v7.field_value is NULL AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR
                     (r.published in (0,1) AND r.payment_method = 'os_offline'))AND v2.field_value NOT LIKE 'medische%'
 
                 UNION

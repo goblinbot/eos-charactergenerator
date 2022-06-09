@@ -1,0 +1,105 @@
+html{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-size: 10px;
+  background: #FFF;
+}
+body {
+  font-size: 12px;
+  margin:0px;
+  padding:0px;
+  background: #FFF;
+
+}
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+table {
+    font-family: orbitron;
+    border-collapse: collapse;
+    font-size: 18px;
+    width: 85%;
+    margin-left:auto;
+    margin-right:auto;
+
+}
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 4px 5px;
+}
+th {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  text-align: left;
+  background-color: #32c5f4;
+  color: white;
+}
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+
+
+@page {
+  size: auto;
+  margin: 0;
+}
+@media print {
+  #printPageButton {
+      display: none;
+  }
+  * {
+      -webkit-print-color-adjust:exact;
+  }
+  table {
+    font-family: orbitron;
+    border-collapse: collapse;
+    font-size: 18px;
+    width: 85%;
+    margin-left:auto; 
+    margin-right:auto;
+  }
+   .roomsign .center{
+           margin-top:40px;
+           margin-bottom:50px;
+           display:block;
+           width:100%;
+           float:left;
+   }
+
+
+}
+.single_record{
+  page-break-after: always;
+}
+
+
+    .roomsign{
+		width: 19cm;
+		height: 27cm;
+		background:url(../images/RoomSign.png) no-repeat;
+		background-size:100% 100%;
+		clear:both;
+		page-break-before:always;
+		margin:15px auto 0;
+   } 
+   
+   .roomsign .center{
+	   margin-top:40px;
+	   margin-bottom:50px;
+	   display:block;
+	   width:100%;
+	   float:left;
+   }

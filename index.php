@@ -55,24 +55,7 @@ if (isset($_POST['newchar']) && $_POST['newchar'] != "") {
   <div class="content">
 
     <br />
-
     <?php
-    if (!isset($_COOKIE['cookieWarning'])) {
-    ?>
-      <div class="dialog">
-
-        <h2><i class="far fa-lightbulb"></i>&nbsp;Cookies</h2>
-
-        <p>The character creator uses <strong>functional</strong> cookies, none of which will track you, or collect data.</p>
-
-        <br />
-
-        <button class="button" onclick="ecc_setCookie('cookieWarning','hide','3');$(this).parent().fadeOut();">
-          <i class="fas fa-check green"></i>&nbsp;Understood, hide this message please.
-        </button>
-      </div>
-    <?php
-    }
 
     $printresult = "";
 

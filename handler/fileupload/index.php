@@ -53,7 +53,7 @@ if (mysqli_num_rows($res2) > 0) {
           <h3>Please submit a photo of your head and shoulders, taken against a solid color (preferably white) background. <br />
             Please use the below photos as an example of what you should submit. <br />
             This will be printed on your character's IC ID Card, so ideally the photo should be of you dressed as your character would appear.</h3>
-          <img src="<?php echo $APP["header"]; ?>/img/Example.png">
+          <img src="../../img/Example.png">
         </div>
     </div>
   </div>

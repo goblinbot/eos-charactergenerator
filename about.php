@@ -1,10 +1,10 @@
 <?php
 // globals
-include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
-include_once($APP["root"] . "/_includes/functions.global.php");
+include_once('_includes/config.php');
+include_once('_includes/functions.global.php');
 
 
-include_once($APP["root"] . "/header.php");
+include_once('header.php');
 
 if (!isset($_SESSION)) {
   session_start();
@@ -33,4 +33,4 @@ if (!isset($_SESSION)) {
 
 
 <?php
-include_once($APP["root"] . "/footer.php");
+include_once('footer.php');

@@ -14,7 +14,6 @@ $implantsArr = getImplants((int)$_GET['viewChar']);
 
 // check if sheet exists. This also validates for account.
 if (isset($sheetArr['characters'][$_GET['viewChar']]) && $sheetArr['characters'][$_GET['viewChar']] != "") {
-
   $DISABLE = "";
   if ($sheetArr['characters'][$_GET['viewChar']]['status'] == 'deceased') {
     $DISABLE = "disabled";

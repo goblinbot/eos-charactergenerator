@@ -3,27 +3,14 @@
 // config variable.
 $APP = array();
 
-// opens an array to be filled later with the CSS and JS, which will eventually be included by PHP.
-$APP["includes"] = array();
+$APP["loginpage"] = "/component/users/?view=login";
 
-// location of the application. for example: http://localhost/chargen/ == '/chargen'. If the application is in the ROOT, you can leave this blank.
-$APP["header"] = "/eoschargen";
+include_once('../db.php');
+include_once("../_includes/functions.global.php");
 
-// define the root folder by adding the header (location) to the server root, defined by PHP.
-$APP["root"] = $_SERVER["DOCUMENT_ROOT"] . $APP["header"];
-
-// define the login page to redirect to if there is no $jid set/inherited.
-$APP["loginpage"] = "https://new.eosfrontier.space/component/users/?view=login";
-
-// $jid = 451;
-include_once($_SERVER["DOCUMENT_ROOT"] . '/eoschargen/db.php');
-include_once($APP["root"] . "/_includes/functions.global.php");
-
-include_once($APP["root"] . '/exports/current-players.php');
-
+include_once('current-players.php');
 
 ?>
-<!-- BEGIN BASTION SECTION -->
 <!DOCTYPE html>
 <html>
 
@@ -108,6 +95,7 @@ include_once($APP["root"] . '/exports/current-players.php');
 </head>
 
 <body>
+  <!-- BEGIN BASTION SECTION -->
   <?php
   $building = 'Bastion';
   $sql2 = "SELECT title FROM jml_eb_events where id = $EVENTID;";
@@ -157,8 +145,8 @@ where ifnull(eetlocatie.field_value,\"tweede gebouw\") = '$building' AND v4.fiel
     echo "</tr>";
   }
   echo "</table>";
-  ?>
-  <?php
+  // END BASTION SECTION
+  // BEGIN TWEEDE GEBOUW SECTION
   echo '<p class="single_record"></p>';
   $building = 'tweede gebouw';
   $sql2 = "SELECT title FROM jml_eb_events where id = $EVENTID;";
@@ -206,6 +194,7 @@ where ifnull(eetlocatie.field_value,\"tweede gebouw\") = '$building' AND v4.fiel
     echo "</tr>";
   }
   echo "</table></p>";
+  // END TWEEDE GEBOUW SECTION
   ?>
 </body>
 

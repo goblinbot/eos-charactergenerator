@@ -1,6 +1,7 @@
 <?php
 
-if (isset($_POST['updateEventsPlayed']) && $_POST['updateEventsPlayed']) {include '../POST/updateEventsPlayed.php';
+if (isset($_POST['updateEventsPlayed']) && $_POST['updateEventsPlayed']) {
+    include "./operations/POST/updateEventsPlayed.php";
 }
 
 

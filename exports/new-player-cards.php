@@ -96,20 +96,23 @@ echo '<h2>New Card Needed for ' . $row['title'] . '</h2>';
 <body>
   <?php
 
-  $sqlpart1 = "SELECT character_name, faction, ICC_number, card_id, characterID from ecc_characters WHERE characterID in
-(SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1) as id from jml_eb_registrants r
+  $sqlpart1 = "SELECT character_name, v3.email, faction ,ICC_number,  card_id, characterID from ecc_characters c
+  JOIN jml_users v3 ON (c.accountID = v3.id) 
+  WHERE characterID in (SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(v1.field_value,' - ',2),' - ',-1) as id 
+  from jml_eb_registrants r
     join jml_eb_field_values v1 on (v1.registrant_id = r.id and v1.field_id = 21)
     join jml_eb_field_values v2 on (v2.registrant_id = r.id and v2.field_id = 14)
     where v2.field_value = 'Speler' AND r.event_id = $EVENTID and ((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR
     (r.published in (0,1) AND r.payment_method = 'os_offline'))) AND card_id is NULL";
   if (isset($NPCCards))
-    $sqlpart2 = " UNION SELECT character_name, faction, ICC_number, card_id, characterID from ecc_characters WHERE (characterID in ($NPCCards) AND card_id is NULL)";
+    $sqlpart2 = " UNION SELECT character_name, NULL as email, faction, ICC_number, card_id, characterID from ecc_characters WHERE (characterID in ($NPCCards) AND card_id is NULL)";
   else $sqlpart2 = ' ';
   $sqlpart3 = " ORDER BY faction, character_name";
-
+    
   $sql = $sqlpart1 . $sqlpart2 . $sqlpart3;
   $res = $UPLINK->query($sql);
   echo "<table>";
+  echo "<th>E-Mail</th>";
   echo "<th>Faction</th>";
   echo "<th>Name</th>";
   echo "<th>ICC Number</th>";
@@ -118,6 +121,7 @@ echo '<h2>New Card Needed for ' . $row['title'] . '</h2>';
 
   while ($row = mysqli_fetch_array($res)) {
     echo "<tr>";
+    echo "<td><center>" . $row['email'] . "</center></td>";
     echo "<td><center>" . $row['faction'] . "</center></td>";
     echo '<td><center> <a href="/admin_sl/character-edit.php?id=' . $row['characterID'] . '">' . $row['character_name'] . "</a></center></td>";
     echo "<td><center>" . $row['ICC_number'] . "</center></td>";

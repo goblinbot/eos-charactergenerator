@@ -146,7 +146,7 @@
                         }
                     }
                     echo "<tr><td>" . $row['name'] . "</td>";
-                    echo "<td><center>" . $foodlocation . "</center></td></tr>";
+                    echo "<td><center>" . str_replace('tweede gebouw', 'Zonnedauw', $foodlocation) . "</center></td></tr>";
                 }
                 echo "</table>";
                 echo "</div>";
@@ -156,5 +156,4 @@
 
     </div>
 </body>
-
 </html>

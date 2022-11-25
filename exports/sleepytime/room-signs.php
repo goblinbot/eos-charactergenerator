@@ -129,20 +129,24 @@
                 $res = $UPLINK->query($sql);
                 echo "<div class='roomsign' style=''>";
                 echo '<p><button class="button" id="printPageButton" style="width: 100%;" onClick="window.print();">Print</button></p>';
-                echo "<center class='center'><font face='Orbitron' size=15><br>" . str_replace('tweede gebouw', 'Geitenkamp', $building) . "<br>$room<br><br></font></center>";
+                echo "<center class='center'><font face='Orbitron' size=15><br>" . str_replace('tweede gebouw', 'Zonnedauw', $building) . "<br>$room<br><br></font></center>";
                 echo "<table>";
                 echo "<th><center>Name</center></th>
-                <!--<th><center>Eating Location</center></th>-->
+                <th><center>Eating Location</center></th>
                 ";
                 while ($row = mysqli_fetch_array($res)) {
                     $foodlocation = $row['foodlocation'];
-                    if (($foodlocation == '') or ($foodlocation == "Zonnedauw")) {
-                        $foodlocation = "FOB";
+                    if ($foodlocation == '') {
+                        $foodlocation = $building;
                     } else {
+                        if ($foodlocation = 'tweede gebouw') {
+                            $foodlocation = 'Zonnedauw';
+                        } else {
                         $foodlocation = $row['foodlocation'];
+                        }
                     }
                     echo "<tr><td>" . $row['name'] . "</td>";
-                    //echo "<td><center>" . $foodlocation . "</center></td></tr>";
+                    echo "<td><center>" . $foodlocation . "</center></td></tr>";
                 }
                 echo "</table>";
                 echo "</div>";

@@ -44,7 +44,7 @@ if (!isset($_GET['viewChar']) || $_GET['viewChar'] == "") {
           echo "<div id=\"charStatus\" class=\"hidden\" style=\"display: none;\">" . $character['status'] . "</div>";
 
           // calc skills
-          if ( isset($character['born_faction'])) {
+          if (  isset($character['born_faction']) && ($character['born_faction'] != '')) {
             $faction = $character['born_faction'];
           } else {
             $faction = $character['faction'];
@@ -88,7 +88,7 @@ if (!isset($_GET['viewChar']) || $_GET['viewChar'] == "") {
 
         // Character Banner
         if (EMS_echo($character['character_name']) != "") {
-          if ( isset($character['born_faction'])) {
+          if ( isset($character['born_faction']) ) {
             $displayFaction = $character['faction'] . " (Originally: " . $character['born_faction'] .")";
           } else {
             $displayFaction = $character['faction'];

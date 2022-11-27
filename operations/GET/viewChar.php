@@ -17,7 +17,7 @@ if (is_array($sheetArr['characters'])) {
 
             // put the character into an easier to access variable for laziness.
             $character = $sheetArr["characters"][$_GET['viewChar']];
-            if ( isset($character['born_faction'])) {
+            if ( isset($character['born_faction']) && ($character['born_faction'] != '')) {
                 $faction = $character['faction'] . " (Originally: " . $character['born_faction'] .")";
               } else {
                 $faction = $character['faction'];

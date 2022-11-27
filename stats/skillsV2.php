@@ -88,9 +88,14 @@ if (!isset($_GET['viewChar']) || $_GET['viewChar'] == "") {
 
         // Character Banner
         if (EMS_echo($character['character_name']) != "") {
-          $printresult .= "<h1><strong>skills:</strong>&nbsp;" . $character['character_name'] . " - " . $faction . "</h1>";
+          if ( isset($character['born_faction'])) {
+            $displayFaction = $character['faction'] . " (Originally: " . $character['born_faction'] .")";
+          } else {
+            $displayFaction = $character['faction'];
+          }
+          $printresult .= "<h1><strong>skills:</strong>&nbsp;" . $character['character_name'] . " - " . $displayFaction . "</h1>";
         } else {
-          $printresult .= "<h1><strong>skills:</strong>&nbsp;[character name] - " . $faction . "</h1>";
+          $printresult .= "<h1><strong>skills:</strong>&nbsp;[character name] - " . $displayFaction . "</h1>";
         }
 
         // exp bar && Back button

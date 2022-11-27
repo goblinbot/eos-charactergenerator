@@ -41,7 +41,7 @@ require_once $APP["root"] . '/exports/current-players.php';
       background: #FFF;
       background-image: url('../img/32033.png');
       background-position: top right;
-      background-position: 95% 85px;
+      background-position: 95% 60px;
       background-repeat: no-repeat;
     }
 
@@ -119,7 +119,7 @@ require_once $APP["root"] . '/exports/current-players.php';
 
             if (  isset($row['born_faction']) && ($row['born_faction'] != '') ) {
               $faction = $row['born_faction'];
-              $displayFaction = $row['faction'] . "<br>(Originally: " . $row['born_faction'] .")";
+              $displayFaction = $row['faction'] . "(Orig: " . ucFirst($row['born_faction']) .")";
             }else{
               $faction = $row['faction'];
               $displayFaction = $faction;
@@ -202,12 +202,22 @@ require_once $APP["root"] . '/exports/current-players.php';
 
             echo "<div style=\"width: 30%; float: left;\">";
 
-            echo "<font size='4'><strong>Augmentations</strong></font></br>";
-
             if ($augmentations != "") {
+              echo "<font size='4'><strong>Augmentations</strong></font></br>";
+              echo "<table style=\"border: 0; width: 90%;\">";
+              echo "<tr style=\"background-color: #CCC;\">"
+              . "<th>Type</th>"
+              . "<th>Skill</th>"
+              . "<th>Level</th>"
+              .  "</tr>";
                 foreach ($augmentations as $aug) {
-                    echo "<p><strong>" . ($aug['type'] == 'cybernetic' ? 'Bionic' : 'Symbiont') . ": " . $aug['name'] . ' level ' . $aug['level'] . "</strong></p>";
+                    echo "<tr>"
+                    . "<td>" . ($aug['type'] == 'cybernetic' ? 'Bionic' : 'Symbiont') . "</td>" 
+                    . "<td>". $aug['name'] . "</td>"
+                    ."<td>" . $aug['level'] . "</td>"
+                    . "</tr>";
                 }
+              echo "</table>";
             }
 
             echo "</div>";

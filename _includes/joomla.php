@@ -23,6 +23,7 @@ $myobj = new \stdClass();
 $myobj->id = $user->get('id');
 $myobj->groups = $user->get('groups');
 
+$array1=array();
 foreach ($myobj->groups as $array) {
     $array1[] = $array;
 }

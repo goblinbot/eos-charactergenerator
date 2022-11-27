@@ -101,7 +101,7 @@ require_once $APP["root"] . '/exports/current-players.php';
         }
 
 
-        $sql = "SELECT characterID, faction, accountID, aantal_events, character_name
+        $sql = "SELECT characterID, faction, born_faction, accountID, aantal_events, character_name
          FROM `ecc_characters` 
          WHERE characterID = '" . mysqli_real_escape_string($UPLINK, (int)$_GET['characterID']) . "' 
          LIMIT 1";
@@ -117,8 +117,15 @@ require_once $APP["root"] . '/exports/current-players.php';
 
             $jid = $row['accountID'];
 
+            if (  isset($row['born_faction']) && ($row['born_faction'] != '') ) {
+              $faction = $row['born_faction'];
+              $displayFaction = $row['faction'] . "<br>(Originally: " . $row['born_faction'] .")";
+            }else{
+              $faction = $row['faction'];
+              $displayFaction = $faction;
+            }
             $skillArr       = getCharacterSkills($row['characterID']);
-            $expUsed        = calcUsedExp(EMS_echo($skillArr), $row['faction']);
+            $expUsed        = calcUsedExp(EMS_echo($skillArr), $faction);
             $expTotal       = calcTotalExp($row['aantal_events']);
             $augmentations  = filterSkillAugs(getImplants($_GET['characterID']));
             //MySQL Query to Check for Bonus research token skill
@@ -142,7 +149,7 @@ require_once $APP["root"] . '/exports/current-players.php';
             echo "<div style='padding: 15px 45px; 0 15px;'>";
             echo "<font size='6'><strong>" . ucfirst($row['character_name']) . "</strong></font></br>";
             echo "<font size='5'><strong>" . $row2['title'] . "</br>Experience points spent: $expUsed / $expTotal "
-            . "<span style=\"color: #777; float: right;\">" . ucfirst($row['faction']) . "</span>"
+            . "<span style=\"color: #777; float: right;\">" . ucfirst($displayFaction) . "</span>"
             . "</strong></font></br>";
 
             echo "<hr/>";
@@ -338,7 +345,7 @@ require_once $APP["root"] . '/exports/current-players.php';
 
                 echo "<tr>"
                 . "<td>#" . $row['characterID'] . "</td>"
-                . "<td>" . $row['character_name'] . "</td><td>" . $row['faction'] . "</td><td>" . $xSTATUS . "</td>"
+                . "<td>" . $row['character_name'] . "</td><td>" . $faction . "</td><td>" . $xSTATUS . "</td>"
                 // ."<td><a href=\"".$APP['header']."/exports/printsheet.php?characterID=".$row['characterID']."\" target=\"_new\"><button>Sheets</button></a></td>"
                 . "<td><button onclick=\"window.open('{$APP["header"]}/exports/printsheet.php?characterID={$row['characterID']}','sheets','width=1280,height=1000');\">View Sheet</button></td></tr>";
                 unset($xSTATUS);

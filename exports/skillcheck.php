@@ -155,7 +155,7 @@ include_once($APP["root"] . '/exports/current-players.php');
     echo '<h2>' . $row2['title'] . '</h2>';
     echo '<h3>Description: ' . $row['description'] . '</h3>';
     echo '<button class="button" id="printPageButton" style="width: 100px;" onClick="window.print();">Print</button>';
-    $sql = "SELECT characterID, character_name, faction, label FROM ecc_characters c
+    $sql = "SELECT characterID, character_name, faction, born_faction, label FROM ecc_characters c
 join ecc_char_skills s1 on (c.characterid = s1.charID)
 join ecc_skills_allskills s2 on (s1.skill_id = s2.skill_id)
 where s1.skill_id = $skillID and c.sheet_status='active' AND characterID in

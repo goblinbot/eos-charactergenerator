@@ -44,9 +44,14 @@ if (!isset($_GET['viewChar']) || $_GET['viewChar'] == "") {
           echo "<div id=\"charStatus\" class=\"hidden\" style=\"display: none;\">" . $character['status'] . "</div>";
 
           // calc skills
+          if ( isset($character['born_faction'])) {
+            $faction = $character['born_faction'];
+          } else {
+            $faction = $character['faction'];
+          }
           $exp = array();
           $exp['exp_total'] = calcTotalExp($character['aantal_events']);
-          $exp['exp_used'] = calcUsedExp(EMS_echo($character['skills']), $character['faction']);
+          $exp['exp_used'] = calcUsedExp(EMS_echo($character['skills']), $faction);
 
           if (isset($_POST['skillform']) && $_POST['skillform'] != "") {
             // first, we check if this character is actually alive. Oh bother.
@@ -71,7 +76,7 @@ if (!isset($_GET['viewChar']) || $_GET['viewChar'] == "") {
         }
 
         // faction skills [strong/weak]
-        $factionMod = getFactionModifiers($character['faction']);
+        $factionMod = getFactionModifiers($faction);
         $augmentations = getImplants($_GET['viewChar']);
         $augmentations = filterSkillAugs($augmentations);
 
@@ -83,9 +88,9 @@ if (!isset($_GET['viewChar']) || $_GET['viewChar'] == "") {
 
         // Character Banner
         if (EMS_echo($character['character_name']) != "") {
-          $printresult .= "<h1><strong>skills:</strong>&nbsp;" . $character['character_name'] . " - " . $character['faction'] . "</h1>";
+          $printresult .= "<h1><strong>skills:</strong>&nbsp;" . $character['character_name'] . " - " . $faction . "</h1>";
         } else {
-          $printresult .= "<h1><strong>skills:</strong>&nbsp;[character name] - " . $character['faction'] . "</h1>";
+          $printresult .= "<h1><strong>skills:</strong>&nbsp;[character name] - " . $faction . "</h1>";
         }
 
         // exp bar && Back button

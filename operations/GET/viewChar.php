@@ -17,11 +17,16 @@ if (is_array($sheetArr['characters'])) {
 
             // put the character into an easier to access variable for laziness.
             $character = $sheetArr["characters"][$_GET['viewChar']];
+            if ( isset($character['born_faction'])) {
+                $faction = $character['born_faction'];
+              } else {
+                $faction = $character['faction'];
+              }
 
             if (EMS_echo($character['character_name']) != "") {
-                $printresult .= "<h1>{$character['character_name']} - {$character['faction']}</h1>";
+                $printresult .= "<h1>{$character['character_name']} - {$faction}</h1>";
             } else {
-                $printresult .= "<h1>[character name] - {$character['faction']}</h1>";
+                $printresult .= "<h1>[character name] - {$faction}</h1>";
             }
 
             if (isset($_GET['editInfo']) && $_GET['editInfo'] == true) {include 'editInfo.php';

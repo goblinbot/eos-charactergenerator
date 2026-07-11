@@ -1,4 +1,6 @@
 <?php
+
+
 if (!isset($APP))
   die('No direct access allowed');
 
@@ -8,11 +10,10 @@ if (!isset($jid) || $jid == false || $jid == null || $jid == "") {
     die('You are not logged in, and no valid login page has been set. Please contact Eos IT for more information. [ ERR: 101 ]');
     exit();
   } else {
-
-    header("location: " . $APP["loginpage"]);
-    exit();
+      header("location: " . $APP["loginpage"]);
+      exit();
+    }
   }
-}
 
 if (!isset($APP["allowed_groups"]) || (isset($APP["allowed_groups"]) && !empty(array_intersect($jgroups, $APP["allowed_groups"])))) {
   $sheetArr = getCharacterSheets();

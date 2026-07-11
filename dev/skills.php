@@ -1,10 +1,10 @@
 <?php
 // globals
 include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
-include_once($APP["root"] . "/_includes/functions.global.php");
+include_once APP_ROOT . "/_includes/functions.global.php";
 
 
-include_once($APP["root"] . "/header.php");
+include_once APP_ROOT . "/header.php";
 
 if (!isset($_SESSION)) {
   session_start();
@@ -122,4 +122,4 @@ unset($printresult);
 <div class="wsright cell"></div>
 
 <?php
-include_once($APP["root"] . "/footer.php");
+include_once APP_ROOT . "/footer.php";

@@ -1,8 +1,8 @@
 <?php
 // globals
 include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
-include_once($APP["root"] . "/_includes/functions.global.php");
-include_once($APP["root"] . "/_includes/functions.sheet.php");
+include_once APP_ROOT . "/_includes/functions.global.php";
+include_once APP_ROOT . "/_includes/functions.sheet.php";
 
 
 echo "<style>th,td { padding: 0 5px; }</style>";

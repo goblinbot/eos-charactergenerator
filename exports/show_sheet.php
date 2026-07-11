@@ -1,6 +1,6 @@
 <?php
-include_once $APP["root"] . "/_includes/functions.sheet.php";
-include_once $APP["root"] . "/_includes/functions.skills.php";
+include_once APP_ROOT . "/_includes/functions.sheet.php";
+include_once APP_ROOT . "/_includes/functions.skills.php";
 
 $sql = "SELECT characterID, faction, born_faction, accountID, aantal_events, character_name
         FROM `ecc_characters` 

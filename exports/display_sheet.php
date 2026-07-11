@@ -1,8 +1,20 @@
 <?php
 // globals
-require_once "../_includes/config.php";
-require_once "../_includes/functions.global.php";
-require_once './current-players.php';
+require_once "../_includes/includes.php";
+//if there is no active session, start one
+if (!isset($_SESSION)) {
+  session_start();
+}
+if (!isset($jid) || $jid == false || $jid == null || $jid == "") {
+
+  if (!isset($APP["loginpage"]) || $APP["loginpage"] == "" || $APP["loginpage"] == "/" || $APP["loginpage"] == "#") {
+    die('You are not logged in, and no valid login page has been set. Please contact Eos IT for more information. [ ERR: 101 ]');
+    exit();
+  } else {
+      header("location: " . "/return-to-charsheet");
+      exit();
+    }
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">

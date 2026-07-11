@@ -1,15 +1,7 @@
 <?php
-// globals
-// config variable.
-$APP = array();
-
-$APP["loginpage"] = "/component/users/?view=login";
-
-include_once ('../../db.php');
-include_once ("../../_includes/functions.global.php");
+require_once "../../_includes/includes.php";
 include_once ("../../_includes/functions.playercap.php");
-include_once ("../../_includes/joomla.php");
-include_once ('../current-players.php');
+
 
 if (isset($_GET['selected_event'])) {
   $selected_event = $_GET['selected_event'];
@@ -46,7 +38,7 @@ if (!in_array("32", $jgroups, true) && !in_array("30", $jgroups, true)) {
 <html>
 
 <head>
-  <link rel="stylesheet" href="../css/participants.css">
+  <link rel="stylesheet" href="../../_includes/css/participants.css">
 </head>
 
 <body>

@@ -1,9 +1,6 @@
 <?php
-include_once('current-players.php');
-include_once($_SERVER["DOCUMENT_ROOT"] . '/eoschargen/db.php');
-include($_SERVER["DOCUMENT_ROOT"] . '/eoschargen/_includes/functions.global.php');
+require_once __DIR__ . "/../_includes/includes.php";
 ?>
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -23,7 +20,7 @@ include($_SERVER["DOCUMENT_ROOT"] . '/eoschargen/_includes/functions.global.php'
       margin-top: 2px;
     }
   </style>
-   <link rel="stylesheet" href="css/participants.css">
+   <link rel="stylesheet" href="../_includes/css/participants.css">
 
 </head>
 

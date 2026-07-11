@@ -3,18 +3,13 @@
 // config variable.
 $APP = array();
 
-$APP["loginpage"] = "/component/users/?view=login";
-
-include_once('../db.php');
-include_once("../_includes/functions.global.php");
-include_once("../_includes/joomla.php");
-include_once('./current-players.php');
-
-
+#$APP["loginpage"] = "/component/users/?view=login";
+include_once __DIR__ . "/../_includes/includes.php";
 
 if (!in_array("32", $jgroups, true) && !in_array("30", $jgroups, true)) {
   header('Status: 303 Moved Temporarily', false, 303);
   header('Location: ../');
+  exit;
 }
 
 ?>
@@ -35,142 +30,12 @@ if (!in_array("32", $jgroups, true) && !in_array("30", $jgroups, true)) {
       navigator.clipboard.writeText(copyText.value);
     }
   </script>
-  <style type="text/css">
-    /* @media screen {
-      table td:nth-last-child(-n + 2) {
-        display: none
-      }
-
-      table th:nth-last-child(-n + 2) {
-        display: none
-      }
-    } */
-
-    body {
-      background: #262e3e;
-      color: white;
-    }
-
-    table {
-      font-family: arial, sans-serif;
-      border-collapse: collapse;
-      width: 100%;
-      color: white;
-    }
-
-    td,
-    th {
-      border: 1px solid #dddddd;
-      text-align: left;
-      padding: 2px 4px;
-      font-size: 16px;
-    }
-
-    @media screen {
-      tr:nth-child(even) {
-        background-color: #555555;
-        color: white;
-      }
-
-      tr:nth-child(odd) {
-        color: white;
-      }
-    }
-
-    .button {
-      background-color: #4CAF50;
-      border: none;
-      color: white;
-      padding: 15px 32px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-      cursor: pointer;
-    }
-
-    .backButton {
-      background-color: rgb(247 54 9);
-      border: none;
-      color: white;
-      padding: 15px 32px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-      cursor: pointer;
-    }
-
-    .hidden-text {
-      display: none;
-    }
-
-    @media print {
-      #printPageButton {
-        display: none;
-      }
-
-      #CopyEmailButton {
-        display: none;
-      }
-
-      #SortBy {
-        display: none;
-      }
-
-      .row {
-        display: flex;
-        margin-left: -5px;
-        margin-right: -5px;
-      }
-
-      .column {
-        flex: 50%;
-        padding: 5px;
-      }
-
-
-      * {
-        box-sizing: border-box;
-        -webkit-print-color-adjust: exact;
-      }
-
-      body {
-        background-color: #fff;
-        color: #000;
-        font-size: 10px;
-      }
-
-      table {
-        color: #000;
-        border-collapse: collapse;
-        padding: 1px 5px;
-        font-size: 8px;
-        width: 95%;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      td,
-      th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 0px 0px;
-        font-size: 10px;
-      }
-
-      .single_record {
-        page-break-after: always;
-      }
-    }
-  </style>
+ <link rel="stylesheet" href="../_includes/css/participants.css">
 </head>
 
 <body>
   <?php
-  $participant_id = $_GET['participant_id'];
+  $participant_id = (int) $_GET["participant_id"];
   $sql2 = "SELECT title FROM jml_eb_events where id = $EVENTID;";
   $res2 = $UPLINK->query($sql2);
   $row2 = mysqli_fetch_array($res2);
@@ -237,7 +102,12 @@ if (!in_array("32", $jgroups, true) && !in_array("30", $jgroups, true)) {
     </tr>
     <tr>
       <td width="20%"><strong>Telefoonnummer:</strong> </td>
-      <td><?php echo "<a href='tel:" . $row['phone'] . ">" . $row['phone'] . "</a>"; ?></td>
+      <td><font color='cyan'><a href='tel:
+		<?php echo formatPhoneNumber($row['phone'],$row['country']);?>
+	'>
+		<?php echo  formatPhoneNumber($row['phone'],$row['country']);?>
+	</a></font>
+	<?php #if (substr($row['phone'], 0, strlen("0")) === "0"){echo potato;}?> </td>
     </tr>
     <tr>
       <td width="20%"><strong>adres:</strong> </td>
@@ -266,7 +136,7 @@ if (!in_array("32", $jgroups, true) && !in_array("30", $jgroups, true)) {
       </tr>
       <tr>
         <td width="20%"><strong>Factie:</strong> </td>
-        <td><?php echo $row['faction']; ?></td>
+        <td><?php echo ucfirst($row['faction']); ?></td>
       </tr>
     </table>
     <?php
@@ -281,7 +151,11 @@ if (!in_array("32", $jgroups, true) && !in_array("30", $jgroups, true)) {
     </tr>
     <tr>
       <td width="20%"><strong><strong>Noodgevalen Telefoonnummer:</strong> </td>
-      <td><?php echo "<a href='tel:" . $row['noodgevallen_telefoonnummer'] . ">" . $row['noodgevallen_telefoonnummer'] . "</a>"; ?></td>
+      <td><a href='tel:
+	<?php echo formatPhoneNumber($row['noodgevallen_telefoonnummer'],$row['country']); ?>
+	'>
+	<?php echo formatPhoneNumber($row['noodgevallen_telefoonnummer'],$row['country']); ?>
+	</a></td>
     </tr>
     <tr>
       <td width="20%"><strong>Medische aandoeningen indien relevant:</strong> </td>

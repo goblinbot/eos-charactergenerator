@@ -1,7 +1,6 @@
 <?php
 // globals
-include_once("../_includes/config.php");
-include_once("../_includes/functions.global.php");
+include_once __DIR__ . "/../_includes/includes.php";
 include_once("../_includes/functions.sheet.php");
 include_once("../_includes/functions.skills.php");
 
@@ -332,7 +331,7 @@ if (!isset($_GET['viewChar']) || $_GET['viewChar'] == "") {
 </div>
 
 <?php
-include_once($APP["root"] . "/footer.php");
+include_once APP_ROOT . "/footer.php";
 ?>
 <script type="text/javascript" src="<?= $APP['header'] ?>/_includes/js/functions.skills.js"></script>
 <?php

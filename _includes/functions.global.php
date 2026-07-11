@@ -1,4 +1,35 @@
 <?php
+
+$stmt = db::$conn->prepare(
+  "SELECT e.id from jml_eb_events e
+JOIN jml_eb_event_categories c ON (c.event_id = e.id)
+WHERE SUBSTRING_INDEX(event_end_date,' ',1) >= CURDATE() AND c.category_id = 1 ORDER BY SUBSTRING_INDEX(event_date,' ',1) ASC LIMIT 1;"
+);
+$res  = $stmt->execute();
+$res  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$EVENTID = ($res['0'])['id'];
+
+
+$stmt2 = db::$conn->prepare(
+  "SELECT e.id from jml_eb_events e
+JOIN jml_eb_event_categories c ON (c.event_id = e.id)
+WHERE SUBSTRING_INDEX(event_end_date,' ',1) >= CURDATE() AND c.category_id = 2 ORDER BY SUBSTRING_INDEX(event_date,' ',1) ASC LIMIT 1;"
+);
+$res2  = $stmt2->execute();
+$res2  = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+if ($res2 && mysqli_num_rows($res2) > 0) {
+  $SPECIALEVENTID = ($res2['0'])['id'];
+} else {
+  $stmt2 = db::$conn->prepare(
+    "SELECT e.id from jml_eb_events e
+JOIN jml_eb_event_categories c ON (c.event_id = e.id)
+WHERE c.category_id = 2 ORDER BY SUBSTRING_INDEX(event_date,' ',1) ASC LIMIT 1;"
+  );
+  $res2  = $stmt2->execute();
+  $res2  = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+  $SPECIALEVENTID = ($res2['0'])['id'];
+}
+
 mysqli_set_charset($UPLINK, 'utf8');
 
 // show errorpage function
@@ -319,10 +350,10 @@ function huizingfilter($input = null)
 function EMS_echo(&$var, $else = '')
 {
   return isset($var) && $var ? $var : $else;
-
 }
 
-function roman_to_integer($roman) {
+function roman_to_integer($roman)
+{
   $romans = array(
     'M' => 1000,
     'CM' => 900,
@@ -337,26 +368,144 @@ function roman_to_integer($roman) {
     'V' => 5,
     'IV' => 4,
     'I' => 1,
-);
+  );
 
-$result = 0;
+  $result = 0;
 
-foreach ($romans as $key => $value) {
+  foreach ($romans as $key => $value) {
     while (strpos($roman, $key) === 0) {
-        $result += $value;
-        $roman = substr($roman, strlen($key));
+      $result += $value;
+      $roman = substr($roman, strlen($key));
     }
-}
-return $result;
+  }
+  return $result;
 }
 
 $notCancelled = "((r.published = 1 AND (r.payment_method = 'os_ideal' OR r.payment_method = 'os_paypal' OR r.payment_method = 'os_bancontact')) OR (r.published in (0,1) AND r.payment_method = 'os_offline') OR (r.published = 1 AND r.payment_method = ''))";
 
 
-function playerStopAlert($faction){
+function playerStopAlert($faction)
+{
   $alert = '<div class="alert">'
-      . '<span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>'
-      . "<h3>⚠️WARNING⚠️</h3>There is a currently a new-player stop on the $faction Faction. <br>If you would like to play a new character on an upcoming event, we recommend you choose a different faction. <br><br>While you are welcome to create a Pendzal Character in the Character Generator, it will not be approved for play on an event until such a time as the new-player stop has been removed. As of this moment, there is no estimate on when that will happen. <br>If you have any questions, you may e-mail <a id='alert-link' href='mailto:spelleider@eosfrontier.space'  target='_blank'>spelleider@eosfrontier.space</a>."
-      . '</div>';
-      return $alert;
+    . '<span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>'
+    . "<h3>⚠️WARNING⚠️</h3>There is a currently a new-player stop on the $faction Faction. <br>If you would like to play a new character on an upcoming event, we recommend you choose a different faction. <br><br>While you are welcome to create a Pendzal Character in the Character Generator, it will not be approved for play on an event until such a time as the new-player stop has been removed. As of this moment, there is no estimate on when that will happen. <br>If you have any questions, you may e-mail <a id='alert-link' href='mailto:spelleider@eosfrontier.space'  target='_blank'>spelleider@eosfrontier.space</a>."
+    . '</div>';
+  return $alert;
+}
+
+function formatPhoneNumber($phone, $country = '')
+{
+  if (substr($phone, 0, 1) === "+") {
+    $formattedPhone = $phone;
+  } else {
+    if ($country === 'Belgium') {
+      $prefix = "0032";
+      if (substr($phone, 0, strlen($prefix)) === $prefix) {
+        $formattedPhone = "+32" . substr($phone, strlen($prefix));
+      }
+      $prefix = "00";
+      if (substr($phone, 0, strlen($prefix)) === $prefix) {
+        $formattedPhone = "+32(0)" . substr($phone, strlen($prefix));
+      }
+    } else if ($country === 'Netherlands') {
+      $prefix = "0031";
+      $prefix2 = "00";
+      $prefix3 = "0";
+      if (substr($phone, 0, strlen($prefix)) === $prefix) {
+        $formattedPhone = "+31" . substr($phone, strlen($prefix));
+      } else if (substr($phone, 0, strlen($prefix2)) === $prefix2) {
+        $formattedPhone = "+31(0)" . substr($phone, strlen($prefix2));
+      } elseif (substr($phone, 0, strlen($prefix3)) === "0") {
+        $formattedPhone = "+31(0)" . substr($phone, strlen($prefix3));
+      } else {
+        $formattedPhone = $phone;
+      }
+    }
+  }
+  return $formattedPhone;
+}
+
+/**
+ * Generates a URL keeping current allowed params, with optional overrides.
+ *
+ * @param string $page The filename (e.g., 'profile.php')
+ * @param array $overrides Key/Value pairs to add or update (e.g., ['sort' => 'desc'])
+ * @param array $allowedKeys The $_GET keys we are allowed to carry over
+ * @return string
+ */
+function build_url($page = null, $overrides = [], $allowedKeys = ['email', 'sort'])
+{
+  // 1. If no page is provided, use current file (e.g., 'index.php')
+  if ($page === null) {
+    $page = basename($_SERVER['SCRIPT_NAME']) . '?';
+  }
+
+  // 2. Filter existing GET params
+  $filtered = array_intersect_key($_GET, array_flip($allowedKeys));
+
+  // 3. Merge overrides
+  $finalParams = array_replace($filtered, $overrides);
+
+  // 4. Remove nulls (cleanup)
+  $finalParams = array_filter($finalParams, fn($value) => $value !== null);
+
+  // 5. Build the query string
+  $queryString = http_build_query($finalParams);
+
+  // 6. Return just the filename + query (e.g., "index.php?sort=asc")
+  return $page . ($queryString ? $queryString : '');
+}
+// PHP < 8.0 doesn't have str_contains
+if (!function_exists('str_contains')) {
+  function str_contains($haystack, $needle)
+  {
+    return $needle !== '' && mb_strpos($haystack, $needle) !== false;
+  }
+}
+
+/**
+ * Exports a participant MySQLi result set to a downloadable CSV.
+ * * @param mysqli_result $resultSet The query result to export
+ * @param string $prefix The start of the filename (e.g., 'registrant-export')
+ */
+function exportParticipantsToCSV($resultSet, $prefix = 'export')
+{
+  $fileName = $prefix . "-" . date('Y-m-d_His') . ".csv";
+
+  // Set headers for download
+  header("Content-Type: text/csv; charset=utf-8");
+  header("Content-Disposition: attachment; filename=\"$fileName\"");
+
+  // Open output stream
+  $output = fopen('php://output', 'w');
+
+  // Add UTF-8 BOM for Excel compatibility
+  fprintf($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
+  $isHeaderWritten = false;
+
+  // Reset result set pointer to the beginning
+  mysqli_data_seek($resultSet, 0);
+
+  while ($row = mysqli_fetch_array($resultSet)) {
+    // Data Transformation Layer
+    $csvRow = [
+      "OC Name"         => trim($row['oc_fn'] . " " . ($row['oc_tv'] ?? '') . " " . $row['oc_ln']),
+      "IC Name"         => $row['ic_name'] ?? '',
+      "Factie"          => ucfirst($row['faction'] ?? ''),
+      "Soort inschrijf" => $row['type'] ?? '',
+      "Foto Opt-Out"    => str_contains($row['foto'] ?? '', 'afmelden') ? "Yes" : ""
+    ];
+
+    // Write headers once based on the keys of the first row
+    if (!$isHeaderWritten) {
+      fputcsv($output, array_keys($csvRow));
+      $isHeaderWritten = true;
+    }
+
+    fputcsv($output, $csvRow);
+  }
+
+  fclose($output);
+  exit; // Stop execution so no HTML is appended to the CSV
 }

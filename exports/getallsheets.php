@@ -1,3 +1,8 @@
+<?php
+require_once __DIR__ . "/../_includes/includes.php";
+include_once APP_ROOT . "/_includes/functions.sheet.php";
+include_once APP_ROOT . "/_includes/functions.skills.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -85,10 +90,6 @@
 
 <body>
   <?php
-  require_once $_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php";
-  include_once $APP["root"] . "/_includes/functions.sheet.php";
-  include_once $APP["root"] . "/_includes/functions.global.php";
-  include_once $APP["root"] . "/_includes/functions.skills.php";
 
   foreach (getCharacterIDsforEvent($EVENTID) as $value) {
     echo '<div class="charsheet">';
@@ -134,8 +135,7 @@
       for ($x = 1; $x <= $y; $x++) {
         echo "<td height='30'><strong>" . $row['character_name']
           . "</strong></br>" . $row2['title'] . " - Research Token " . $x . "</td>";
-      }
-      ;
+      };
       echo "</table>";
       echo "<div style='padding: 15px 45px; 0 15px;'>";
       echo "<font size='6'><strong>" . ucfirst($row['character_name']) . "</strong></font></br>";
@@ -151,7 +151,7 @@
       echo "<font size='4'><strong>Your skills</strong></font></br>";
 
       // first, create a minimized skill sheet
-  
+
       $parentSkills = [];
 
       $kSQL = "SELECT primaryskill_id, name FROM `ecc_skills_groups`";
@@ -160,7 +160,7 @@
         $parentSkills[$kROW['primaryskill_id']] = $kROW['name'];
       }
       // and Third: It's time to print those skills!
-  
+
       echo "<table style=\"border: 0; width: 90%;\">";
       echo "<tr style=\"background-color: #CCC;\">"
         . "<th colspan=\"3\">Skill</th>"
@@ -193,8 +193,8 @@
 
       echo "<div style=\"width: 30%; float: left;\">";
 
-      $augmentations = filterSkillAugs(getImplants($value['characterID'],'true'));
-      if ($augmentations != null ) {
+      $augmentations = filterSkillAugs(getImplants($value['characterID'], 'true'));
+      if ($augmentations != null) {
         echo "<font size='4'><strong>Augmentations</strong></font></br>";
         echo "<table style=\"border: 0; width: 90%;\">";
         echo "<tr style=\"background-color: #CCC;\">"

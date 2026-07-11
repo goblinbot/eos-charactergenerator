@@ -1,8 +1,8 @@
 <?php
 // globals
-require_once $_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php";
-require_once $APP["root"] . "/_includes/functions.global.php";
-require_once $APP["root"] . '/exports/current-players.php';
+require_once __DIR__ . "/../_includes/includes.php";
+require_once APP_ROOT . "/_includes/functions.global.php";
+
 
 (string) $_FACTION = (isset($_GET['faction']) && $_GET['faction'] != "" ? $_GET['faction'] : '%');
 (string) $_BUILDING = (isset($_GET['building']) && $_GET['building'] != "" ? $_GET['building'] : 'Bastion');

@@ -1,7 +1,6 @@
 <?php
-include_once($_SERVER["DOCUMENT_ROOT"] . '/eoschargen/db.php');
-require "../../_includes/functions.global.php";
-
+require_once __DIR__ . "/../../_includes/includes.php";
+        
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 require './buildtable.php';
@@ -14,7 +13,7 @@ require './buildtable.php';
     <meta charset="utf-8">
 
     <title>Sleepytime</title>
-    <link rel="stylesheet" href="../css/participants.css">
+    <link rel="stylesheet" href="../../_includes/css/participants.css">
     <link href="https://fonts.googleapis.com/css?family=Orbitron:400,500,700,900" rel="stylesheet">
 </head>
 

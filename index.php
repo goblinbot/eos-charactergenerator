@@ -1,7 +1,6 @@
 <?php
 // globals
-include_once('./_includes/config.php');
-include_once('./_includes/functions.global.php');
+require_once '_includes/includes.php';
 include_once('./header.php');
 
 //if there is no active session, start one

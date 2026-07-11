@@ -3,7 +3,7 @@
 // config variable.
 $APP = array();
 
-$APP["loginpage"] = "/component/users/?view=login";
+#$APP["loginpage"] = "/component/users/?view=login";
 
 include_once('../db.php');
 include_once("../_includes/functions.global.php");

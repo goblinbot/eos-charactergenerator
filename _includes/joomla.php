@@ -1,7 +1,14 @@
 <?php
 
-// Get Joomla session
-define('_JEXEC', 1);
+
+if ($dev) {
+    $jid = 747;
+    $myobj = new \stdClass();
+    $myobj->id = $jid;
+    $myobj->groups = ["32", "66", "64"];
+    $jgroups = array("32", "66", "64");
+} else {
+    define('_JEXEC', 1);
 define('DS', '/');
 // IMPORTANT: adjust path based on folder or define it manually as string
 // "myjoomlaroot" is name of your Joomla root folder
@@ -33,3 +40,4 @@ $array = array(
     'groups' => $array1
 );
 $jgroups = $array["groups"];
+}

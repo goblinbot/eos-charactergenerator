@@ -1,6 +1,6 @@
 <?php
-include_once $APP["root"] . "/_includes/functions.sheet.php";
-include_once $APP["root"] . "/_includes/functions.skills.php";
+include_once APP_ROOT . "/_includes/functions.sheet.php";
+include_once APP_ROOT . "/_includes/functions.skills.php";
 
 if (isset($_GET['print']) && $_GET['print'] == 'confirm') {
     $sql = "UPDATE `ecc_characters` SET `print_status` = $EVENTID WHERE `characterID` = '" . (int) $_GET['characterID'] . "' LIMIT 1;";

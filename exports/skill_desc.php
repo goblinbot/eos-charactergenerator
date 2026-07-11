@@ -1,30 +1,12 @@
 <?php
-require_once "../_includes/config.php";
-require_once "../_includes/functions.global.php";
-require_once './current-players.php';
+require_once __DIR__ . '/../_includes/includes.php';
 ?>
 <html>
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    <?php
-    include '../_includes/css/style.css';
-    ?>
-    button {
-      font-size: 4vw;
-    }
-
-    @media screen and (min-width: 601px) {
-      button {
-        font-size: 1.5vw;
-      }
-    }
-
-    img {
-      Padding: 50px, 0px //padding positions
-    }
-  </style>
+  <link href="../_includes/css/style.css" rel="stylesheet" type="text/css" />
+  <link href="../_includes/css/skill_desc.css" rel="stylesheet" type="text/css" />
 </head>
 
 <?php
@@ -33,8 +15,8 @@ echo '<button onclick="history.go(-1);">Back </button> &nbsp; &nbsp; &nbsp; <img
 $skillid = $_GET["id"];
 
 $stmt = db::$conn->prepare(
-  "SELECT s.label, s.level, s.description, g.name as parent from ecc_skills_allskills s 
-    LEFT JOIN ecc_skills_groups g on (g.primaryskill_id = s.parent)                                                                                                                  
+  "SELECT s.label, s.level, s.description, g.name as parent from ecc_skills_allskills s
+    LEFT JOIN ecc_skills_groups g on (g.primaryskill_id = s.parent)
   WHERE skill_id = $skillid;"
 );
 $res = $stmt->execute();

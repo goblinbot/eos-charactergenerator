@@ -1,113 +1,14 @@
 <?php
-$APP = array();
-$APP["includes"] = array();
-$APP["header"] = "/eoschargen";
-$APP["root"] = $_SERVER["DOCUMENT_ROOT"] . $APP["header"];
-$APP["loginpage"] = "/component/users/?view=login";
+include_once "../_includes/includes.php";
 
-include_once($_SERVER["DOCUMENT_ROOT"] . '/eoschargen/db.php');
-include_once($APP["root"] . "/_includes/functions.global.php");
-include_once($APP["root"] . '/exports/current-players.php');
+
 ?>
 <!DOCTYPE html>
 <html>
 
 <head>
-  <style>
-    body {
-      font-family: orbitron;
-      background: #262e3e;
-      color: white;
-    }
+  <link rel="stylesheet" href="../_includes/css/skillcheck.css">
 
-    table {
-      font-family: orbitron;
-      border-collapse: collapse;
-      width: 70%;
-      color: white;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    td,
-    th {
-      border: 1px solid #dddddd;
-      text-align: left;
-      padding: 1px 2px;
-      font-size: 14px;
-    }
-
-    tr:nth-child(even) {
-      background-color: #dddddd;
-      color: black;
-    }
-
-    .button {
-      background-color: #4CAF50;
-      border: none;
-      color: white;
-      padding: 15px 32px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-      cursor: pointer;
-
-    }
-
-    #nname {
-      padding: 5px;
-      color: #fff;
-      background-color: #000;
-      font-size: 12px;
-      -webkit-appearance: none;
-
-    }
-
-    @media print {
-      #printPageButton {
-        display: none;
-      }
-
-      #nname {
-        display: none;
-
-      }
-
-      * {
-        -webkit-print-color-adjust: exact;
-      }
-
-      body {
-        background-color: #fff;
-        color: #000;
-        font-size: 10px;
-      }
-
-      table {
-        color: #000;
-        border-collapse: collapse;
-        padding: 1px 5px;
-        font-size: 8px;
-        width: 70%;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      td,
-      th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 0px 0px;
-        font-size: 10px;
-      }
-
-      .single_record {
-        page-break-after: always;
-      }
-    }
-  </style>
 </head>
 
 <body>

@@ -11,12 +11,14 @@
     display: none
   }
 
-  tr:nth-child(even) {
-    background-color: #555555;
-    color: white;
+  /* Stripes only the data rows, ignoring the header */
+  tbody tr:nth-child(odd) {
+    background-color: transparent;
+    /* or your base color */
   }
 
-  tr:nth-child(odd) {
+  tbody tr:nth-child(even) {
+    background-color: #555555;
     color: white;
   }
 

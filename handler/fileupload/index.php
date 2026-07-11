@@ -1,8 +1,7 @@
 <?php
 // globals
-include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
-include_once($APP["root"] . "/_includes/functions.global.php");
-include_once($APP["root"] . "/header.php");
+include_once __DIR__ . "/../../_includes/includes.php";
+include_once APP_ROOT . "/header.php";
 
 if (!isset($_SESSION)) {
   session_start();
@@ -63,7 +62,7 @@ if (mysqli_num_rows($res2) > 0) {
         </div>
     </div>
   </div>
-  <?php include $APP["root"] . '/footer.php'; ?>
+  <?php include '../../footer.php'; ?>
 </body>
 
 </html>
@@ -99,7 +98,7 @@ if (mysqli_num_rows($res2) > 0) {
 
 <script>
   var viewchar = "<?php echo $viewchar; ?>";
-  $(document).ready(function () {
+  $(document).ready(function() {
 
     $image_crop = $('#image_demo').croppie({
       enableExif: true,
@@ -114,23 +113,23 @@ if (mysqli_num_rows($res2) > 0) {
       }
     });
 
-    $('#upload_image').on('change', function () {
+    $('#upload_image').on('change', function() {
       var reader = new FileReader();
-      reader.onload = function (event) {
+      reader.onload = function(event) {
         $image_crop.croppie('bind', {
           url: event.target.result
-        }).then(function () {
+        }).then(function() {
           console.log('jQuery bind complete');
         });
       }
       reader.readAsDataURL(this.files[0]);
       $('#uploadimageModal').modal('show');
     });
-    $('.crop_image').click(function (event) {
+    $('.crop_image').click(function(event) {
       $image_crop.croppie('result', {
         type: 'canvas',
         size: 'viewport'
-      }).then(function (response) {
+      }).then(function(response) {
         $.ajax({
           url: "upload.php",
           type: "POST",
@@ -138,7 +137,7 @@ if (mysqli_num_rows($res2) > 0) {
             "image": response,
             "charid": viewchar
           },
-          success: function (data) {
+          success: function(data) {
             $('#uploadimageModal').modal('hide');
             $('#uploaded_image').html(data);
           }

@@ -1,7 +1,6 @@
 <?php
-include_once($_SERVER["DOCUMENT_ROOT"] . "/eoschargen/_includes/config.php");
-include_once($APP["root"] . "/_includes/functions.global.php");
-include_once($APP["root"] . "/_includes/functions.skills.php");
+include_once __DIR__ . "/../_includes/includes.php";
+include_once(__DIR__ . "/../_includes/functions.skills.php");
 
 /* no login means NO PLAY. GET OUT. */
 if (!isset($jid)) {

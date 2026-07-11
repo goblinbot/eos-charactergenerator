@@ -59,7 +59,7 @@ $factions = array('aquila','dugo','ekanesh','pendzal','sona');
 
     $printresult .= '<div id="fct_pendzal" class="formitem dialog factionblurb">'
       . '<h2 class="center-xs"><i class="far fa-lightbulb"></i>&nbsp;Pendzal</h2>'
-      .  playerStopAlert('Pendzal')
+      #.  playerStopAlert('Pendzal')
       . '<p>Uncountable clans break up the Pendzal planetary borders with their own territories but work together '
       . 'when they have to. Personal freedom of choice is an inviolable human right to these engineers at heart, and '
       . 'they fought their way out of the Aquila and Dugo in bitter separation wars to gain the recognition they deserved.</p>'
@@ -71,3 +71,4 @@ $factions = array('aquila','dugo','ekanesh','pendzal','sona');
       . 'lush style of living and financial prowess made sure these information brokers secured worlds of their own and '
       . 'managed to abolish all other currencies in favour of their universal standard, the Sonur.</p>'
       . '</div>';
+

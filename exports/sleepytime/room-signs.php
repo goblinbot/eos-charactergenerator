@@ -1,13 +1,13 @@
 <?php
-        header("Content-Type: text/html; charset=ISO-8859-1");
-        include_once ($_SERVER["DOCUMENT_ROOT"] . '/eoschargen/db.php');
-        include("../../_includes/functions.global.php");
+        header("Content-Type: text/html; charset=UTF-8");
+        require_once __DIR__ . "/../../_includes/includes.php";
         require './buildtable.php';
         ?>
 <!doctype html>
-<lang="en">
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
     <title>Room Signs</title>
     <link rel="stylesheet" href="css/room-sign.css">
     <link href="https://fonts.googleapis.com/css?family=Orbitron:400,500,700,900" rel="stylesheet">
